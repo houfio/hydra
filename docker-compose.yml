@@ -29,6 +29,7 @@ services:
     ports:
       - 8000:80
     volumes:
+      - ./:/var/www/public
       - ./docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - hydra
