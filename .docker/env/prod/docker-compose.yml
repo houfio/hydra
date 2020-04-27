@@ -2,11 +2,9 @@ version: '3'
 services:
   hydra:
     build:
-      args:
-        user: hydra
       context: ../../..
       dockerfile: ./.docker/env/prod/Dockerfile
-    image: hydra
+    image: houfio/hydra
     ports:
       - 8000:80
     networks:
