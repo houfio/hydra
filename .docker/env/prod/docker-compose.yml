@@ -1,0 +1,26 @@
+version: '3'
+services:
+  hydra:
+    build:
+      args:
+        user: hydra
+      context: ../../..
+      dockerfile: ./.docker/env/prod/Dockerfile
+    image: hydra
+    ports:
+      - 8000:80
+    networks:
+      - hydra
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - ../../compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - hydra
+networks:
+  hydra:
+    driver: bridge
