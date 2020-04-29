@@ -9,20 +9,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout code
-      uses: actions/checkout@v2.1.0
-    - name: define version
-      run: echo ::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##*/})
-    - name: publish to registry
-      uses: elgohr/Publish-Docker-Github-Action@2.14
-      with:
-        name: docker.pkg.github.com/houfio/hydra/hydra
-        username: houfio
-        password: ${{ secrets.GITHUB_TOKEN }}
-        registry: docker.pkg.github.com
-        dockerfile: .docker/env/prod/Dockerfile
-        context: .
-        tags: "${{ env.BRANCH_NAME }}"
+      - name: checkout code
+        uses: actions/checkout@v2.1.0
+      - name: define version
+        run: echo ::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##*/})
+      - name: publish to registry
+        uses: elgohr/Publish-Docker-Github-Action@2.14
+        with:
+          name: docker.pkg.github.com/houfio/hydra/hydra
+          username: houfio
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          dockerfile: .docker/env/prod/Dockerfile
+          context: .
+          tags: "${{ env.BRANCH_NAME }}"
   deploy:
     runs-on: ubuntu-latest
     steps:
