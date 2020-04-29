@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.1
+    - uses: actions/checkout@v2
     - uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
         name: docker.pkg.github.com/houfio/hydra/${GITHUB_REF##*/}
