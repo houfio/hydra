@@ -19,4 +19,4 @@ jobs:
         registry: docker.pkg.github.com
         dockerfile: .docker/env/prod/Dockerfile
         context: .
-        tags: "${{ BRANCH_NAME }}"
+        tags: "${{ env.BRANCH_NAME }}"
