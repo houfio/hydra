@@ -1,0 +1,21 @@
+name: publish
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - release/*
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.1
+    - uses: elgohr/Publish-Docker-Github-Action@2.14
+      with:
+        name: docker.pkg.github.com/houfio/hydra/${GITHUB_REF##*/}
+        username: houfio
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        workdir: .docker/env/prod/Dockerfile
+        context: .
+        tags: "latest,$(date +%s)"
