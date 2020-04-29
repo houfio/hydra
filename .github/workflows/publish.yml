@@ -16,6 +16,6 @@ jobs:
         username: houfio
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        workdir: .docker/env/prod/Dockerfile
+        dockerfile: .docker/env/prod/Dockerfile
         context: .
         tags: "latest,$(date +%s)"
