@@ -18,4 +18,4 @@ jobs:
         registry: docker.pkg.github.com
         dockerfile: .docker/env/prod/Dockerfile
         context: .
-        tags: ${GITHUB_REF##*/}
+        tags: "latest"
