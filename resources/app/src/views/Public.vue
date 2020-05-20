@@ -52,7 +52,7 @@
 <style scoped lang="scss">
   .main {
     min-height: 100vh;
-    padding: 15px 40px;
+    padding: 15px 50px;
     background-color: darkred;
   }
 
