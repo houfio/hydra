@@ -6,7 +6,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'Admin'
-  };
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+
+  @Component
+  export default class Admin extends Vue {}
 </script>

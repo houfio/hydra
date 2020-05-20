@@ -2,22 +2,33 @@
   <main>
     <Header/>
     <Border>
-      <router-view/>
+      <table>
+        <tbody>
+          <tr>
+          </tr>
+          <tr>
+            <router-view/>
+          </tr>
+        </tbody>
+      </table>
     </Border>
   </main>
 </template>
 
 <script>
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+
   import Border from '../components/Border';
   import Header from '../components/Header';
 
-  export default {
-    name: 'Public',
+  @Component({
     components: {
       Border,
-      Header
+      Header,
     }
-  };
+  })
+  export default class Public extends Vue {}
 </script>
 
 <style scoped lang="scss">

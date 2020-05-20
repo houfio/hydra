@@ -17,14 +17,17 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+
   import Brand from './Brand';
 
-  export default {
-    name: 'Header',
+  @Component({
     components: {
       Brand
     }
-  };
+  })
+  export default class Header extends Vue {}
 </script>
 
 <style scoped lang="scss">

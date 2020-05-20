@@ -91,9 +91,11 @@
 </template>
 
 <script>
-  export default {
-    name: 'Border'
-  };
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+
+  @Component
+  export default class Border extends Vue {}
 </script>
 
 <style scoped lang="scss">
