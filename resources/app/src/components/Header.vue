@@ -16,11 +16,11 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Brand from './Brand';
+  import Brand from './Brand.vue';
 
   @Component({
     components: {

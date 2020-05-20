@@ -15,12 +15,12 @@
   </main>
 </template>
 
-<script>
+<script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Border from '../components/Border';
-  import Header from '../components/Header';
+  import Border from '../components/Border.vue';
+  import Header from '../components/Header.vue';
 
   @Component({
     components: {
