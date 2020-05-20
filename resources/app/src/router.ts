@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Admin from '../views/Admin.vue';
-import Home from '../views/Home.vue';
-import Public from '../views/Public.vue';
+import Admin from './views/Admin.vue';
+import Home from './views/Home.vue';
+import Public from './views/Public.vue';
 
 Vue.use(VueRouter);
 
