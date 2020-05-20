@@ -5,6 +5,7 @@
       <table>
         <tbody>
           <tr>
+            <Navigation/>
           </tr>
           <tr>
             <router-view/>
@@ -21,11 +22,13 @@
 
   import Border from '../components/Border.vue';
   import Header from '../components/Header.vue';
+  import Navigation from '../components/Navigation.vue';
 
   @Component({
     components: {
       Border,
       Header,
+      Navigation
     }
   })
   export default class Public extends Vue {}
