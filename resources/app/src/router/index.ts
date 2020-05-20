@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Admin from '../views/Admin.vue';
-import Home from '../views/Public.vue';
+import Home from '../views/Home.vue';
+import Public from '../views/Public.vue';
 
 Vue.use(VueRouter);
 
@@ -11,11 +12,13 @@ export default new VueRouter({
   base: process.env.BASE_URL,
   routes: [{
     path: '/kassa',
-    name: 'Admin',
     component: Admin
   }, {
     path: '/',
-    name: 'Home',
-    component: Home
+    component: Public,
+    children: [{
+      path: '/',
+      component: Home
+    }]
   }]
 });

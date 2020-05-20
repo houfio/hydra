@@ -1,17 +1,20 @@
 <template>
   <main>
     <Header/>
-    public
-    <router-view/>
+    <Border>
+      <router-view/>
+    </Border>
   </main>
 </template>
 
 <script>
+  import Border from '../components/Border';
   import Header from '../components/Header';
 
   export default {
     name: 'Public',
     components: {
+      Border,
       Header
     }
   };
