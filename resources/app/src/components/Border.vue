@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="border">
     <tbody>
       <tr class="spacer">
         <td colspan="9"/>
@@ -99,7 +99,7 @@
 </script>
 
 <style scoped lang="scss">
-  table {
+  .border {
     width: 100%;
     border-collapse: collapse;
   }

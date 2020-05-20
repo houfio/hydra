@@ -1,14 +1,19 @@
 <template>
-  <main>
+  <main class="main">
     <Header/>
     <Border>
-      <table>
+      <table class="content">
         <tbody>
           <tr>
             <Navigation/>
           </tr>
+          <tr class="spacer">
+            <td colspan="3"/>
+          </tr>
           <tr>
+            <td class="spacer"/>
             <router-view/>
+            <td class="spacer"/>
           </tr>
         </tbody>
       </table>
@@ -35,9 +40,21 @@
 </script>
 
 <style scoped lang="scss">
-  main {
+  .main {
     min-height: 100vh;
     padding: 15px 40px;
     background-color: darkred;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  tr.spacer {
+    height: 50px;
+  }
+
+  td.spacer {
+    width: 50px;
   }
 </style>

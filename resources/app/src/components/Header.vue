@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="header">
     <tbody>
       <tr>
         <Brand/>
@@ -31,7 +31,7 @@
 </script>
 
 <style scoped lang="scss">
-  table {
+  .header {
     width: 100%;
     border-collapse: collapse;
   }

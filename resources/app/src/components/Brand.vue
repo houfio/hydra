@@ -1,7 +1,7 @@
 <template>
-  <td>
+  <td class="brand">
     <img class="logo" src="../assets/logo.png" alt="Golden Dragon"/>
-    <span class="brand">De Gouden Draak</span>
+    <span class="name">De Gouden Draak</span>
     <img class="logo flipped" src="../assets/logo.png" alt="Golden Dragon"/>
   </td>
 </template>
@@ -15,7 +15,7 @@
 </script>
 
 <style scoped lang="scss">
-  td {
+  .brand {
     width: 30%;
     color: yellow;
     font-size: 30px;
@@ -30,7 +30,7 @@
     }
   }
 
-  .brand {
+  .name {
     font-family: Takeaway, serif;
   }
 </style>
