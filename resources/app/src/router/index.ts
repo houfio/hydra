@@ -1,24 +1,21 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 
-import Home from '../views/Home.vue';
+import Admin from '../views/Admin.vue';
+import Home from '../views/Public.vue';
 
 Vue.use(VueRouter);
 
-const routes: RouteConfig[] = [{
-  path: '/',
-  name: 'Home',
-  component: Home
-}, {
-  path: '/about',
-  name: 'About',
-  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-}];
-
-const router = new VueRouter({
+export default new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes: [{
+    path: '/kassa',
+    name: 'Admin',
+    component: Admin
+  }, {
+    path: '/',
+    name: 'Home',
+    component: Home
+  }]
 });
-
-export default router;

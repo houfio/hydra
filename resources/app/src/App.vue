@@ -1,33 +1,39 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-      |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <router-view/>
 </template>
 
 <style lang="scss">
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+  @font-face {
+    font-family: Takeaway;
+    src: url('./assets/chinesetakeaway.woff2') format('woff2');
   }
 
-  #nav {
-    padding: 30px;
+  *, *::before, *:after {
+    box-sizing: border-box;
+  }
 
-    a {
-      font-weight: bold;
-      color: #2c3e50;
+  button {
+    text-align: start;
 
-      &.router-link-exact-active {
-        color: #42b983;
-      }
+    :hover:not(:disabled) {
+      cursor: pointer;
     }
+  }
+
+  select, button, input {
+    padding: 0;
+    background: none;
+    border: none;
+    font: inherit;
+    appearance: none !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    line-height: 1em;
+  }
+
+  img, svg {
+    vertical-align: middle;
   }
 </style>
