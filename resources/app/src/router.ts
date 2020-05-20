@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Admin from './views/Admin.vue';
 import Home from './views/Home.vue';
+import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
 
 Vue.use(VueRouter);
@@ -19,6 +20,9 @@ export default new VueRouter({
     children: [{
       path: '/',
       component: Home
+    }, {
+      path: '*',
+      component: NotFound
     }]
   }]
 });
