@@ -15,6 +15,16 @@
             <router-view/>
             <td class="spacer"/>
           </tr>
+          <br/>
+          <tr>
+            <td colspan="3">
+              <router-link to="/contact" v-slot="{ href, navigate }">
+                <a class="footer" href="href" @click="navigate">
+                  Naar Contact
+                </a>
+              </router-link>
+            </td>
+          </tr>
         </tbody>
       </table>
     </Border>
@@ -56,5 +66,13 @@
 
   td.spacer {
     width: 50px;
+  }
+
+  .footer {
+    display: inline-block;
+    width: 100%;
+    color: yellow;
+    text-align: center;
+    text-decoration: none;
   }
 </style>
