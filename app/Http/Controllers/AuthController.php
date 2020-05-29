@@ -14,10 +14,10 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $data = $this->validate($request, [
-            'email' => 'required|email',
+            'id' => 'required|integer',
             'password' => 'required'
         ]);
-        $user = User::where('email', $data['email'])->first();
+        $user = User::find($data['id']);
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             throw new UnauthorizedException('Invalid credentials.');
