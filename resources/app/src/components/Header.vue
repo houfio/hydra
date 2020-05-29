@@ -4,11 +4,13 @@
       <tr>
         <Brand/>
         <td>
-          <a href="paginas/aanbiedingen.html" class="offers">
-            <marquee behavior="scroll" direction="left">
-              Welkom bij De Gouden Draak. Klik op deze tekst om de aanbiedingen van deze week te zien!
-            </marquee>
-          </a>
+          <router-link to="/offers" v-slot="{ href, navigate }">
+            <a class="offers" :href="href" @click="navigate">
+              <marquee behavior="scroll" direction="left">
+                Welkom bij De Gouden Draak. Klik op deze tekst om de aanbiedingen van deze week te zien!
+              </marquee>
+            </a>
+          </router-link>
         </td>
         <Brand/>
       </tr>
