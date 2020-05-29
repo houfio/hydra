@@ -12,6 +12,10 @@ class MenuController extends Controller
         $types = DishType::with('dishes')->get()
             ->makeHidden(['created_at', 'updated_at']);
 
+        foreach ($types as $type) {
+            $type->dishes->makeHidden(['type_id', 'created_at', 'updated_at']);
+        }
+
         return response()->json([
             'data' => [
                 'types' => $types
