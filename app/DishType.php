@@ -14,6 +14,6 @@ class DishType extends Model
 
     public function dishes()
     {
-        return $this->hasMany(Dish::class);
+        return $this->hasMany(Dish::class, 'type_id');
     }
 }
