@@ -50,6 +50,11 @@
 </script>
 
 <style scoped lang="scss">
+  @font-face {
+    font-family: Takeaway;
+    src: url('../assets/chinesetakeaway.woff2') format('woff2');
+  }
+
   .main {
     min-height: 100vh;
     padding: 15px 50px;

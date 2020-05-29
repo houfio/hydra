@@ -3,13 +3,12 @@
 </template>
 
 <style lang="scss">
-  @font-face {
-    font-family: Takeaway;
-    src: url('./assets/chinesetakeaway.woff2') format('woff2');
-  }
-
   *, *::before, *:after {
     box-sizing: border-box;
+  }
+
+  html {
+    overflow-y: scroll;
   }
 
   button {
@@ -22,6 +21,7 @@
 
   select, button, input {
     padding: 0;
+    color: inherit;
     background: none;
     border: none;
     font: inherit;
