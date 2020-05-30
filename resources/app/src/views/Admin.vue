@@ -1,15 +1,26 @@
 <template>
-  <main class="main">
+  <div class="main">
+    <Navigation v-if="navigation"/>
     <router-view/>
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  @Component
-  export default class Admin extends Vue {}
+  import Navigation from '../components/admin/Navigation.vue';
+
+  @Component({
+    components: {
+      Navigation
+    }
+  })
+  export default class Admin extends Vue {
+    get navigation() {
+      return Boolean(this.$route.meta.guard);
+    }
+  }
 </script>
 
 <style scoped lang="scss">

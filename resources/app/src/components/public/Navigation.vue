@@ -1,8 +1,8 @@
 <template>
   <td colspan="3">
     <p class="title">
-      <img class="logo" src="../assets/logo.png" alt="Golden Dragon">
-      <img class="logo flipped" src="../assets/logo.png" alt="Golden Dragon">
+      <img class="logo" src="../../assets/logo.png" alt="Golden Dragon">
+      <img class="logo flipped" src="../../assets/logo.png" alt="Golden Dragon">
       <span>Chinees Indische Specialiteiten</span><br>
       <span class="big">De Gouden Draak</span>
     </p>

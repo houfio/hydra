@@ -1,8 +1,8 @@
 <template>
   <td class="brand">
-    <img class="logo" src="../assets/logo.png" alt="Golden Dragon"/>
+    <img class="logo" src="../../assets/logo.png" alt="Golden Dragon"/>
     <span class="name">De Gouden Draak</span>
-    <img class="logo flipped" src="../assets/logo.png" alt="Golden Dragon"/>
+    <img class="logo flipped" src="../../assets/logo.png" alt="Golden Dragon"/>
   </td>
 </template>
 

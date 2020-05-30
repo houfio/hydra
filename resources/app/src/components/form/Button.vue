@@ -23,10 +23,6 @@
     outline: none;
     transition: box-shadow .25s ease;
 
-    &:hover {
-      cursor: pointer;
-    }
-
     &:focus {
       box-shadow: 0 0 0 3px darken(#ff6347, 25);
     }

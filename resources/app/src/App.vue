@@ -14,7 +14,7 @@
   button {
     text-align: start;
 
-    :hover:not(:disabled) {
+    &:hover:not(:disabled) {
       cursor: pointer;
     }
   }

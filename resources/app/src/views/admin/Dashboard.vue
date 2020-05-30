@@ -1,12 +1,20 @@
 <template>
-
+  <Page>
+    dashboard
+  </Page>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  @Component
+  import Page from '../../components/admin/Page.vue';
+
+  @Component({
+    components: {
+      Page
+    }
+  })
   export default class Dashboard extends Vue {}
 </script>
 
