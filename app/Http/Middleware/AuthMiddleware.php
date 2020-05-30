@@ -11,7 +11,7 @@ use Illuminate\Validation\UnauthorizedException;
 
 class AuthMiddleware
 {
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next)
     {
         $token = $request->header('authorization');
 

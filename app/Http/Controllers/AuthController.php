@@ -24,14 +24,15 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'data' => [[
+            'success' => true,
+            'data' => [
                 'token' => JWT::encode([
                     'iss' => 'lumen',
                     'sub' => $user->id,
                     'iat' => time(),
                     'exp' => time() + 60 * 60
                 ], env('JWT_SECRET'))
-            ]]
+            ]
         ]);
     }
 }

@@ -23,6 +23,7 @@ class Handler extends ExceptionHandler
         }
 
         return response()->json([
+            'success' => false,
             'error' => [
                 'code' => $code,
                 'message' => $message,

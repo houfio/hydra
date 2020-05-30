@@ -17,6 +17,7 @@ class MenuController extends Controller
         }
 
         return response()->json([
+            'success' => true,
             'data' => [
                 'types' => $types
             ]
