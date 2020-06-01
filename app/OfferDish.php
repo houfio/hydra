@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class DealDish extends Pivot
+class OfferDish extends Pivot
 {
-    protected $table = 'deal_dishes';
+    protected $table = 'offer_dishes';
 
     protected $fillable = [
         'price', 'tax'
@@ -16,13 +16,13 @@ class DealDish extends Pivot
         'price' => 'float'
     ];
 
-    public function deal()
+    public function offer()
     {
-        return $this->belongsTo(Deal::class);
+        return $this->belongsTo(Offer::class);
     }
 
     public function dish()
     {
-        return $this->belongsTo(Dish::class);
+        return $this->belongsTo(Offer::class);
     }
 }

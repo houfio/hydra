@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DishesSeeder::class,
             OrdersSeeder::class,
-            DealsSeeder::class
+            OffersSeeder::class
         ]);
 
         Model::reguard();

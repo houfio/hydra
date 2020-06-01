@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Deal;
+use App\Offer;
 use App\Dish;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
-class DealController extends Controller
+class OfferController extends Controller
 {
     public function list()
     {
         return response()->json([
             'success' => true,
             'data' => [
-                'deals' => Deal::all()
+                'offers' => Offer::all()
             ]
         ]);
     }
@@ -29,16 +29,16 @@ class DealController extends Controller
             'dishes.*.price' => 'required|numeric|min:1'
         ]);
 
-        $deal = new Deal();
+        $offer = new Offer();
 
-        $deal->name = $data['name'];
-        $deal->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
+        $offer->name = $data['name'];
+        $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
 
-        $deal->save();
+        $offer->save();
 
         foreach ($data['dishes'] as $dish) {
             $savedDish = Dish::find($dish['id']);
-            $deal->dishes()->save($savedDish, [
+            $offer->dishes()->save($savedDish, [
                 'price' => $savedDish->price,
                 'tax' => 9
             ]);
@@ -49,19 +49,19 @@ class DealController extends Controller
         ]);
     }
 
-    public function detail(Deal $deal)
+    public function detail(Offer $offer)
     {
         return response()->json([
             'success' => true,
             'data' => [
-                'deal' => $deal
+                'deal' => $offer
             ]
         ]);
     }
 
-    public function delete(Deal $deal)
+    public function delete(Offer $offer)
     {
-        $deal->delete();
+        $offer->delete();
 
         return response('', 204);
     }
