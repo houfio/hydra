@@ -8,14 +8,6 @@ class OfferDish extends Pivot
 {
     protected $table = 'offer_dishes';
 
-    protected $fillable = [
-        'price', 'tax'
-    ];
-
-    protected $casts = [
-        'price' => 'float'
-    ];
-
     public function offer()
     {
         return $this->belongsTo(Offer::class);

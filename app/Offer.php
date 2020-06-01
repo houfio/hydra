@@ -8,8 +8,12 @@ class Offer extends Model
 {
     protected $table = 'offers';
 
+    protected $fillable = [
+        'price', 'tax'
+    ];
+
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'offer_dishes')->withPivot('price', 'tax');
+        return $this->belongsToMany(Dish::class, 'offer_dishes');
     }
 }
