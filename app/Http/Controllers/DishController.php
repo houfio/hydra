@@ -29,6 +29,7 @@ class DishController extends Controller
     public function create(Request $request)
     {
         $data = $this->validate($request, [
+            'name' => 'required|unique:dishes,name|max:255',
             'number' => 'required|unique:dishes,number',
             'price' => 'required|integer|min:0',
             'description' => 'nullable',
@@ -37,6 +38,7 @@ class DishController extends Controller
 
         $dish = new Dish();
 
+        $dish->name = $data['name'];
         $dish->number = $data['number'];
         $dish->price = $data['price'];
         $dish->description = $data['description'];
@@ -52,12 +54,14 @@ class DishController extends Controller
     public function update(Request $request, Dish $dish)
     {
         $data = $this->validate($request, [
+            'name' => 'required|unique:dishes,name|max:255',
             'number' => "required|unique:dishes,number,{$dish->id}",
             'price' => 'required|integer|min:0',
             'description' => 'nullable',
             'type_id' => 'required|numeric|exists:dish_types,id'
         ]);
 
+        $dish->name = $data['name'];
         $dish->number = $data['number'];
         $dish->price = $data['price'];
         $dish->description = $data['description'];
