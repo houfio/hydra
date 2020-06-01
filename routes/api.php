@@ -9,3 +9,10 @@ $router->group(['prefix' => '/auth'], function () use ($router) {
 });
 
 $router->get('/menu', 'MenuController@list');
+
+$router->group(['prefix' => '/dish'], function () use ($router) {
+    $router->post('', 'DishController@create');
+    $router->get('{dish}', 'DishController@detail');
+    $router->patch('{dish}', 'DishController@update');
+    $router->delete('{dish}', 'DishController@delete');
+});

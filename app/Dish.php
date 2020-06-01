@@ -12,6 +12,10 @@ class Dish extends Model
         'number', 'addition', 'name', 'price', 'description'
     ];
 
+    protected $casts = [
+        'price' => 'float'
+    ];
+
     public function type()
     {
         return $this->belongsTo(DishType::class);
