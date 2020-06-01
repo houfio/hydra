@@ -11,6 +11,7 @@ import Sales from './views/admin/Sales.vue';
 import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
 import Home from './views/public/Home.vue';
+import Menu from './views/public/Menu.vue';
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,9 @@ export default new VueRouter({
     children: [{
       path: '/',
       component: Home
+    }, {
+      path: '/menu',
+      component: Menu
     }, {
       path: '*',
       component: NotFound
