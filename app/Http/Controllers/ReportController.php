@@ -32,7 +32,7 @@ class ReportController extends Controller
             'data' => [
                 'revenue' => (float)number_format($revenue, 2, '.', ''),
                 'vat' => (float)number_format($vat, 2, '.', ''),
-                'dishes' => $dishes->paginate(30)
+                'dishes' => $dishes->paginate(30)->appends($data)
             ]
         ]);
     }
