@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Session;
 use App\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
@@ -27,7 +28,29 @@ class AuthController extends Controller
             'success' => true,
             'data' => [
                 'token' => JWT::encode([
-                    'sub' => $user->id
+                    'sub' => "user $user->id"
+                ], env('JWT_SECRET'))
+            ]
+        ]);
+    }
+
+    public function session(Request $request)
+    {
+        $data = $this->validate($request, [
+            'table' => 'required|integer|min:1'
+        ]);
+
+        $session = new Session();
+
+        $session->table = $data['table'];
+
+        $session->save();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => JWT::encode([
+                    'sub' => "tablet $session->id"
                 ], env('JWT_SECRET'))
             ]
         ]);

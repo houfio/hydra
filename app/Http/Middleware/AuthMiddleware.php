@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Session;
 use App\User;
 use Closure;
 use Exception;
@@ -25,8 +26,13 @@ class AuthMiddleware
             throw new UnauthorizedException('Invalid token.');
         }
 
-        $user = User::find($credentials->sub);
-        $request->auth = $user;
+        $parts = explode(' ', $credentials->sub);
+
+        if ($parts[0] === 'user') {
+            $request->user = User::find($parts[1]);
+        } else if ($parts[0] === 'tablet') {
+            $request->tablet = Session::find($parts[1]);
+        }
 
         return $next($request);
     }

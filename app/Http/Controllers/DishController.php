@@ -87,6 +87,6 @@ class DishController extends Controller
     {
         $dish->delete();
 
-        return response("", 204);
+        return response('', 204);
     }
 }
