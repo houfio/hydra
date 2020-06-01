@@ -80,6 +80,9 @@
             </tr>
           </tbody>
         </table>
+        <div class="paginator">
+          <Paginator v-if="returned" :paginated="response.dishes" @paginate="paginate"/>
+        </div>
       </div>
     </div>
   </Page>
@@ -95,6 +98,7 @@
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
+  import Paginator from '../../components/Paginator.vue';
   import { Method } from '../../constants';
   import { ReportApi } from '../../types';
   import { request } from '../../utils/request';
@@ -104,7 +108,8 @@
       Page,
       Button,
       Form,
-      Input
+      Input,
+      Paginator
     }
   })
   export default class Sales extends Vue {
@@ -116,15 +121,20 @@
       return Boolean(Object.keys(this.response).length);
     }
 
-    public async submit(api: typeof request) {
+    public async submit(api: typeof request, page?: number) {
       const response = await api<ReportApi>('/report', Method.Get, {
         start_date: this.start,
-        end_date: this.end
+        end_date: this.end,
+        page
       });
 
       if (response.success) {
         this.response = response.data;
       }
+    }
+
+    public paginate(page: number) {
+      this.submit(request, page);
     }
 
     public format(date: string) {
@@ -187,5 +197,11 @@
 
   .right {
     text-align: right;
+  }
+
+  .paginator {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: .5rem;
   }
 </style>
