@@ -11,12 +11,7 @@
         </Form>
       </div>
       <div class="box">
-        <div v-if="response">
-          revenue:
-          {{ response.revenue }}
-          vat:
-          {{ response.vat }}
-        </div>
+        {{ JSON.stringify(response || 'undefined') }}
       </div>
       <div class="box big">
         lol
