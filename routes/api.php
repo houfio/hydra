@@ -11,6 +11,7 @@ $router->group(['prefix' => '/auth'], function () use ($router) {
 
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix' => '/order'], function () use ($router) {
+        $router->get('', 'OrderController@list');
         $router->post('', 'OrderController@create');
     });
 });
@@ -26,7 +27,6 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     $router->get('/report', 'ReportController@create');
 
     $router->group(['prefix' => '/order'], function () use ($router) {
-        $router->get('', 'OrderController@list');
         $router->get('{order}', 'OrderController@detail');
     });
 });

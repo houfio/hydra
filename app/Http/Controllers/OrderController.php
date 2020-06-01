@@ -11,12 +11,12 @@ use Laravel\Lumen\Routing\Controller;
 
 class OrderController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         return response()->json([
             'success' => true,
             'data' => [
-                'orders' => Order::all()
+                'orders' => isset($request->tablet) ? $request->tablet->orders : Order::all()
             ]
         ]);
     }
