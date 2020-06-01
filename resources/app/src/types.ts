@@ -49,6 +49,10 @@ export type ReportApi = {
     dish: {
       id: number,
       name: string
+    },
+    order: {
+      id: number,
+      created_at: string
     }
   }>,
   revenue: number,

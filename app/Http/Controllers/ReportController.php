@@ -19,6 +19,8 @@ class ReportController extends Controller
             $query->whereBetween('created_at', [$data['start_date'], $data['end_date']]);
         })->with(['dish' => function ($query) {
             $query->select('id', 'name');
+        }, 'order' => function ($query) {
+            $query->select('id', 'created_at');
         }]);
 
         $vat = 0;

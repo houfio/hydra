@@ -11,29 +11,74 @@
         </Form>
       </div>
       <div class="box">
-        <div v-if="returned" class="spacing">
+        <div class="spacing">
           <div class="info">
             <span class="big">
-              &euro;{{ response.revenue.toFixed(2) }}
+              {{ returned ? `&euro;${response.revenue.toFixed(2)}` : '-' }}
             </span>
             omzet incl. btw
           </div>
           <div class="info">
             <span class="big">
-              &euro;{{ response.vat.toFixed(2) }}
+              {{ returned ? `&euro;${response.vat.toFixed(2)}` : '-' }}
             </span>
             btw
           </div>
           <div class="info">
             <span class="big">
-              &euro;{{ (response.revenue - response.vat).toFixed(2) }}
+              {{ returned ? `&euro;${(response.revenue - response.vat).toFixed(2)}` : '-' }}
             </span>
             omzet excl. btw
           </div>
         </div>
       </div>
       <div class="box big">
-        <table>
+        <table class="table">
+          <colgroup>
+            <col style="width: 20%"/>
+            <col style="width: 50%"/>
+            <col/>
+            <col/>
+            <col/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="heading">
+                Datum
+              </th>
+              <th class="heading">
+                Gerecht
+              </th>
+              <th class="heading right">
+                Prijs
+              </th>
+              <th class="heading right">
+                Aantal
+              </th>
+              <th class="heading right">
+                Subtotaal
+              </th>
+            </tr>
+          </thead>
+          <tbody v-if="returned">
+            <tr v-for="dish of response.dishes.data">
+              <td class="data">
+                {{ format(dish.order.created_at) }}
+              </td>
+              <td class="data">
+                {{ dish.dish.name }}
+              </td>
+              <td class="data right">
+                &euro;{{ dish.price.toFixed(2) }}
+              </td>
+              <td class="data right">
+                {{ dish.quantity }}
+              </td>
+              <td class="data right">
+                &euro;{{ (dish.price * dish.quantity).toFixed(2) }}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -41,6 +86,8 @@
 </template>
 
 <script lang="ts">
+  import { format, parseISO } from 'date-fns';
+  import { nl } from 'date-fns/locale';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
@@ -79,6 +126,10 @@
         this.response = response.data;
       }
     }
+
+    public format(date: string) {
+      return format(parseISO(date), 'PPpp', { locale: nl });
+    }
   }
 </script>
 
@@ -116,5 +167,24 @@
       font-size: 2rem;
       font-weight: bold;
     }
+  }
+
+  .table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .heading {
+    text-align: start;
+    padding-bottom: .5rem;
+  }
+
+  .data {
+    padding: .5rem 0;
+  }
+
+  .right {
+    text-align: right;
   }
 </style>
