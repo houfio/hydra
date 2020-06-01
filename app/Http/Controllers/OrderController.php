@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Dish;
 use App\Order;
 use App\Session;
+use Exception;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
@@ -22,7 +23,15 @@ class OrderController extends Controller
         $order = new Order();
 
         if (isset($request->tablet)) {
-            $order->session()->associate(Session::find($request->tablet->id));
+            /** @var Session $session */
+            $session = Session::find($request->tablet->id);
+            $lastOrder = $session->orders()->max('created_at');
+
+            if (strtotime('-10 minutes') < strtotime($lastOrder)) {
+                throw new Exception('Order cannot be placed yet.');
+            }
+
+            $order->session()->associate($session);
         }
 
         $order->save();
@@ -33,7 +42,7 @@ class OrderController extends Controller
                 'quantity' => $dish['quantity'],
                 'price' => $savedDish->price,
                 'tax' => 9,
-                'note' => $dish['note']
+                'note' => isset($dish['note']) ? $dish['note'] : null
             ]);
         }
 
