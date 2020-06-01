@@ -12,6 +12,10 @@ class Offer extends Model
         'price', 'tax'
     ];
 
+    protected $casts = [
+        'price' => 'float'
+    ];
+
     public function dishes()
     {
         return $this->belongsToMany(Dish::class, 'offer_dishes');
