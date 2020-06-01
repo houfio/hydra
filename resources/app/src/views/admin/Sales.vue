@@ -43,7 +43,7 @@
   export default class Sales extends Vue {
     public start = '';
     public end = '';
-    public response?: ReportApi;
+    public response: Partial<ReportApi> = {};
 
     public async submit(api: typeof request) {
       const response = await api<ReportApi>('/report', Method.Get, {
