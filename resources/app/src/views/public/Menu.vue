@@ -11,7 +11,7 @@
             <div class="heading">
               <span class="title">{{ dish.name }}</span>
               <span class="spacer"></span>
-              <span class="price">&euro;{{ dish.price }}</span>
+              <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
             </div>
             <p v-if="dish.description">
               ({{ dish.description }})
@@ -31,7 +31,7 @@
             <div class="heading">
               <span class="title">{{ dish.name }}</span>
               <span class="spacer"></span>
-              <span class="price">&euro;{{ dish.price }}</span>
+              <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
             </div>
             <p v-if="dish.description">
               ({{ dish.description }})
