@@ -19,11 +19,10 @@ class ReportController extends Controller
             $query->whereBetween('created_at', [$data['start_date'], $data['end_date']]);
         })->with('order');
 
-        $dishes = $dishes->get();
         $vat = 0;
         $revenue = 0;
 
-        foreach ($dishes as $dish) {
+        foreach ($dishes->get() as $dish) {
             $revenue += (float)$dish->price * $dish->quantity;
             $vat += ((float)$dish->price * $dish->quantity / (100 + $dish->tax)) * $dish->tax;
         }
@@ -33,7 +32,7 @@ class ReportController extends Controller
             'data' => [
                 'revenue' => (float)number_format($revenue, 2, '.', ''),
                 'vat' => (float)number_format($vat, 2, '.', ''),
-                'dishes' => $dishes
+                'dishes' => $dishes->paginate(30)
             ]
         ]);
     }
