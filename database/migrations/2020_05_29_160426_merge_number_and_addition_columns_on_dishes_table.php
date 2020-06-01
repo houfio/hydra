@@ -43,7 +43,12 @@ class MergeNumberAndAdditionColumnsOnDishesTable extends Migration
         $dishes = Dish::all();
 
         Schema::table('dishes', function (Blueprint $table) {
-            $table->integer('number')->change();
+            $table->dropColumn(['number']);
+            $table->string('addition', 1);
+        });
+
+        Schema::table('dishes', function (Blueprint $table) {
+            $table->integer('number');
             $table->string('addition', 1);
         });
 
