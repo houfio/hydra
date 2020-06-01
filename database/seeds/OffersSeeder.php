@@ -14,10 +14,7 @@ class OffersSeeder extends Seeder
             $randomDishes = $dishes->random(rand(1, 4));
 
             foreach ($randomDishes as $randomDish) {
-                $offer->dishes()->save($randomDish, [
-                    'price' => $randomDish->price * 0.75,
-                    'tax' => 9
-                ]);
+                $offer->dishes()->save($randomDish);
             }
         });
     }

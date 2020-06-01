@@ -24,24 +24,23 @@ class OfferController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|unique:deals,name|max:255',
             'valid_until' => 'nullable|date',
+            'price' => 'numeric|min:1',
             'dishes' => 'required|array|min:1',
-            'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id',
-            'dishes.*.price' => 'required|numeric|min:1'
+            'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id'
         ]);
 
         $offer = new Offer();
 
         $offer->name = $data['name'];
         $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
+        $offer->price = $data['price'];
+        $offer->tax = 9;
 
         $offer->save();
 
         foreach ($data['dishes'] as $dish) {
             $savedDish = Dish::find($dish['id']);
-            $offer->dishes()->save($savedDish, [
-                'price' => $savedDish->price,
-                'tax' => 9
-            ]);
+            $offer->dishes()->save($savedDish);
         }
 
         return response()->json([
