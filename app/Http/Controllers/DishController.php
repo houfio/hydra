@@ -64,4 +64,13 @@ class DishController extends Controller
             ]
         ]);
     }
+
+    public function delete(Dish $dish)
+    {
+        $dish->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
 }
