@@ -2,24 +2,16 @@
   <Page>
     <div class="grid">
       <div class="box">
-        <form @submit.prevent="submit">
-          <Error v-if="error">
-            {{ error }}
-          </Error>
+        <Form @submit="submit" v-slot="{ loading, errors }">
           <Input label="Startdatum" type="date" v-model="start" :errors="errors['start_date']"/>
           <Input label="Einddatum" type="date" v-model="end" :errors="errors['end_date']"/>
           <Button :disabled="loading">
             Maak overzicht
           </Button>
-        </form>
+        </Form>
       </div>
       <div class="box">
-        <div v-if="response">
-          revenue:
-          {{ response.revenue }}
-          vat: 
-          {{ response.vat }}
-        </div>
+        {{ JSON.stringify(response || 'undefined') }}
       </div>
       <div class="box big">
         lol
@@ -34,47 +26,34 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
-  import Error from '../../components/form/Error.vue';
+  import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
-  import { Method, StatusCode } from '../../constants';
-  import { FormErrors, ReportApi } from '../../types';
+  import { Method } from '../../constants';
+  import { ReportApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page,
       Button,
-      Error,
+      Form,
       Input
     }
   })
   export default class Sales extends Vue {
     public start = '';
     public end = '';
-    public error = '';
-    public errors = {};
-    public loading = false;
     public response?: ReportApi;
 
-    public async submit() {
-      this.loading = true;
-
-      const response = await request<ReportApi>('/report', Method.Get, {
+    public async submit(api: typeof request) {
+      const response = await api<ReportApi>('/report', Method.Get, {
         start_date: this.start,
         end_date: this.end
       });
 
       if (response.success) {
         this.response = response.data;
-      } else {
-        if (response.error.code !== StatusCode.UnprocessableEntity) {
-          return this.error = response.error.message;
-        }
-
-        this.errors = response.error.info as FormErrors;
       }
-
-      this.loading = false;
     }
   }
 </script>
