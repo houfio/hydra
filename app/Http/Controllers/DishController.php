@@ -3,11 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Dish;
+use App\DishType;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
 class DishController extends Controller
 {
+    public function list()
+    {
+        $types = DishType::with('dishes')->get()
+            ->makeHidden(['created_at', 'updated_at']);
+
+        foreach ($types as $type) {
+            $type->dishes->makeHidden(['type_id', 'created_at', 'updated_at']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'types' => $types
+            ]
+        ]);
+    }
+
     public function create(Request $request)
     {
         $data = $this->validate($request, [
