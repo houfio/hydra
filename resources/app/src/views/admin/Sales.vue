@@ -11,10 +11,30 @@
         </Form>
       </div>
       <div class="box">
-        {{ JSON.stringify(response || 'undefined') }}
+        <div v-if="returned" class="spacing">
+          <div class="info">
+            <span class="big">
+              &euro;{{ response.revenue.toFixed(2) }}
+            </span>
+            omzet incl. btw
+          </div>
+          <div class="info">
+            <span class="big">
+              &euro;{{ response.vat.toFixed(2) }}
+            </span>
+            btw
+          </div>
+          <div class="info">
+            <span class="big">
+              &euro;{{ (response.revenue - response.vat).toFixed(2) }}
+            </span>
+            omzet excl. btw
+          </div>
+        </div>
       </div>
       <div class="box big">
-        lol
+        <table>
+        </table>
       </div>
     </div>
   </Page>
@@ -45,6 +65,10 @@
     public end = '';
     public response: Partial<ReportApi> = {};
 
+    get returned() {
+      return Boolean(Object.keys(this.response).length);
+    }
+
     public async submit(api: typeof request) {
       const response = await api<ReportApi>('/report', Method.Get, {
         start_date: this.start,
@@ -72,6 +96,25 @@
 
     &.big {
       grid-column: span 2;
+    }
+  }
+
+  .spacing {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & .big {
+      margin-bottom: .5rem;
+      font-size: 2rem;
+      font-weight: bold;
     }
   }
 </style>
