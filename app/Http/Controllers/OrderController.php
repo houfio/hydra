@@ -14,7 +14,8 @@ class OrderController extends Controller
         $data = $this->validate($request, [
             'dishes' => 'required|array|min:1',
             'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id',
-            'dishes.*.quantity' => 'required|numeric|min:1'
+            'dishes.*.quantity' => 'required|numeric|min:1',
+            'dishes.*.note' => 'nullable|min:1|max:255'
         ]);
 
         $order = new Order();
@@ -25,7 +26,8 @@ class OrderController extends Controller
             $order->dishes()->save($savedDish, [
                 'quantity' => $dish['quantity'],
                 'price' => $savedDish->price,
-                'tax' => 9
+                'tax' => 9,
+                'note' => $dish['note']
             ]);
         }
 
