@@ -27,10 +27,7 @@ class AuthController extends Controller
             'success' => true,
             'data' => [
                 'token' => JWT::encode([
-                    'iss' => 'lumen',
-                    'sub' => $user->id,
-                    'iat' => time(),
-                    'exp' => time() + 60 * 60
+                    'sub' => $user->id
                 ], env('JWT_SECRET'))
             ]
         ]);
