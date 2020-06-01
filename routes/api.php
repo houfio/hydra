@@ -24,4 +24,4 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
     });
 });
 
-$router->get('/menu', 'MenuController@list');
+$router->get('/dish', 'DishController@list');
