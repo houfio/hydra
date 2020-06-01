@@ -25,4 +25,9 @@ class Dish extends Model
     {
         return $this->belongsToMany(Order::class, 'order_dishes')->withPivot('price', 'quantity', 'tax');
     }
+
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class, 'offer_dishes')->withPivot('price', 'tax');
+    }
 }

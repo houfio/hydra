@@ -10,6 +10,6 @@ class Offer extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'deal_dishes')->withPivot('price', 'tax');
+        return $this->belongsToMany(Dish::class, 'offer_dishes')->withPivot('price', 'tax');
     }
 }
