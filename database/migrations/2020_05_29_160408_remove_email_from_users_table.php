@@ -9,7 +9,7 @@ class RemoveEmailFromUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('email');
+            $table->dropColumn('email');
         });
     }
 
