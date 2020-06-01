@@ -12,6 +12,10 @@ class OrderDish extends Pivot
         'price', 'tax'
     ];
 
+    protected $casts = [
+        'price' => 'float'
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
