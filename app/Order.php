@@ -12,4 +12,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Dish::class, 'order_dishes')->withPivot('price', 'quantity', 'tax', 'note');
     }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
+    }
 }
