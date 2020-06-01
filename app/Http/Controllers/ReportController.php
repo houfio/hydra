@@ -17,7 +17,9 @@ class ReportController extends Controller
 
         $dishes = OrderDish::whereHas('order', function ($query) use ($data) {
             $query->whereBetween('created_at', [$data['start_date'], $data['end_date']]);
-        })->with('order');
+        })->with(['dish' => function ($query) {
+            $query->select('id', 'name');
+        }]);
 
         $vat = 0;
         $revenue = 0;

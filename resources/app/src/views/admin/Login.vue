@@ -22,7 +22,7 @@
   import Error from '../../components/form/Error.vue';
   import Input from '../../components/form/Input.vue';
   import { Method, StatusCode } from '../../constants';
-  import { FormErrors } from '../../types';
+  import { FormErrors, LoginApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -45,7 +45,7 @@
       this.error = '';
       this.errors = {};
 
-      const response = await request<{ token: string }>('/auth/login', Method.Post, {
+      const response = await request<LoginApi>('/auth/login', Method.Post, {
         id: this.id,
         password: this.password
       });

@@ -23,15 +23,13 @@ class OrderController extends Controller
         $order = new Order();
 
         if (isset($request->tablet)) {
-            /** @var Session $session */
-            $session = Session::find($request->tablet->id);
-            $lastOrder = $session->orders()->max('created_at');
+            $lastOrder = $request->tablet->orders()->max('created_at');
 
             if (strtotime('-10 minutes') < strtotime($lastOrder)) {
                 throw new Exception('Order cannot be placed yet.');
             }
 
-            $order->session()->associate($session);
+            $order->session()->associate($request->tablet);
         }
 
         $order->save();

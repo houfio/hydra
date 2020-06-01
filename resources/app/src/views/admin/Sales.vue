@@ -3,6 +3,9 @@
     <div class="grid">
       <div class="box">
         <form @submit.prevent="submit">
+          <Error v-if="error">
+            {{ error }}
+          </Error>
           <Input label="Startdatum" type="date" v-model="start" :errors="errors['start_date']"/>
           <Input label="Einddatum" type="date" v-model="end" :errors="errors['end_date']"/>
           <Button :disabled="loading">
@@ -11,7 +14,12 @@
         </form>
       </div>
       <div class="box">
-        lol
+        <div v-if="response">
+          revenue:
+          {{ response.revenue }}
+          vat: 
+          {{ response.vat }}
+        </div>
       </div>
       <div class="box big">
         lol
@@ -26,30 +34,45 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Error from '../../components/form/Error.vue';
   import Input from '../../components/form/Input.vue';
-  import { Method } from '../../constants';
+  import { Method, StatusCode } from '../../constants';
+  import { FormErrors, ReportApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page,
       Button,
+      Error,
       Input
     }
   })
   export default class Sales extends Vue {
     public start = '';
     public end = '';
+    public error = '';
     public errors = {};
     public loading = false;
+    public response?: ReportApi;
 
     public async submit() {
       this.loading = true;
 
-      await request('/report', Method.Get, {
+      const response = await request<ReportApi>('/report', Method.Get, {
         start_date: this.start,
         end_date: this.end
       });
+
+      if (response.success) {
+        this.response = response.data;
+      } else {
+        if (response.error.code !== StatusCode.UnprocessableEntity) {
+          return this.error = response.error.message;
+        }
+
+        this.errors = response.error.info as FormErrors;
+      }
 
       this.loading = false;
     }
