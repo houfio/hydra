@@ -12,7 +12,7 @@ use Illuminate\Validation\UnauthorizedException;
 
 class AuthMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $guard = null)
     {
         $token = $request->header('authorization');
 
@@ -32,6 +32,10 @@ class AuthMiddleware
             $request->user = User::find($parts[1]);
         } else if ($parts[0] === 'tablet') {
             $request->tablet = Session::find($parts[1]);
+        }
+
+        if ($guard !== null && !isset($request->$guard)) {
+            throw new UnauthorizedException('Unauthorized.');
         }
 
         return $next($request);
