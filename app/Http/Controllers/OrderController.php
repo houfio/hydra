@@ -11,6 +11,16 @@ use Laravel\Lumen\Routing\Controller;
 
 class OrderController extends Controller
 {
+    public function list()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'orders' => Order::all()
+            ]
+        ]);
+    }
+
     public function create(Request $request)
     {
         $data = $this->validate($request, [

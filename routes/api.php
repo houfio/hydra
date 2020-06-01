@@ -26,6 +26,7 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     $router->get('/report', 'ReportController@create');
 
     $router->group(['prefix' => '/order'], function () use ($router) {
+        $router->get('', 'OrderController@list');
         $router->get('{order}', 'OrderController@detail');
     });
 });
