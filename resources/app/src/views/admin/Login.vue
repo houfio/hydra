@@ -39,7 +39,7 @@
     public errors = {};
 
     @Mutation('setToken', { namespace: 'auth' })
-    private setToken!: (token: string) => void;
+    private setToken!: (token?: string) => void;
 
     public async submit() {
       this.error = '';
