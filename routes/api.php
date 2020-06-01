@@ -29,6 +29,13 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     $router->group(['prefix' => '/order'], function () use ($router) {
         $router->get('{order}', 'OrderController@detail');
     });
+
+    $router->group(['prefix' => '/deal'], function () use ($router) {
+        $router->get('', 'DealController@list');
+        $router->post('', 'DealController@create');
+        $router->get('{deal}', 'DealController@detail');
+        $router->delete('{deal}', 'DealController@delete');
+    });
 });
 
 $router->get('/dish', 'DishController@list');
