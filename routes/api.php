@@ -10,27 +10,27 @@ $router->group(['prefix' => '/auth'], function () use ($router) {
 });
 
 $router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->group(['prefix' => '/order'], function () use ($router) {
+    $router->group(['prefix' => '/orders'], function () use ($router) {
         $router->get('', 'OrderController@list');
         $router->post('', 'OrderController@create');
     });
 });
 
 $router->group(['middleware' => 'auth:user'], function () use ($router) {
-    $router->group(['prefix' => '/dish'], function () use ($router) {
+    $router->group(['prefix' => '/dishes'], function () use ($router) {
         $router->post('', 'DishController@create');
         $router->get('{dish}', 'DishController@detail');
-        $router->patch('{dish}', 'DishController@update');
+        $router->put('{dish}', 'DishController@update');
         $router->delete('{dish}', 'DishController@delete');
     });
 
     $router->get('/report', 'ReportController@create');
 
-    $router->group(['prefix' => '/order'], function () use ($router) {
+    $router->group(['prefix' => '/orders'], function () use ($router) {
         $router->get('{order}', 'OrderController@detail');
     });
 
-    $router->group(['prefix' => '/offer'], function () use ($router) {
+    $router->group(['prefix' => '/offers'], function () use ($router) {
         $router->get('', 'OfferController@list');
         $router->post('', 'OfferController@create');
         $router->get('{offer}', 'OfferController@detail');
@@ -38,4 +38,7 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     });
 });
 
-$router->get('/menu', 'MenuController@list');
+$router->group(['prefix' => '/menu'], function () use ($router) {
+    $router->get('', 'MenuController@list');
+    $router->get('download', 'MenuController@download');
+});

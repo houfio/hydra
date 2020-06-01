@@ -19,13 +19,19 @@
   import Component from 'vue-class-component';
 
   import Page from '../../components/admin/Page.vue';
+  import { Method } from '../../constants';
+  import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page
     }
   })
-  export default class Dashboard extends Vue {}
+  export default class Dashboard extends Vue {
+    public async mounted() {
+      await request('/dishes', Method.Get);
+    }
+  }
 </script>
 
 <style scoped lang="scss">
