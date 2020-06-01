@@ -136,7 +136,7 @@
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: auto minmax(25rem, 1fr) / 1fr 2fr;
+    grid-template: 12rem calc(100vh - 19rem) / 1fr 2fr;
     grid-gap: 1rem;
   }
 
@@ -147,6 +147,7 @@
 
     &.big {
       grid-column: span 2;
+      overflow-y: scroll;
     }
   }
 

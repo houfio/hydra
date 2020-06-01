@@ -7,10 +7,6 @@
     box-sizing: border-box;
   }
 
-  html {
-    overflow-y: scroll;
-  }
-
   button {
     text-align: start;
 
