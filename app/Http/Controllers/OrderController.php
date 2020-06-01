@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dish;
 use App\Order;
+use App\Session;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
@@ -19,6 +20,11 @@ class OrderController extends Controller
         ]);
 
         $order = new Order();
+
+        if (isset($request->tablet)) {
+            $order->session()->associate(Session::find($request->tablet->id));
+        }
+
         $order->save();
 
         foreach ($data['dishes'] as $dish) {
