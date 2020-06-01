@@ -69,8 +69,6 @@ class DishController extends Controller
     {
         $dish->delete();
 
-        return response()->json([
-            'success' => true
-        ]);
+        return response("", 204);
     }
 }
