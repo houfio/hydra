@@ -31,22 +31,20 @@
     color: white;
     background-color: #181818;
     font-family: 'Open Sans', sans-serif;
-  }
-</style>
 
-<style lang="scss">
-  ::-webkit-scrollbar {
-    width: 16px;
-  }
+    & ::-webkit-scrollbar {
+      width: 16px;
+    }
 
-  ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 1rem;
-  }
+    & ::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 1rem;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background-color: #444444;
-    border: 6px solid #262626;
-    border-radius: 0 1rem 1rem 0;
+    & ::-webkit-scrollbar-thumb {
+      background-color: #444444;
+      border: 6px solid #262626;
+      border-radius: 0 1rem 1rem 0;
+    }
   }
 </style>
