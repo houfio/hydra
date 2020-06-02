@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DishType extends Model
 {
@@ -14,6 +15,6 @@ class DishType extends Model
 
     public function dishes()
     {
-        return $this->hasMany(Dish::class, 'type_id')->orderBy('number');
+        return $this->hasMany(Dish::class, 'type_id')->orderBy(DB::raw('number + 0'));
     }
 }
