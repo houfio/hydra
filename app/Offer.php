@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Offer extends Model
 {
@@ -18,6 +19,6 @@ class Offer extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'offer_dishes');
+        return $this->belongsToMany(Dish::class, 'offer_dishes')->orderBy(DB::raw('number + 0'));
     }
 }

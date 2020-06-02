@@ -9,7 +9,7 @@
         <li class="menu-item" v-for="dish in type.dishes">
           <div class="section">
             <div class="heading">
-              <span class="title">{{ dish.name }}</span>
+              <span class="title">{{ dish.number }}. {{ dish.name }}</span>
               <span class="spacer"></span>
               <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
             </div>
@@ -21,17 +21,15 @@
       </ul>
     </div>
     <span class="head-heading">Aanbiedingen</span>
-    <div v-for="type in response.offers">
+    <div v-for="offer in response.offers">
       <span class="type-heading">
-        {{ type.name }}
+        {{ offer.name }} &euro;{{ offer.price.toFixed(2) }}
       </span>
       <ul class="menu">
-        <li class="menu-item" v-for="dish in type.dishes">
+        <li class="menu-item" v-for="dish in offer.dishes">
           <div class="section">
             <div class="heading">
-              <span class="title">{{ dish.name }}</span>
-              <span class="spacer"></span>
-              <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
+              <span class="title">{{ dish.number }}. {{ dish.name }}</span>
             </div>
             <p v-if="dish.description">
               ({{ dish.description }})
