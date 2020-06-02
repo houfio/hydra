@@ -68,8 +68,7 @@ export type OffersApi = {
 };
 
 export type MenuApi = {
-  types: DishType[],
-  offers: Offer[]
+  url: string
 };
 
 export type Offer = {

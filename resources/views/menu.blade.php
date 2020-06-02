@@ -1,6 +1,7 @@
+<!doctype html>
 <html>
   <head>
-    <title>App Name - @yield('title')</title>
+    <title>De Gouden Draak - Menukaart</title>
   </head>
   <body>
     <h1>Gouden Draak menukaart</h1>
@@ -12,11 +13,9 @@
             <span style="margin-right: 10px; text-align: left">
               {{ $dish->number }}
             </span>
-
             {{ $dish->name }}
-
             <span style="text-align: right">
-              &euro; {{ number_format($dish->price, 2, '.', '') }}
+              &euro;{{ number_format($dish->price, 2, '.', '') }}
             </span>
           </li>
         @endforeach
@@ -27,7 +26,9 @@
       <h4>{{ $offer->name }}</h4>
       <ul>
         @foreach($offer->dishes as $dish)
-          <li style="list-style: none;">{{ $dish->number }} {{ $dish->name }} &euro;{{ number_format($dish->price, 2, '.', '') }}</li>
+          <li style="list-style: none;">
+            {{ $dish->number }} {{ $dish->name }} &euro;{{ number_format($dish->price, 2, '.', '') }}
+          </li>
         @endforeach
       </ul>
     @endforeach

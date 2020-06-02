@@ -41,5 +41,5 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
 
 $router->group(['prefix' => '/menu'], function () use ($router) {
     $router->get('', 'MenuController@list');
-    $router->get('download', 'MenuController@download');
+    $router->get('current', 'MenuController@current');
 });

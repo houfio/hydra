@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DishType;
 use App\Offer;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Routing\Controller;
 
 class MenuController extends Controller
@@ -31,16 +32,31 @@ class MenuController extends Controller
         ];
     }
 
-    public function download()
-    {
-        return PDF::loadView('menu', $this->generate())->download('menu.pdf');
-    }
-
     public function list()
     {
         return response()->json([
             'success' => true,
             'data' => $this->generate()
+        ]);
+    }
+
+    public function current()
+    {
+        $data = $this->generate();
+        $hash = md5(serialize($data));
+        $path = "public/menu/$hash.pdf";
+
+        if (!Storage::exists($path)) {
+            $content = PDF::loadView('menu', $data)->download()->getOriginalContent();
+
+            Storage::put($path, $content);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'url' => env('APP_URL') . '/storage' . substr($path, 6)
+            ]
         ]);
     }
 }
