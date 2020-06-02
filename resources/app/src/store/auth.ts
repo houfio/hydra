@@ -4,7 +4,7 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators';
   namespaced: true
 })
 export default class extends VuexModule {
-  token?: string;
+  public token?: string;
 
   @Mutation
   public setToken(token?: string) {

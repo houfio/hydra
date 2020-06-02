@@ -18,6 +18,7 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
 
 $router->group(['middleware' => 'auth:user'], function () use ($router) {
     $router->group(['prefix' => '/dishes'], function () use ($router) {
+        $router->get('', 'DishController@list');
         $router->post('', 'DishController@create');
         $router->get('{dish}', 'DishController@detail');
         $router->put('{dish}', 'DishController@update');

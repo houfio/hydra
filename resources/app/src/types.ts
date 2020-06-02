@@ -59,6 +59,10 @@ export type ReportApi = {
   vat: number
 };
 
+export type DishesApi = {
+  types: DishType[]
+};
+
 export type MenuApi = {
   types: DishType[],
   offers: Offer[]
