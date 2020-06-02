@@ -17,7 +17,7 @@
               &euro;{{ dish.price.toFixed(2) }}
             </div>
             <div>
-              <Button>
+              <Button @click.native="add(dish)">
                 Toevoegen
               </Button>
             </div>
@@ -25,10 +25,43 @@
         </div>
       </div>
       <div class="box">
-        bruh
+        <div v-for="dish of order" class="dish">
+          <div>
+            x{{ dish.amount }}
+          </div>
+          <div>
+            {{ dish.name }}
+          </div>
+          <div>
+            &euro;{{ dish.price.toFixed(2) }}
+          </div>
+          <div class="row">
+            <Button @click.native="remove(dish)">
+              -
+            </Button>
+            <Button @click.native="add(dish)">
+              +
+            </Button>
+          </div>
+        </div>
       </div>
       <div class="box">
-        bruh
+        <div class="spacing">
+          <div class="info">
+            <span class="big">
+              &euro;{{ totalAmount }}
+            </span>
+            totaal incl. btw
+          </div>
+          <div class="info">
+            <Button>
+              Afrekenen
+            </Button>
+            <Button @click.native="deleteOrder">
+              Verwijderen
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   </Page>
@@ -40,25 +73,71 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Form from '../../components/form/Form.vue';
   import { Method } from '../../constants';
-  import { DishesApi, DishType } from '../../types';
+  import { Dish, DishesApi, DishType, Offer, OffersApi, OrderDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page,
-      Button
+      Button,
+      Form
     }
   })
   export default class Dashboard extends Vue {
     public types: DishType[] = [];
+    public offers: Offer[] = [];
+    public order: OrderDish[] = [];
+
+    get totalAmount() {
+      return this.order.reduce((a, b) => a + b.price * b.amount, 0).toFixed(2);
+    }
 
     public async mounted() {
       const response = await request<DishesApi>('/dishes', Method.Get);
+      const offers = await request<OffersApi>('/offers', Method.Get);
 
       if (response.success) {
         this.types = response.data.types;
       }
+
+      if (offers.success) {
+        this.offers = offers.data.offers;
+      }
+    }
+
+    public add(dish: Dish) {
+      const foundDish = this.order.find((orderDish) => orderDish.id === dish.id);
+
+      if (!foundDish) {
+        this.order.push({
+          id: dish.id,
+          name: dish.name,
+          price: dish.price,
+          amount: 1
+        });
+      } else {
+        ++foundDish.amount;
+      }
+    }
+
+    public remove(dish: OrderDish) {
+      const foundDish = this.order.find((orderDish) => orderDish.id === dish.id);
+
+      if (!foundDish) {
+        return;
+      }
+
+      if (foundDish.amount === 1) {
+        this.order = this.order.filter((orderDish) => orderDish.id !== dish.id);
+      } else {
+        --foundDish.amount;
+      }
+    }
+
+    public deleteOrder() {
+      this.order = [];
     }
   }
 </script>
@@ -68,6 +147,39 @@
     display: grid;
     grid-template: calc(100vh - 19rem) 12rem / 3fr 2fr;
     grid-gap: 1rem;
+  }
+
+  .spacing {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+  }
+
+  .row {
+    display: flex;
+
+    button:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    button:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & .big {
+      margin-bottom: .5rem;
+      font-size: 2rem;
+      font-weight: bold;
+    }
   }
 
   .box {

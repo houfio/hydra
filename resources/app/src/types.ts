@@ -63,6 +63,10 @@ export type DishesApi = {
   types: DishType[]
 };
 
+export type OffersApi = {
+  offers: Offer[]
+};
+
 export type MenuApi = {
   types: DishType[],
   offers: Offer[]
@@ -73,7 +77,7 @@ export type Offer = {
   name: string,
   tax: number,
   price: number,
-  dishes: Dish[]
+  dishes: Dish[] | OfferDish[]
 };
 
 export type DishType = {
@@ -88,4 +92,15 @@ export type Dish = {
   price: number,
   description: string | null,
   name: string
+};
+
+export type OrderDish = {
+  id: number,
+  price: number,
+  name: string,
+  amount: number
+};
+
+export type OfferDish = {
+  id: number
 };
