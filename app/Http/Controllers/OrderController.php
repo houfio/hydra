@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Dish;
 use App\Order;
-use App\Session;
 use Exception;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;

@@ -11,10 +11,27 @@ class OfferController extends Controller
 {
     public function list()
     {
+        $offers = Offer::with('dishes')->get()
+            ->makeHidden(['created_at', 'updated_at']);
+
+        foreach ($offers as $offer) {
+            $offer->dishes->makeHidden([
+                'type_id',
+                'created_at',
+                'updated_at',
+                'pivot',
+                'number',
+                'price',
+                'description',
+                'type_id',
+                'name'
+            ]);
+        }
+
         return response()->json([
             'success' => true,
             'data' => [
-                'offers' => Offer::all()
+                'offers' => $offers
             ]
         ]);
     }

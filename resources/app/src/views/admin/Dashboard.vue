@@ -52,19 +52,12 @@
   })
   export default class Dashboard extends Vue {
     public types: DishType[] = [];
-    public regex = /(?<id>[0-9]+)(?<alt>[a-z]+)?/;
 
     public async mounted() {
       const response = await request<DishesApi>('/dishes', Method.Get);
 
       if (response.success) {
         this.types = response.data.types;
-
-        for (const type of this.types) {
-          type.dishes.sort((a, b) => a.number.localeCompare(b.number));
-        }
-      } else {
-        console.log(response.error);
       }
     }
   }

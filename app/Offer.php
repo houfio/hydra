@@ -2,11 +2,18 @@
 
 namespace App;
 
+use App\Scopes\IsValidScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Offer extends Model
 {
+    protected static function booted()
+    {
+        static::addGlobalScope(new IsValidScope());
+        parent::booted();
+    }
+
     protected $table = 'offers';
 
     protected $fillable = [
