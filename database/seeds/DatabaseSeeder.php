@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             DishesSeeder::class,
-            OrdersSeeder::class,
-            OffersSeeder::class
+            OffersSeeder::class,
+            OrdersSeeder::class
         ]);
 
         Model::reguard();

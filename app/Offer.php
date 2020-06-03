@@ -28,4 +28,9 @@ class Offer extends Model
     {
         return $this->belongsToMany(Dish::class, 'offer_dishes')->orderBy(DB::raw('number + 0'));
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_offers');
+    }
 }
