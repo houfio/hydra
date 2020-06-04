@@ -15,9 +15,9 @@ class ChangeRelationWithOffersTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('set null');
             $table->decimal('price', 10, 2);
+            $table->integer('tax');
             $table->integer('quantity');
             $table->string('note')->nullable();
-            $table->integer('tax');
         });
     }
 

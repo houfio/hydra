@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\OrderDish;
+use App\OrderOffer;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
@@ -22,6 +24,16 @@ class ReportController extends Controller
         }, 'order' => function ($query) {
             $query->select('id', 'created_at');
         }]);
+
+        $offers = OrderOffer::whereHas('order', function ($query) use ($data) {
+            $query->whereBetween('created_at', [$data['start_date'], $data['end_date']]);
+        })->with(['dish' => function ($query) {
+            $query->select('id', 'name');
+        }, 'order' => function ($query) {
+            $query->select('id', 'created_at');
+        }]);
+
+        $dishes = $dishes->union($offers);
 
         $vat = 0;
         $revenue = 0;

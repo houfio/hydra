@@ -24,7 +24,7 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $data = $this->validate($request, [
-            'dishes' => 'required|array',
+            'dishes' => 'present|array',
             'offers' => 'present|array',
             'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id',
             'offers.*.id' => 'required|numeric|min:1|exists:offers,id',
