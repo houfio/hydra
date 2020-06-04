@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
 use App\OrderDish;
 use App\OrderOffer;
 use Illuminate\Http\Request;

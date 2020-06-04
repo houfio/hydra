@@ -86,7 +86,7 @@ export type DishType = {
 };
 
 export type Dish = {
-  id: number,
+  id?: number,
   number: string,
   price: number,
   description: string | null,
@@ -99,6 +99,14 @@ export type OrderDish = {
   name: string,
   quantity: number,
   isOffer: boolean
+};
+
+export type NewDish = {
+  number: string,
+  price: number,
+  description: string,
+  name: string,
+  type_id: number
 };
 
 export type OfferDish = {
