@@ -23,11 +23,38 @@
             </div>
           </div>
         </div>
+        <span class="offer-heading">
+          Aanbiedingen
+        </span>
+        <div v-for="offer of offers">
+          <div class="dish">
+            <div style="width: 0"></div>
+            <div class="offer">
+              {{ offer.name }}
+            </div>
+            <div>
+              &euro;{{ offer.price.toFixed(2) }}
+            </div>
+            <div>
+              <Button @click.native="add(offer)">
+                Toevoegen
+              </Button>
+            </div>
+          </div>
+          <div v-for="dish of offer.dishes" class="dish">
+            <div></div>
+            <div>
+              {{ dish.name }}
+            </div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </div>
       <div class="box">
         <div v-for="dish of order" class="dish">
           <div>
-            x{{ dish.amount }}
+            x{{ dish.quantity }}
           </div>
           <div>
             {{ dish.name }}
@@ -54,7 +81,7 @@
             totaal incl. btw
           </div>
           <div class="info">
-            <Button>
+            <Button :disabled="!order.length" @click.native="pay">
               Afrekenen
             </Button>
             <Button @click.native="deleteOrder">
@@ -91,7 +118,7 @@
     public order: OrderDish[] = [];
 
     get totalAmount() {
-      return this.order.reduce((a, b) => a + b.price * b.amount, 0).toFixed(2);
+      return this.order.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2);
     }
 
     public async mounted() {
@@ -107,7 +134,7 @@
       }
     }
 
-    public add(dish: Dish) {
+    public add(dish: Dish | Offer) {
       const foundDish = this.order.find((orderDish) => orderDish.id === dish.id);
 
       if (!foundDish) {
@@ -115,10 +142,11 @@
           id: dish.id,
           name: dish.name,
           price: dish.price,
-          amount: 1
+          quantity: 1,
+          isOffer: dish.hasOwnProperty('dishes')
         });
       } else {
-        ++foundDish.amount;
+        ++foundDish.quantity;
       }
     }
 
@@ -129,15 +157,29 @@
         return;
       }
 
-      if (foundDish.amount === 1) {
+      if (foundDish.quantity === 1) {
         this.order = this.order.filter((orderDish) => orderDish.id !== dish.id);
       } else {
-        --foundDish.amount;
+        --foundDish.quantity;
       }
     }
 
     public deleteOrder() {
       this.order = [];
+    }
+
+    public async pay() {
+      const response = await request<DishesApi>('/orders', Method.Post, {
+        dishes: this.order.filter((line) => !line.isOffer),
+        offers: this.order.filter((line) => line.isOffer)
+      });
+
+      if (response.success) {
+        this.order = [];
+        window.alert('Bestelling aangemaakt');
+      } else {
+        window.alert('Bestelling niet aangemaakt');
+      }
     }
   }
 </script>
@@ -191,6 +233,20 @@
       grid-row: span 2;
       overflow-y: scroll;
     }
+  }
+
+  .offer-heading {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .offer {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
   }
 
   .type {

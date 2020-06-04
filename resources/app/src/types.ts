@@ -97,9 +97,11 @@ export type OrderDish = {
   id: number,
   price: number,
   name: string,
-  amount: number
+  quantity: number,
+  isOffer: boolean
 };
 
 export type OfferDish = {
-  id: number
+  id: number,
+  name: string
 };

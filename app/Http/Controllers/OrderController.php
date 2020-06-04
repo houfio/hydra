@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dish;
+use App\Offer;
 use App\Order;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,10 +24,12 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $data = $this->validate($request, [
-            'dishes' => 'required|array|min:1',
+            'dishes' => 'required|array',
+            'offers' => 'present|array',
             'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id',
-            'dishes.*.quantity' => 'required|numeric|min:1',
-            'dishes.*.note' => 'nullable|min:1|max:255'
+            'offers.*.id' => 'required|numeric|min:1|exists:offers,id',
+            '*.*.quantity' => 'required|numeric|min:1',
+            '*.*.note' => 'nullable|min:1|max:255'
         ]);
 
         $order = new Order();
@@ -52,6 +55,18 @@ class OrderController extends Controller
                 'note' => isset($dish['note']) ? $dish['note'] : null
             ]);
         }
+
+        foreach ($data['offers'] as $offer) {
+            $savedOffer = Offer::find($offer['id']);
+            $order->offers()->save($savedOffer, [
+                'quantity' => $offer['quantity'],
+                'price' => $savedOffer->price,
+                'tax' => 9,
+                'note' => isset($offer['note']) ? $offer['note'] : null
+            ]);
+        }
+
+        $order->save();
 
         return response()->json([
             'success' => true

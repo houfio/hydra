@@ -24,7 +24,6 @@ class OfferController extends Controller
                 'price',
                 'description',
                 'type_id',
-                'name'
             ]);
         }
 
