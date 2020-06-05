@@ -3,7 +3,13 @@
     <label class="label">
       {{ label }}
     </label>
-    <input class="input" :type="type" @input="onChange"/>
+    <select v-if="type === 'select'" @change="onChange" class="form-control">
+      <option v-for="option in data" :value="option.id">
+        {{ option.label }}
+      </option>
+    </select>
+    <textarea v-else-if="type === 'textarea'" @input="onChange"/>
+    <input v-else class="input" :type="type" @input="onChange"/>
     <div v-for="error in errors" :key="error" class="error">
       {{ error }}
     </div>
@@ -15,12 +21,13 @@
   import Component from 'vue-class-component';
   import { Emit, Prop } from 'vue-property-decorator';
 
-  import { FormErrors } from '../../types';
+  import { FormErrors, SelectType } from '../../types';
 
   @Component
   export default class Input extends Vue {
     @Prop() public type?: string;
     @Prop() public label?: string;
+    @Prop() public data?: SelectType[];
     @Prop() public errors?: keyof FormErrors;
 
     @Emit('input')

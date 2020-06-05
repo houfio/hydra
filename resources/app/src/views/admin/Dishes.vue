@@ -31,7 +31,7 @@
           <Input label="Prijs" type="number" v-model="newDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="newDish.number" :errors="errors['number']"/>
           <Input label="Beschrijving" type="textarea" v-model="newDish.description" :errors="errors['description']"/>
-          <Input label="Type" type="select" v-model="newDish.type_id" :errors="errors['type_id']"/>
+          <Input label="Type" type="select" v-model="newDish.type_id" :errors="errors['type_id']" :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
           <Button :disabled="loading">
             Aanmaken
           </Button>
@@ -53,7 +53,7 @@
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { DishesApi, DishType, NewDish } from '../../types';
+  import { DishApi, DishesApi, DishType, NewDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -75,20 +75,25 @@
     };
 
     public async mounted() {
+      await this.getDishes();
+    }
+
+    public async create() {
+      const response = await request<DishApi>('/dishes', Method.Post, this.newDish);
+
+      if (response.success) {
+        await this.getDishes();
+        window.alert('Product aangemaakt');
+      } else {
+        window.alert('Product niet aangemaakt');
+      }
+    }
+
+    private async getDishes() {
       const response = await request<DishesApi>('/dishes', Method.Get);
 
       if (response.success) {
         this.types = response.data.types;
-      }
-    }
-
-    public async create() {
-      const response = await request('/dishes', Method.Post, this.newDish);
-
-      if (response.success) {
-        window.alert('Product aangemaakt');
-      } else {
-        window.alert('Product niet aangemaakt');
       }
     }
   }

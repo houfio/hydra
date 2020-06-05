@@ -86,7 +86,7 @@ export type DishType = {
 };
 
 export type Dish = {
-  id?: number,
+  id: number,
   number: string,
   price: number,
   description: string | null,
@@ -112,4 +112,9 @@ export type NewDish = {
 export type OfferDish = {
   id: number,
   name: string
+};
+
+export type SelectType = {
+  id: number,
+  label: string
 };
