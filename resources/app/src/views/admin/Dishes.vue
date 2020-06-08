@@ -31,7 +31,7 @@
       </div>
       <div class="box">
         <span>Product toevoegen</span>
-        <Form @submit="create" v-slot="{ loading, errors }">
+        <Form @submit="createDish" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="newDish.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="newDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="newDish.number" :errors="errors['number']"/>
@@ -98,7 +98,7 @@
       await this.getDishes();
     }
 
-    public async create() {
+    public async createDish() {
       const response = await request('/dishes', Method.Post, this.newDish);
 
       if (response.success) {
@@ -128,6 +128,17 @@
         window.alert('Product verwijderd');
       } else {
         window.alert('Product niet verwijderd');
+      }
+    }
+
+    public async createType() {
+      const response = await request('/dishes', Method.Post, this.newDish);
+
+      if (response.success) {
+        await this.getDishes();
+        window.alert('Product aangemaakt');
+      } else {
+        window.alert('Product niet aangemaakt');
       }
     }
 
@@ -187,7 +198,7 @@
 
   .offer {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     margin-bottom: 1rem;
     font-size: 1.25rem;
   }

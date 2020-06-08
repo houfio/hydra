@@ -244,7 +244,7 @@
 
   .offer {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     margin-bottom: 1rem;
     font-size: 1.25rem;
   }
