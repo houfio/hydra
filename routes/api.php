@@ -25,6 +25,14 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
         $router->delete('{dish}', 'DishController@delete');
     });
 
+    $router->group(['prefix' => '/types'], function () use ($router) {
+        $router->get('', 'TypeController@list');
+        $router->post('', 'TypeController@create');
+        $router->get('{dishtype}', 'TypeController@detail');
+        $router->put('{dishtype}', 'TypeController@update');
+        $router->delete('{dishtype}', 'TypeController@delete');
+    });
+
     $router->get('/report', 'ReportController@create');
 
     $router->group(['prefix' => '/orders'], function () use ($router) {
