@@ -7,6 +7,7 @@ import Dashboard from './views/admin/Dashboard.vue';
 import Dishes from './views/admin/Dishes.vue';
 import Login from './views/admin/Login.vue';
 import Logout from './views/admin/Logout.vue';
+import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
 import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
@@ -36,6 +37,12 @@ export default new VueRouter({
     }, {
       path: 'verkopen',
       component: Sales,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
+      path: 'bestellingen',
+      component: Orders,
       meta: {
         guard: [authenticated, '/kassa/login']
       }

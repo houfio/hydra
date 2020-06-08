@@ -67,6 +67,16 @@ export type OffersApi = {
   offers: Offer[]
 };
 
+export type OrdersApi = {
+  orders: Order[]
+};
+
+export type Order = {
+  id: number,
+  session_id?: number,
+  dishes: Dish[]
+};
+
 export type MenuApi = {
   url: string
 };
@@ -95,7 +105,7 @@ export type Dish = {
 };
 
 export type OrderDish = {
-  id: number,
+  id?: number,
   price: number,
   name: string,
   quantity: number,

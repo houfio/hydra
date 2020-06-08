@@ -11,12 +11,12 @@ class Order extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'order_dishes')->withPivot('price', 'quantity', 'tax', 'note')->orderBy(DB::raw('number+0'));
+        return $this->belongsToMany(Dish::class, 'order_dishes')->using(OrderDish::class)->withPivot('price', 'quantity', 'tax', 'note')->orderBy(DB::raw('number+0'));
     }
 
     public function offers()
     {
-        return $this->belongsToMany(Offer::class, 'order_offers')->withPivot('price', 'quantity', 'tax', 'note');
+        return $this->belongsToMany(Offer::class, 'order_offers')->using(OrderOffer::class)->withPivot('price', 'quantity', 'tax', 'note');
     }
 
     public function session()
