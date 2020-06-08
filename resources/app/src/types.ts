@@ -90,7 +90,8 @@ export type Dish = {
   number: string,
   price: number,
   description: string | null,
-  name: string
+  name: string,
+  type_id?: number
 };
 
 export type OrderDish = {

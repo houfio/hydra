@@ -17,8 +17,13 @@
               &euro;{{ dish.price.toFixed(2) }}
             </div>
             <div>
-              <Button @click.native="add(dish)">
-                Toevoegen
+              <Button @click.native="remove(dish)">
+                Verwijderen
+              </Button>
+            </div>
+            <div>
+              <Button @click.native="selectedDish = {...dish, type_id: type.id}">
+                Aanpassen
               </Button>
             </div>
           </div>
@@ -31,7 +36,8 @@
           <Input label="Prijs" type="number" v-model="newDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="newDish.number" :errors="errors['number']"/>
           <Input label="Beschrijving" type="textarea" v-model="newDish.description" :errors="errors['description']"/>
-          <Input label="Type" type="select" v-model="newDish.type_id" :errors="errors['type_id']" :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
+          <Input label="Type" type="select" v-model="newDish.type_id" :errors="errors['type_id']"
+                 :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
           <Button :disabled="loading">
             Aanmaken
           </Button>
@@ -39,6 +45,19 @@
       </div>
       <div class="box">
         <span>Product Aanpassen</span>
+        <p v-if="!Object.keys(selectedDish).length">Geen product geselecteerd</p>
+        <Form v-else @submit="create" v-slot="{ loading, errors }">
+          <Input label="Naam" type="text" v-model="selectedDish.name" :errors="errors['name']"/>
+          <Input label="Prijs" type="number" v-model="selectedDish.price" :errors="errors['price']"/>
+          <Input label="Menu nummer" type="text" v-model="selectedDish.number" :errors="errors['number']"/>
+          <Input label="Beschrijving" type="textarea" v-model="selectedDish.description"
+                 :errors="errors['description']"/>
+          <Input label="Type" type="select" v-model="selectedDish.type_id" :errors="errors['type_id']"
+                 :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
+          <Button :disabled="loading">
+            Aanpassen
+          </Button>
+        </Form>
       </div>
     </div>
   </Page>
@@ -53,7 +72,7 @@
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { DishApi, DishesApi, DishType, NewDish } from '../../types';
+  import { Dish, DishesApi, DishType, NewDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -66,6 +85,7 @@
   })
   export default class Dishes extends Vue {
     public types: DishType[] = [];
+    public selectedDish: Partial<Dish> = {};
     public newDish: NewDish = {
       name: '',
       description: '',
@@ -79,13 +99,24 @@
     }
 
     public async create() {
-      const response = await request<DishApi>('/dishes', Method.Post, this.newDish);
+      const response = await request('/dishes', Method.Post, this.newDish);
 
       if (response.success) {
         await this.getDishes();
         window.alert('Product aangemaakt');
       } else {
         window.alert('Product niet aangemaakt');
+      }
+    }
+
+    public async remove(dish: Dish) {
+      const deleted = await request(`/dishes/${dish.id}`, Method.Delete);
+
+      if (deleted) {
+        await this.getDishes();
+        window.alert('Product verwijderd');
+      } else {
+        window.alert('Product niet verwijderd');
       }
     }
 
