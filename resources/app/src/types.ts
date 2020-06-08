@@ -74,6 +74,7 @@ export type OrdersApi = {
 export type Order = {
   id: number,
   session_id?: number,
+  created_at: string,
   dishes: Dish[]
 };
 
@@ -102,6 +103,16 @@ export type Dish = {
   description: string | null,
   name: string,
   type_id?: number
+  pivot?: OrderDishPivot
+};
+
+export type OrderDishPivot = {
+  order_id: number,
+  dish_id: number,
+  price: number,
+  quantity: number,
+  tax: number,
+  note: string | null
 };
 
 export type OrderDish = {

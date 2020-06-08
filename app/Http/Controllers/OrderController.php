@@ -14,7 +14,7 @@ class OrderController extends Controller
     public function list(Request $request)
     {
         $orders = isset($request->tablet) ? $request->tablet->orders->with('dishes') : Order::with('dishes');
-        $orders = $orders->get()->makeHidden(['created_at', 'updated_at']);
+        $orders = $orders->get()->makeHidden(['updated_at']);
 
         foreach ($orders as $order) {
             $order->dishes->makeHidden(['type_id', 'created_at', 'updated_at']);

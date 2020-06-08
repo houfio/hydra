@@ -2,48 +2,54 @@
   <Page>
     <div class="grid">
       <div class="box big">
-        <div v-for="type of types">
-          <span class="type">
-            {{ type.name }}
-          </span>
-          <div v-for="dish of type.dishes" class="dish">
-            <div>
-              {{ dish.number }}
-            </div>
-            <div>
-              {{ dish.name }}
-            </div>
-            <div>
-              &euro;{{ dish.price.toFixed(2) }}
-            </div>
-            <div>
-              <Button @click.native="add(dish)">
-                Bekijken
-              </Button>
-            </div>
+        <div v-for="order of orders" class="order">
+          <div>
+            {{ order.created_at }}
+          </div>
+          <div>
+            {{ order.dishes.length }} gerechten besteld
+          </div>
+          <div>
+            &euro;{{ calculatePrice(order.dishes) }}
+          </div>
+          <div>
+            <Button @click.native="selected = order">
+              Bekijken
+            </Button>
           </div>
         </div>
       </div>
       <div class="box">
-        <p>Bruh</p>
+        <div v-if="Object.keys(selected).length" v-for="dish of selected.dishes" class="dish">
+          <div>
+            x{{ dish.pivot.quantity }}
+          </div>
+          <div>
+            {{ dish.name }}
+          </div>
+          <div>
+            &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
+          </div>
+          <div></div>
+        </div>
+        <p v-else>Selecteer een bestelling</p>
       </div>
       <div class="box">
-        <div class="spacing">
+        <div v-if="Object.keys(selected).length" class="spacing">
           <div class="info">
             <span class="big">
-              &euro;{{ totalAmount }}
+              &euro;{{ calculatePrice(selected.dishes) }}
             </span>
             totaal incl. btw
           </div>
           <div class="info">
-            <Button :disabled="!order.length" @click.native="pay">
-              Afrekenen
-            </Button>
-            <Button @click.native="deleteOrder">
-              Verwijderen
-            </Button>
+            <span class="big">
+              {{ selected.created_at }}
+            </span>
+            geplaatst op
           </div>
         </div>
+        <p v-else>Selecteer een bestelling</p>
       </div>
     </div>
   </Page>
@@ -57,7 +63,7 @@
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OffersApi, OrderDish } from '../../types';
+  import { Dish, Order, OrdersApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -68,15 +74,18 @@
     }
   })
   export default class Orders extends Vue {
-    public types: DishType[] = [];
-    public offers: Offer[] = [];
-    public orders: Orders[] = [];
+    public orders: Order[] = [];
+    public selected: Partial<Order> = {};
+
+    public calculatePrice(dishes: Dish[]): string {
+      return dishes.reduce((prev, curr) => prev + (curr.pivot!.price * curr.pivot!.quantity), 0).toFixed(2);
+    }
 
     public async mounted() {
-      const response = await request<DishesApi>('/orders', Method.Get);
+      const response = await request<OrdersApi>('/orders', Method.Get);
 
       if (response.success) {
-        this.types = response.data.types;
+        this.orders = response.data.orders;
       }
     }
   }
@@ -152,6 +161,28 @@
     justify-content: center;
     margin-bottom: 1rem;
     font-size: 1.75rem;
+  }
+
+  .order {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    & > div:nth-child(1) {
+      width: 25rem;
+    }
+
+    & > div:nth-child(2) {
+      flex: 1;
+    }
+
+    & > div:nth-child(3) {
+      margin-right: 1rem;
+    }
+
+    &:last-child {
+      margin-bottom: 2rem;
+    }
   }
 
   .dish {
