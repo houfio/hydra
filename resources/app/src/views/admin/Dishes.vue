@@ -46,7 +46,7 @@
       <div class="box">
         <span>Product Aanpassen</span>
         <p v-if="!Object.keys(selectedDish).length">Geen product geselecteerd</p>
-        <Form v-else @submit="create" v-slot="{ loading, errors }">
+        <Form v-else @submit="update" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="selectedDish.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="selectedDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="selectedDish.number" :errors="errors['number']"/>
@@ -113,6 +113,17 @@
       const deleted = await request(`/dishes/${dish.id}`, Method.Delete);
 
       if (deleted) {
+        await this.getDishes();
+        window.alert('Product verwijderd');
+      } else {
+        window.alert('Product niet verwijderd');
+      }
+    }
+
+    public async update() {
+      const response = await request(`/dishes/${this.selectedDish.id}`, Method.Put, this.selectedDish);
+
+      if (response.success) {
         await this.getDishes();
         window.alert('Product verwijderd');
       } else {
