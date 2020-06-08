@@ -86,7 +86,7 @@ export type DishType = {
 };
 
 export type Dish = {
-  id: number,
+  id?: number,
   number: string,
   price: number,
   description: string | null,

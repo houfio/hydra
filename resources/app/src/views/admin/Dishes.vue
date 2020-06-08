@@ -17,7 +17,7 @@
               &euro;{{ dish.price.toFixed(2) }}
             </div>
             <div>
-              <Button @click.native="remove(dish)">
+              <Button @click.native="removeDish(dish)">
                 Verwijderen
               </Button>
             </div>
@@ -46,7 +46,7 @@
       <div class="box">
         <span>Product Aanpassen</span>
         <p v-if="!Object.keys(selectedDish).length">Geen product geselecteerd</p>
-        <Form v-else @submit="update" v-slot="{ loading, errors }">
+        <Form v-else @submit="updateDish" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="selectedDish.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="selectedDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="selectedDish.number" :errors="errors['number']"/>
@@ -86,13 +86,15 @@
   export default class Dishes extends Vue {
     public types: DishType[] = [];
     public selectedDish: Partial<Dish> = {};
-    public newDish: NewDish = {
+    public selectedType: DishType = {};
+    public newDish: Dish = {
       name: '',
       description: '',
       number: '',
       price: 0,
       type_id: 0
     };
+    public newType: string = '';
 
     public async mounted() {
       await this.getDishes();
@@ -109,7 +111,7 @@
       }
     }
 
-    public async remove(dish: Dish) {
+    public async removeDish(dish: Dish) {
       const deleted = await request(`/dishes/${dish.id}`, Method.Delete);
 
       if (deleted) {
@@ -120,25 +122,49 @@
       }
     }
 
-    public async update() {
+    public async updateDish() {
       const response = await request(`/dishes/${this.selectedDish.id}`, Method.Put, this.selectedDish);
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product verwijderd');
+        window.alert('Product geupdatet');
       } else {
-        window.alert('Product niet verwijderd');
+        window.alert('Product niet geupdatet');
       }
     }
 
     public async createType() {
-      const response = await request('/dishes', Method.Post, this.newDish);
+      const response = await request('/types', Method.Post, {
+        name: this.newType
+      });
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product aangemaakt');
+        window.alert('Product type aangemaakt');
       } else {
-        window.alert('Product niet aangemaakt');
+        window.alert('Product type niet aangemaakt');
+      }
+    }
+
+    public async removeType(type: DishType) {
+      const deleted = await request(`/types/${type.id}`, Method.Delete);
+
+      if (deleted) {
+        await this.getDishes();
+        window.alert('Product type verwijderd');
+      } else {
+        window.alert('Product type niet verwijderd');
+      }
+    }
+
+    public async updateType() {
+      const response = await request(`/types/${this.selectedType.id}`, Method.Put, this.selectedType);
+
+      if (response.success) {
+        await this.getDishes();
+        window.alert('Product type geupdatet');
+      } else {
+        window.alert('Product type niet geupdatet');
       }
     }
 
