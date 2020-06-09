@@ -31,7 +31,7 @@ class DishController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|unique:dishes,name|max:255',
             'number' => 'required|unique:dishes,number',
-            'price' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable',
             'type_id' => 'required|numeric|exists:dish_types,id'
         ]);
@@ -56,7 +56,7 @@ class DishController extends Controller
         $data = $this->validate($request, [
             'name' => "required|unique:dishes,name,{$dish->id}|max:255",
             'number' => "required|unique:dishes,number,{$dish->id}",
-            'price' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable',
             'type_id' => 'required|numeric|exists:dish_types,id'
         ]);
