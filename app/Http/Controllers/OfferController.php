@@ -40,7 +40,7 @@ class OfferController extends Controller
     public function create(Request $request)
     {
         $data = $this->validate($request, [
-            'name' => 'required|unique:deals,name|max:255',
+            'name' => 'required|unique:offers,name|max:255',
             'valid_until' => 'nullable|date',
             'price' => 'numeric|min:1',
             'dishes' => 'required|array|min:1',
@@ -52,7 +52,6 @@ class OfferController extends Controller
         $offer->name = $data['name'];
         $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
         $offer->price = $data['price'];
-        $offer->tax = 9;
 
         $offer->save();
 

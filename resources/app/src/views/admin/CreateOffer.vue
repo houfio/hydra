@@ -37,11 +37,11 @@
         </div>
       </div>
       <div class="box">
-        <Form @submit="cancel" v-slot="{ loading, errors }">
+        <Form @submit="create" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="offer.price" :errors="errors['price']"/>
-          <Input label="Geldig tot" type="date" v-model="offer.valid_until" :errors="errors['valid_until']"/>
-          <Button :disabled="loading">
+          <Input label="Geldig tot" type="datetime-local" v-model="offer.valid_until" :errors="errors['valid_until']"/>
+          <Button :disabled="loading || !offer.dishes.length">
             Aanmaken
           </Button>
           <Button type="button" @click.native="cancel">
@@ -56,6 +56,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
@@ -82,6 +83,9 @@
       dishes: []
     };
 
+    @Mutation('push', { namespace: 'notification' })
+    private push!: (notification: string) => void;
+
     public async mounted() {
       const response = await request<DishesApi>('/dishes', Method.Get);
 
@@ -98,6 +102,14 @@
           id: dish.id,
           name: dish.name
         });
+      }
+    }
+
+    public async create() {
+      const response = await request<DishesApi>('/offers', Method.Post, this.offer);
+
+      if (response.success) {
+        this.push('Aanbieding aangemaakt');
       }
     }
 
