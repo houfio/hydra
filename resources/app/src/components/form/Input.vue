@@ -8,7 +8,7 @@
         {{ options[key] }}
       </option>
     </select>
-    <textarea v-else-if="type === 'textarea'" class="input" @input="onChange"/>
+    <textarea v-else-if="type === 'textarea'" class="input" :value="value" @input="onChange"/>
     <input v-else class="input" :type="type" :value="value" @input="onChange"/>
     <div v-for="error in errors" :key="error" class="error">
       {{ error }}

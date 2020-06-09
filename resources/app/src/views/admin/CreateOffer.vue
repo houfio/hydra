@@ -37,20 +37,20 @@
         </div>
       </div>
       <div class="box">
-        <Form @submit="editing ? update : create" v-slot="{ loading, errors }">
+        <Form @submit="execute" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="offer.price" :errors="errors['price']"/>
           <Input label="Geldig tot" type="datetime-local" v-model="offer.valid_until" :errors="errors['valid_until']"/>
           <Button :disabled="loading || !offer.dishes.length">
             {{ editing ? 'Bewerken' : 'Aanmaken' }}
           </Button>
-          <Button v-if="editing" type="button" @click.native="removeOffer">
-            Verwijderen
-          </Button>
-          <Button v-else type="button" @click.native="cancel">
-            Annuleren
-          </Button>
         </Form>
+        <Button v-if="editing" type="button" @click.native="removeOffer">
+          Verwijderen
+        </Button>
+        <Button v-else type="button" @click.native="cancel">
+          Annuleren
+        </Button>
       </div>
     </div>
   </Page>
@@ -102,6 +102,10 @@
       if (response.success) {
         this.types = response.data.types;
       }
+    }
+
+    public async execute() {
+      this.editing ? await this.update() : await this.create();
     }
 
     public add(dish: Dish) {
@@ -162,7 +166,8 @@
       const response = await request<OfferApi>(`/offers/${id}`, Method.Get);
 
       if (response.success) {
-        response.data.offer.valid_until = format(parseISO(response.data.offer.valid_until), 'yyyy-MM-dd hh:mm').replace(' ', 'T');
+        response.data.offer.valid_until = response.data.offer.valid_until ?
+          format(parseISO(response.data.offer.valid_until), 'yyyy-MM-dd hh:mm').replace(' ', 'T') : '';
         this.offer = response.data.offer;
       }
     }

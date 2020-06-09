@@ -68,7 +68,7 @@ class OfferController extends Controller
     public function update(Request $request, Offer $offer)
     {
         $data = $this->validate($request, [
-            'name' => 'required|unique:offers,name|max:255',
+            'name' => "required|unique:offers,name,{$offer->id}|max:255",
             'valid_until' => 'nullable|date|after:today',
             'price' => 'numeric|min:1',
             'dishes' => 'required|array|min:1',
@@ -79,7 +79,7 @@ class OfferController extends Controller
         $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
         $offer->price = $data['price'];
 
-        $offer->dishes()->detach($offer->dishes()->pluck('id')->toArray());
+        $offer->dishes()->detach($offer->dishes()->pluck('dishes.id')->toArray());
 
         foreach ($data['dishes'] as $dish) {
             $savedDish = Dish::find($dish['id']);
