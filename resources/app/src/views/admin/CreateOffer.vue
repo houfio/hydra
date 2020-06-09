@@ -37,14 +37,17 @@
         </div>
       </div>
       <div class="box">
-        <Form @submit="create" v-slot="{ loading, errors }">
+        <Form @submit="editing ? update : create" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="offer.price" :errors="errors['price']"/>
           <Input label="Geldig tot" type="datetime-local" v-model="offer.valid_until" :errors="errors['valid_until']"/>
           <Button :disabled="loading || !offer.dishes.length">
-            Aanmaken
+            {{ editing ? 'Bewerken' : 'Aanmaken' }}
           </Button>
-          <Button type="button" @click.native="cancel">
+          <Button v-if="editing" type="button" @click.native="removeOffer">
+            Verwijderen
+          </Button>
+          <Button v-else type="button" @click.native="cancel">
             Annuleren
           </Button>
         </Form>
@@ -54,6 +57,7 @@
 </template>
 
 <script lang="ts">
+  import { format, parseISO } from 'date-fns';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import { Mutation } from 'vuex-class';
@@ -63,7 +67,7 @@
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OfferDish } from '../../types';
+  import { Dish, DishesApi, DishType, Offer, OfferApi, OfferDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -76,17 +80,23 @@
   })
   export default class CreateOffer extends Vue {
     public types: DishType[] = [];
-    public offer: Partial<Offer> = {
+    public editing = false;
+    public offer: Offer = {
       name: '',
       price: 0,
       valid_until: '',
       dishes: []
     };
 
-    @Mutation('push', { namespace: 'notification' })
+    @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
     public async mounted() {
+      if (this.$route.params.offer) {
+        this.editing = true;
+        await this.getOffer(this.$route.params.offer);
+      }
+
       const response = await request<DishesApi>('/dishes', Method.Get);
 
       if (response.success) {
@@ -110,6 +120,15 @@
 
       if (response.success) {
         this.push('Aanbieding aangemaakt');
+        this.$router.push('/kassa/aanbiedingen');
+      }
+    }
+
+    public async update() {
+      const response = await request<DishesApi>(`/offers/${this.offer.id}`, Method.Put, this.offer);
+
+      if (response.success) {
+        this.push('Aanbieding bewerkt');
       }
     }
 
@@ -121,6 +140,15 @@
       }
     }
 
+    public async removeOffer() {
+      const deleted = await request(`/offers/${this.$route.params.offer}`, Method.Delete);
+
+      if (deleted) {
+        this.push('Aanbieding aangemaakt');
+        this.$router.push('/kassa/aanbiedingen');
+      }
+    }
+
     public cancel() {
       this.offer = {
         name: '',
@@ -128,6 +156,15 @@
         valid_until: '',
         dishes: []
       };
+    }
+
+    private async getOffer(id: string) {
+      const response = await request<OfferApi>(`/offers/${id}`, Method.Get);
+
+      if (response.success) {
+        response.data.offer.valid_until = format(parseISO(response.data.offer.valid_until), 'yyyy-MM-dd hh:mm').replace(' ', 'T');
+        this.offer = response.data.offer;
+      }
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :disabled="disabled">
+  <button class="button" :type="type" :disabled="disabled">
     <slot/>
   </button>
 </template>
@@ -12,6 +12,7 @@
   @Component
   export default class Button extends Vue {
     @Prop({ default: false }) public disabled!: boolean;
+    @Prop({ default: 'submit' }) public type!: string;
   }
 </script>
 

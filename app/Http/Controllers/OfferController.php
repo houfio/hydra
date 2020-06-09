@@ -95,10 +95,24 @@ class OfferController extends Controller
 
     public function detail(Offer $offer)
     {
+        $offer = $offer->load('dishes')
+            ->makeHidden(['created_at', 'updated_at']);
+
+        $offer->dishes->makeHidden([
+            'type_id',
+            'created_at',
+            'updated_at',
+            'pivot',
+            'number',
+            'price',
+            'description',
+            'type_id',
+        ]);
+
         return response()->json([
             'success' => true,
             'data' => [
-                'deal' => $offer
+                'offer' => $offer
             ]
         ]);
     }

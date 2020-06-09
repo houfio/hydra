@@ -20,7 +20,7 @@
             &euro;{{ offer.price.toFixed(2) }}
           </div>
           <div>
-            <Button @click.native="">
+            <Button @click.native="$router.push(`/kassa/aanbiedingen/maken/${offer.id}`)">
               Aanpassen
             </Button>
           </div>

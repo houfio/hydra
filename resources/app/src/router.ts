@@ -55,7 +55,7 @@ export default new VueRouter({
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'aanbiedingen/maken',
+      path: 'aanbiedingen/maken/:offer?',
       component: CreateOffer,
       meta: {
         guard: [authenticated, '/kassa/login']

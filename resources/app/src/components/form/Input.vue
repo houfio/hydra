@@ -9,7 +9,7 @@
       </option>
     </select>
     <textarea v-else-if="type === 'textarea'" class="input" @input="onChange"/>
-    <input v-else class="input" :type="type" @input="onChange"/>
+    <input v-else class="input" :type="type" :value="value" @input="onChange"/>
     <div v-for="error in errors" :key="error" class="error">
       {{ error }}
     </div>
@@ -28,6 +28,7 @@
     @Prop() public type?: string;
     @Prop() public label?: string;
     @Prop() public options?: object;
+    @Prop() public value?: string;
     @Prop() public errors?: keyof FormErrors;
 
     @Emit('input')
