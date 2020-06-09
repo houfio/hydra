@@ -33,7 +33,7 @@
         <span>Product toevoegen</span>
         <Form @submit="createDish" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="newDish.name" :errors="errors['name']"/>
-          <Input label="Prijs" type="number" v-model="newDish.price" :errors="errors['price']"/>
+          <Input label="Prijs" type="number" v-model.number="newDish.price" :errors="errors['price']" step="0.01"/>
           <Input label="Menu nummer" type="text" v-model="newDish.number" :errors="errors['number']"/>
           <Input label="Beschrijving" type="textarea" v-model="newDish.description" :errors="errors['description']"/>
           <Input
@@ -53,7 +53,7 @@
         <p v-if="!Object.keys(selectedDish).length">Geen product geselecteerd</p>
         <Form v-else @submit="updateDish" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="selectedDish.name" :errors="errors['name']"/>
-          <Input label="Prijs" type="number" v-model="selectedDish.price" :errors="errors['price']"/>
+          <Input label="Prijs" type="number" v-model.number="selectedDish.price" :errors="errors['price']" step="0.01"/>
           <Input label="Menu nummer" type="text" v-model="selectedDish.number" :errors="errors['number']"/>
           <Input
             label="Beschrijving"
@@ -80,13 +80,14 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, NewDish } from '../../types';
+  import { Dish, DishesApi, DishType } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -110,6 +111,9 @@
     };
     public newType = '';
 
+    @Mutation('push', {namespace: 'notification'})
+    private push!: (notification: string) => void;
+
     public get typeOptions() {
       return this.types.reduce((previous, current) => ({
         ...previous,
@@ -121,14 +125,14 @@
       await this.getDishes();
     }
 
-    public async createDish() {
-      const response = await request('/dishes', Method.Post, this.newDish);
+    public async createDish(api: typeof request) {
+      const response = await api('/dishes', Method.Post, this.newDish);
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product aangemaakt');
+        this.push('Product aangemaakt');
       } else {
-        window.alert('Product niet aangemaakt');
+        this.push('Product niet aangemaakt');
       }
     }
 
@@ -137,20 +141,20 @@
 
       if (deleted) {
         await this.getDishes();
-        window.alert('Product verwijderd');
+        this.push('Product verwijderd');
       } else {
-        window.alert('Product niet verwijderd');
+        this.push('Product niet aangemaakt');
       }
     }
 
-    public async updateDish() {
-      const response = await request(`/dishes/${this.selectedDish.id}`, Method.Put, this.selectedDish);
+    public async updateDish(api: typeof request) {
+      const response = await api(`/dishes/${this.selectedDish.id}`, Method.Put, this.selectedDish);
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product geupdatet');
+        this.push('Product bijgewerkt');
       } else {
-        window.alert('Product niet geupdatet');
+        this.push('Product niet bijgewerkt');
       }
     }
 
@@ -161,9 +165,9 @@
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product type aangemaakt');
+        this.push('Product type aangemaakt');
       } else {
-        window.alert('Product type niet aangemaakt');
+        this.push('Product type niet aangemaakt');
       }
     }
 
@@ -172,9 +176,9 @@
 
       if (deleted) {
         await this.getDishes();
-        window.alert('Product type verwijderd');
+        this.push('Product type verwijderd');
       } else {
-        window.alert('Product type niet verwijderd');
+        this.push('Product type niet verwijderd');
       }
     }
 
@@ -183,9 +187,9 @@
 
       if (response.success) {
         await this.getDishes();
-        window.alert('Product type geupdatet');
+        this.push('Product type bijgewerkt');
       } else {
-        window.alert('Product type niet geupdatet');
+        this.push('Product type niet bijgewerkt');
       }
     }
 

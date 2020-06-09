@@ -39,7 +39,7 @@
       <div class="box">
         <Form @submit="execute" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
-          <Input label="Prijs" type="number" v-model="offer.price" :errors="errors['price']"/>
+          <Input label="Prijs" type="number" v-model.number="offer.price" :errors="errors['price']" step="0.01"/>
           <Input label="Geldig tot" type="datetime-local" v-model="offer.valid_until" :errors="errors['valid_until']"/>
           <Button :disabled="loading || !offer.dishes.length">
             {{ editing ? 'Bewerken' : 'Aanmaken' }}
@@ -104,8 +104,8 @@
       }
     }
 
-    public async execute() {
-      this.editing ? await this.update() : await this.create();
+    public async execute(api: typeof request) {
+      this.editing ? await this.update(api) : await this.create(api);
     }
 
     public add(dish: Dish) {
@@ -119,8 +119,8 @@
       }
     }
 
-    public async create() {
-      const response = await request<DishesApi>('/offers', Method.Post, this.offer);
+    public async create(api: typeof request) {
+      const response = await api<DishesApi>('/offers', Method.Post, this.offer);
 
       if (response.success) {
         this.push('Aanbieding aangemaakt');
@@ -128,8 +128,8 @@
       }
     }
 
-    public async update() {
-      const response = await request<DishesApi>(`/offers/${this.offer.id}`, Method.Put, this.offer);
+    public async update(api: typeof request) {
+      const response = await api<DishesApi>(`/offers/${this.offer.id}`, Method.Put, this.offer);
 
       if (response.success) {
         this.push('Aanbieding bewerkt');
@@ -166,8 +166,7 @@
       const response = await request<OfferApi>(`/offers/${id}`, Method.Get);
 
       if (response.success) {
-        response.data.offer.valid_until = response.data.offer.valid_until ?
-          format(parseISO(response.data.offer.valid_until), 'yyyy-MM-dd hh:mm').replace(' ', 'T') : '';
+        response.data.offer.valid_until = response.data.offer.valid_until ? response.data.offer.valid_until.replace(' ', 'T') : '';
         this.offer = response.data.offer;
       }
     }
