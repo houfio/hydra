@@ -37,22 +37,17 @@
         </div>
       </div>
       <div class="box">
-        <div class="spacing">
-          <div class="info">
-            <span class="big">
-              0
-            </span>
-            totaal incl. btw
-          </div>
-          <div class="info">
-            <Button>
-              Aanmaken
-            </Button>
-            <Button @click.native="cancel">
-              Annuleren
-            </Button>
-          </div>
-        </div>
+        <Form @submit="cancel" v-slot="{ loading, errors }">
+          <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
+          <Input label="Prijs" type="number" v-model="offer.price" :errors="errors['price']"/>
+          <Input label="Geldig tot" type="date" v-model="offer.valid_until" :errors="errors['valid_until']"/>
+          <Button :disabled="loading">
+            Aanmaken
+          </Button>
+          <Button type="button" @click.native="cancel">
+            Annuleren
+          </Button>
+        </Form>
       </div>
     </div>
   </Page>
@@ -64,15 +59,18 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OfferDish, OffersApi, OrderDish } from '../../types';
+  import { Dish, DishesApi, DishType, Offer, OfferDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
+      Form,
       Page,
-      Button
+      Button,
+      Input
     }
   })
   export default class CreateOffer extends Vue {
