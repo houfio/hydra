@@ -148,7 +148,7 @@
       const deleted = await request(`/offers/${this.$route.params.offer}`, Method.Delete);
 
       if (deleted) {
-        this.push('Aanbieding aangemaakt');
+        this.push('Aanbieding verwijderd');
         this.$router.push('/kassa/aanbiedingen');
       }
     }
