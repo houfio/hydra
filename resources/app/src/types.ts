@@ -142,8 +142,3 @@ export type OfferDish = {
   id?: number,
   name: string
 };
-
-export type SelectType = {
-  id: number,
-  label: string
-};

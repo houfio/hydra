@@ -1,9 +1,10 @@
 <template>
   <Page>
-    <Button @click.native="$router.push('/kassa/aanbiedingen/maken')">
-      Aanmaken
-    </Button>
     <div class="grid">
+      <div/>
+      <Button @click.native="$router.push('/kassa/aanbiedingen/maken')">
+        Aanmaken
+      </Button>
       <div class="box big">
         <div v-for="offer of offers" class="offer">
           <div v-if="offer.valid_until">
@@ -61,7 +62,7 @@
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: 12rem calc(100vh - 19rem) / 1fr 2fr;
+    grid-template: 3rem calc(100vh - 11rem) / 5fr 1fr;
     grid-gap: 1rem;
   }
 

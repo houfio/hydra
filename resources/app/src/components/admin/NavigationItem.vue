@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="path" v-slot="{ href, navigate, isExactActive }">
-    <a class="item" :class="{ active: isExactActive }" :href="href" @click="navigate">
+  <router-link :to="path" v-slot="{ href, navigate, isActive, isExactActive }">
+    <a class="item" :class="{ active: exact ? isExactActive : isActive }" :href="href" @click="navigate">
       <slot/>
     </a>
   </router-link>
@@ -14,6 +14,7 @@
   @Component
   export default class NavigationItem extends Vue {
     @Prop() public path!: string;
+    @Prop({ default: false }) public exact!: boolean;
   }
 </script>
 

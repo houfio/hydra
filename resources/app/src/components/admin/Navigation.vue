@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation">
-    <NavigationItem path="/kassa">
+    <NavigationItem path="/kassa" :exact="true">
       Kassa
     </NavigationItem>
     <NavigationItem path="/kassa/gerechten">

@@ -4,11 +4,11 @@
       {{ label }}
     </label>
     <select v-if="type === 'select'" @change="onChange" class="form-control">
-      <option v-for="option in data" :value="option.id">
-        {{ option.label }}
+      <option v-for="key of options" :value="key">
+        {{ options[key] }}
       </option>
     </select>
-    <textarea v-else-if="type === 'textarea'" @input="onChange"/>
+    <textarea v-else-if="type === 'textarea'" class="input" @input="onChange"/>
     <input v-else class="input" :type="type" @input="onChange"/>
     <div v-for="error in errors" :key="error" class="error">
       {{ error }}
@@ -21,13 +21,13 @@
   import Component from 'vue-class-component';
   import { Emit, Prop } from 'vue-property-decorator';
 
-  import { FormErrors, SelectType } from '../../types';
+  import { FormErrors } from '../../types';
 
   @Component
   export default class Input extends Vue {
     @Prop() public type?: string;
     @Prop() public label?: string;
-    @Prop() public data?: SelectType[];
+    @Prop() public options?: object;
     @Prop() public errors?: keyof FormErrors;
 
     @Emit('input')
@@ -67,6 +67,7 @@
     background-color: #f1f1f1;
     border-radius: .5rem;
     outline: none;
+    resize: vertical;
     transition: box-shadow .25s ease;
 
     &:focus {

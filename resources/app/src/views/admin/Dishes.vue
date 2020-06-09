@@ -36,8 +36,13 @@
           <Input label="Prijs" type="number" v-model="newDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="newDish.number" :errors="errors['number']"/>
           <Input label="Beschrijving" type="textarea" v-model="newDish.description" :errors="errors['description']"/>
-          <Input label="Type" type="select" v-model="newDish.type_id" :errors="errors['type_id']"
-                 :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
+          <Input
+            label="Type"
+            type="select"
+            v-model="newDish.type_id"
+            :errors="errors['type_id']"
+            :options="typeOptions"
+          />
           <Button :disabled="loading">
             Aanmaken
           </Button>
@@ -50,10 +55,19 @@
           <Input label="Naam" type="text" v-model="selectedDish.name" :errors="errors['name']"/>
           <Input label="Prijs" type="number" v-model="selectedDish.price" :errors="errors['price']"/>
           <Input label="Menu nummer" type="text" v-model="selectedDish.number" :errors="errors['number']"/>
-          <Input label="Beschrijving" type="textarea" v-model="selectedDish.description"
-                 :errors="errors['description']"/>
-          <Input label="Type" type="select" v-model="selectedDish.type_id" :errors="errors['type_id']"
-                 :data="types.flatMap((type) => [{id: type.id, label: type.name}])"/>
+          <Input
+            label="Beschrijving"
+            type="textarea"
+            v-model="selectedDish.description"
+            :errors="errors['description']"
+          />
+          <Input
+            label="Type"
+            type="select"
+            v-model="selectedDish.type_id"
+            :errors="errors['type_id']"
+            :data="types.flatMap((type) => [{id: type.id, label: type.name}])"
+          />
           <Button :disabled="loading">
             Aanpassen
           </Button>
@@ -87,14 +101,21 @@
     public types: DishType[] = [];
     public selectedDish: Partial<Dish> = {};
     public selectedType: Partial<DishType> = {};
-    public newDish: Dish = {
+    public newDish = {
       name: '',
       description: '',
       number: '',
       price: 0,
       type_id: 0
     };
-    public newType: string = '';
+    public newType = '';
+
+    public get typeOptions() {
+      return this.types.reduce((previous, current) => ({
+        ...previous,
+        [current.id]: current.name
+      }), {});
+    }
 
     public async mounted() {
       await this.getDishes();
@@ -181,7 +202,7 @@
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: repeat(2, calc(70vh - 19rem)) / 3fr 2fr;
+    grid-template: repeat(2, calc(50vh - 3.5rem)) / 3fr 2fr;
     grid-gap: 1rem;
   }
 
