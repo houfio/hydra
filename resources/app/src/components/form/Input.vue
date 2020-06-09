@@ -43,6 +43,7 @@
   .wrapper {
     position: relative;
     margin-bottom: .5rem;
+    font-family: 'Open Sans', sans-serif;
 
     &.has-error {
       background-color: #ff0000;

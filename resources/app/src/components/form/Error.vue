@@ -16,7 +16,9 @@
   .error {
     margin-bottom: .5rem;
     padding: .5rem .75rem;
+    color: white;
     background-color: red;
     border-radius: .5rem;
+    font-family: 'Open Sans', sans-serif;
   }
 </style>

@@ -15,6 +15,9 @@ import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
 import Home from './views/public/Home.vue';
 import Menu from './views/public/Menu.vue';
+import Tablet from './views/Tablet.vue';
+import Overview from './views/tablet/Overview.vue';
+import Register from './views/tablet/Register.vue';
 
 Vue.use(VueRouter);
 
@@ -68,13 +71,26 @@ export default new VueRouter({
       component: Logout
     }]
   }, {
+    path: '/tablet',
+    component: Tablet,
+    children: [{
+      path: '/',
+      component: Overview,
+      meta: {
+        guard: [authenticated, '/tablet/register']
+      }
+    }, {
+      path: 'register',
+      component: Register
+    }]
+  }, {
     path: '/',
     component: Public,
     children: [{
       path: '/',
       component: Home
     }, {
-      path: '/menu',
+      path: 'menu',
       component: Menu
     }, {
       path: '*',
