@@ -41,6 +41,6 @@ class MenuController extends Controller
 
     public function download()
     {
-        return PDF::loadView('menu', $this->generate())->download();
+        return PDF::loadView('menu', $this->generate())->download('menu.pdf');
     }
 }
