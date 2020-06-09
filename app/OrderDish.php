@@ -9,7 +9,7 @@ class OrderDish extends Pivot
     protected $table = 'order_dishes';
 
     protected $fillable = [
-        'price', 'tax'
+        'price', 'tax', 'quantity', 'note'
     ];
 
     protected $casts = [

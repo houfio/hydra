@@ -120,7 +120,8 @@ export type OrderDish = {
   price: number,
   name: string,
   quantity: number,
-  isOffer: boolean
+  isOffer: boolean,
+  note?: string
 };
 
 export type NewDish = {

@@ -58,6 +58,7 @@
           </div>
           <div>
             {{ dish.name }}
+            <Input v-model="dish.note"/>
           </div>
           <div>
             &euro;{{ dish.price.toFixed(2) }}
@@ -100,16 +101,16 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
-  import Form from '../../components/form/Form.vue';
+  import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
   import { Dish, DishesApi, DishType, Offer, OffersApi, OrderDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
+      Input,
       Page,
-      Button,
-      Form
+      Button
     }
   })
   export default class Dashboard extends Vue {
@@ -185,6 +186,11 @@
 </script>
 
 <style scoped lang="scss">
+  .note {
+    background-color: white;
+    color: black;
+  }
+
   .grid {
     display: grid;
     grid-template: calc(100vh - 19rem) 12rem / 3fr 2fr;
