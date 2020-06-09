@@ -41,7 +41,7 @@ class OfferController extends Controller
     {
         $data = $this->validate($request, [
             'name' => 'required|unique:offers,name|max:255',
-            'valid_until' => 'nullable|date',
+            'valid_until' => 'nullable|date|after:today',
             'price' => 'numeric|min:1',
             'dishes' => 'required|array|min:1',
             'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id'
@@ -59,6 +59,34 @@ class OfferController extends Controller
             $savedDish = Dish::find($dish['id']);
             $offer->dishes()->save($savedDish);
         }
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function update(Request $request, Offer $offer)
+    {
+        $data = $this->validate($request, [
+            'name' => 'required|unique:offers,name|max:255',
+            'valid_until' => 'nullable|date|after:today',
+            'price' => 'numeric|min:1',
+            'dishes' => 'required|array|min:1',
+            'dishes.*.id' => 'required|numeric|min:1|exists:dishes,id'
+        ]);
+
+        $offer->name = $data['name'];
+        $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
+        $offer->price = $data['price'];
+
+        $offer->dishes()->detach($offer->dishes()->pluck('id')->toArray());
+
+        foreach ($data['dishes'] as $dish) {
+            $savedDish = Dish::find($dish['id']);
+            $offer->dishes()->save($savedDish);
+        }
+
+        $offer->save();
 
         return response()->json([
             'success' => true

@@ -43,6 +43,7 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
         $router->get('', 'OfferController@list');
         $router->post('', 'OfferController@create');
         $router->get('{offer}', 'OfferController@detail');
+        $router->put('{offer}', 'OfferController@update');
         $router->delete('{offer}', 'OfferController@delete');
     });
 });
