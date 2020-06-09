@@ -35,7 +35,7 @@
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Border from '../components/public/Border.vue';
+  import Border from '../components/Border.vue';
   import Header from '../components/public/Header.vue';
   import Navigation from '../components/public/Navigation.vue';
 

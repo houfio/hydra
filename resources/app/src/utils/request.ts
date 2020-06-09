@@ -1,6 +1,7 @@
 import { stringify } from 'query-string';
 
 import { Method } from '../constants';
+import router from '../router';
 import store from '../store';
 import { Response } from '../types';
 
@@ -23,6 +24,12 @@ export async function request<T>(url: string, method: Method, payload?: object) 
         }
       }
     });
+
+    if (response.status === 401) {
+      store.commit('auth/setToken');
+
+      await router.push('/');
+    }
 
     return method === Method.Delete ? true : await response.json();
   } catch (e) {

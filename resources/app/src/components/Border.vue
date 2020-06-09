@@ -1,5 +1,5 @@
 <template>
-  <table class="border">
+  <table class="border" :class="{ full: full }">
     <tbody>
       <tr class="spacer">
         <td colspan="9"/>
@@ -42,7 +42,7 @@
         <td class="square left right"/>
         <td class="square"/>
         <td class="square"/>
-        <td>
+        <td class="slot">
           <slot/>
         </td>
         <td class="square"/>
@@ -93,15 +93,22 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Prop } from 'vue-property-decorator';
 
   @Component
-  export default class Border extends Vue {}
+  export default class Border extends Vue {
+    @Prop({ default: false }) public full!: boolean;
+  }
 </script>
 
 <style scoped lang="scss">
   .border {
     width: 100%;
     border-collapse: collapse;
+
+    &.full {
+      min-height: 100vh;
+    }
   }
 
   tr {
@@ -141,6 +148,10 @@
 
     &.right {
       border-right-width: 4px;
+    }
+
+    &.slot {
+      vertical-align: top;
     }
   }
 </style>
