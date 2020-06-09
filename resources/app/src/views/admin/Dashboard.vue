@@ -42,12 +42,12 @@
             </div>
           </div>
           <div v-for="dish of offer.dishes" class="dish">
-            <div></div>
+            <div/>
             <div>
               {{ dish.name }}
             </div>
-            <div></div>
-            <div></div>
+            <div/>
+            <div/>
           </div>
         </div>
       </div>
@@ -58,12 +58,11 @@
           </div>
           <div>
             {{ dish.name }}
-            <Input v-model="dish.note"/>
           </div>
           <div>
             &euro;{{ dish.price.toFixed(2) }}
           </div>
-          <div class="row">
+          <div class="group">
             <Button @click.native="remove(dish)">
               -
             </Button>
@@ -77,7 +76,7 @@
         <div class="spacing">
           <div class="info">
             <span class="big">
-              &euro;{{ totalAmount }}
+              &euro;{{ total }}
             </span>
             totaal incl. btw
           </div>
@@ -118,7 +117,7 @@
     public offers: Offer[] = [];
     public order: OrderDish[] = [];
 
-    get totalAmount() {
+    get total() {
       return this.order.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2);
     }
 
@@ -204,17 +203,21 @@
     height: 100%;
   }
 
-  .row {
+  .group {
     display: flex;
 
-    button:first-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
+    & > * {
+      border-radius: 0;
 
-    button:last-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      &:first-child {
+        border-top-left-radius: .5rem;
+        border-bottom-left-radius: .5rem;
+      }
+
+      &:last-child {
+        border-top-right-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+      }
     }
   }
 
