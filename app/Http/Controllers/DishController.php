@@ -54,7 +54,7 @@ class DishController extends Controller
     public function update(Request $request, Dish $dish)
     {
         $data = $this->validate($request, [
-            'name' => 'required|unique:dishes,name|max:255',
+            'name' => "required|unique:dishes,name,{$dish->id}|max:255",
             'number' => "required|unique:dishes,number,{$dish->id}",
             'price' => 'required|integer|min:0',
             'description' => 'nullable',
