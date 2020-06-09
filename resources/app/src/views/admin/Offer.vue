@@ -57,7 +57,6 @@
 </template>
 
 <script lang="ts">
-  import { format, parseISO } from 'date-fns';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import { Mutation } from 'vuex-class';
@@ -67,7 +66,7 @@
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OfferApi, OfferDish } from '../../types';
+  import { Dish, DishesApi, DishType, Offer as OfferType, OfferApi, OfferDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -78,10 +77,9 @@
       Input
     }
   })
-  export default class CreateOffer extends Vue {
+  export default class Offer extends Vue {
     public types: DishType[] = [];
-    public editing = false;
-    public offer: Offer = {
+    public offer: OfferType = {
       name: '',
       price: 0,
       valid_until: '',
@@ -91,10 +89,13 @@
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
+    public get editing() {
+      return Boolean(this.$route.params.id);
+    }
+
     public async mounted() {
-      if (this.$route.params.offer) {
-        this.editing = true;
-        await this.getOffer(this.$route.params.offer);
+      if (this.editing) {
+        await this.getOffer(this.$route.params.id);
       }
 
       const response = await request<DishesApi>('/dishes', Method.Get);
@@ -145,7 +146,7 @@
     }
 
     public async removeOffer() {
-      const deleted = await request(`/offers/${this.$route.params.offer}`, Method.Delete);
+      const deleted = await request(`/offers/${this.$route.params.id}`, Method.Delete);
 
       if (deleted) {
         this.push('Aanbieding verwijderd');

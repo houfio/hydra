@@ -68,6 +68,10 @@ export type DishesApi = {
   types: DishType[]
 };
 
+export type DishApi = {
+  dish: Dish
+};
+
 export type OfferApi = {
   offer: Offer
 };

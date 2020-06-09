@@ -3,11 +3,12 @@ import VueRouter from 'vue-router';
 
 import { authenticated } from './utils/authenticated';
 import Admin from './views/Admin.vue';
-import CreateOffer from './views/admin/CreateOffer.vue';
 import Dashboard from './views/admin/Dashboard.vue';
+import Dish from './views/admin/Dish.vue';
 import Dishes from './views/admin/Dishes.vue';
 import Login from './views/admin/Login.vue';
 import Logout from './views/admin/Logout.vue';
+import Offer from './views/admin/Offer.vue';
 import Offers from './views/admin/Offers.vue';
 import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
@@ -37,6 +38,12 @@ export default new VueRouter({
         guard: [authenticated, '/kassa/login']
       }
     }, {
+      path: 'gerechten/maken/:id?',
+      component: Dish,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
       path: 'verkopen',
       component: Sales,
       meta: {
@@ -55,8 +62,8 @@ export default new VueRouter({
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'aanbiedingen/maken/:offer?',
-      component: CreateOffer,
+      path: 'aanbiedingen/maken/:id?',
+      component: Offer,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
