@@ -11,7 +11,9 @@ class OfferController extends Controller
 {
     public function list()
     {
-        $offers = Offer::with('dishes')->get()
+        $offers = Offer::with('dishes')
+            ->orderBy('created_at', 'desc')
+            ->get()
             ->makeHidden(['created_at', 'updated_at']);
 
         foreach ($offers as $offer) {

@@ -83,10 +83,11 @@ export type MenuApi = {
 };
 
 export type Offer = {
-  id: number,
+  id?: number,
   name: string,
-  tax: number,
+  tax?: number,
   price: number,
+  valid_until: string,
   dishes: Dish[] | OfferDish[]
 };
 
@@ -133,7 +134,7 @@ export type NewDish = {
 };
 
 export type OfferDish = {
-  id: number,
+  id?: number,
   name: string
 };
 

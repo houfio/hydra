@@ -9,6 +9,9 @@
     <NavigationItem path="/kassa/bestellingen">
       Bestellingen
     </NavigationItem>
+    <NavigationItem path="/kassa/aanbiedingen">
+      Aanbiedingen
+    </NavigationItem>
     <NavigationItem path="/kassa/verkopen">
       Verkopen
     </NavigationItem>

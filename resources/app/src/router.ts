@@ -3,10 +3,12 @@ import VueRouter from 'vue-router';
 
 import { authenticated } from './utils/authenticated';
 import Admin from './views/Admin.vue';
+import CreateOffer from './views/admin/CreateOffer.vue';
 import Dashboard from './views/admin/Dashboard.vue';
 import Dishes from './views/admin/Dishes.vue';
 import Login from './views/admin/Login.vue';
 import Logout from './views/admin/Logout.vue';
+import Offers from './views/admin/Offers.vue';
 import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
 import NotFound from './views/NotFound.vue';
@@ -43,6 +45,18 @@ export default new VueRouter({
     }, {
       path: 'bestellingen',
       component: Orders,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
+      path: 'aanbiedingen',
+      component: Offers,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
+      path: 'aanbiedingen/maken',
+      component: CreateOffer,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
