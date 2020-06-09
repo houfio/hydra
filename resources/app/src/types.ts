@@ -2,6 +2,11 @@ import { StatusCode } from './constants';
 
 export type FunctionArguments<T> = T extends (...args: infer V) => any ? V : never;
 
+export type Notification = {
+  id: string,
+  notification: string
+};
+
 export type Response<T> = {
   success: true,
   data: T

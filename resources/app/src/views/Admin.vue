@@ -2,6 +2,7 @@
   <div class="main">
     <Navigation v-if="navigation"/>
     <router-view/>
+    <Notifications/>
   </div>
 </template>
 
@@ -10,10 +11,12 @@
   import Component from 'vue-class-component';
 
   import Navigation from '../components/admin/Navigation.vue';
+  import Notifications from '../components/admin/Notifications.vue';
 
   @Component({
     components: {
-      Navigation
+      Navigation,
+      Notifications
     }
   })
   export default class Admin extends Vue {

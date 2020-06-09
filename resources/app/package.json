@@ -12,6 +12,7 @@
     "date-fns": "^2.14.0",
     "normalize.css": "^8.0.1",
     "query-string": "^6.12.1",
+    "shortid": "^2.2.15",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
@@ -22,6 +23,7 @@
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
+    "@types/shortid": "0.0.29",
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-router": "^4.3.1",
     "@vue/cli-plugin-typescript": "^4.3.1",

@@ -97,6 +97,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
@@ -116,6 +117,9 @@
     public types: DishType[] = [];
     public offers: Offer[] = [];
     public order: OrderDish[] = [];
+
+    @Mutation('push', { namespace: 'notification' })
+    private push!: (notification: string) => void;
 
     get total() {
       return this.order.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2);
@@ -166,6 +170,7 @@
 
     public deleteOrder() {
       this.order = [];
+      this.push('Bestellig weggehaald');
     }
 
     public async pay() {
