@@ -12,7 +12,7 @@
           <NavigationItem path="/menu">
             Menukaart
           </NavigationItem>
-          <NavigationItem path="/news">
+          <NavigationItem path="/nieuws">
             Nieuws
           </NavigationItem>
           <NavigationItem path="/contact">

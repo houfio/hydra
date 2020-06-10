@@ -22,7 +22,6 @@ class OfferController extends Controller
                 'created_at',
                 'updated_at',
                 'pivot',
-                'number',
                 'price',
                 'description',
                 'type_id',

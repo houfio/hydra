@@ -14,8 +14,10 @@ import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
 import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
+import Contact from './views/public/Contact.vue';
 import Home from './views/public/Home.vue';
 import Menu from './views/public/Menu.vue';
+import News from './views/public/News.vue';
 import Tablet from './views/Tablet.vue';
 import Overview from './views/tablet/Overview.vue';
 import Register from './views/tablet/Register.vue';
@@ -99,6 +101,12 @@ export default new VueRouter({
     }, {
       path: 'menu',
       component: Menu
+    }, {
+      path: 'nieuws',
+      component: News
+    }, {
+      path: 'contact',
+      component: Contact
     }, {
       path: '*',
       component: NotFound
