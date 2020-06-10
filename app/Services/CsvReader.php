@@ -42,7 +42,7 @@ class CsvReader
         return $content;
     }
 
-    private function getLastContent(): array
+    public function getLastContent(): array
     {
         return $this->content;
     }
