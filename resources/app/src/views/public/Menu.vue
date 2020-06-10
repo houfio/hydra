@@ -1,69 +1,45 @@
 <template>
-  <Page>
-    <span class="head-heading">De Gouden Draak menukaart</span>
-    <div v-for="type in response.types">
-      <span class="type-heading">
-        {{ type.name }}
-      </span>
-      <ul class="menu">
-        <li class="menu-item" v-for="dish in type.dishes">
-          <div class="section">
-            <div class="heading">
-              <span class="title">{{ dish.number }}. {{ dish.name }}
-                <button @click="favorite(dish.id)" :style="favorited(dish.id) ? 'color: red' : 'color: green'">
-                  Fav
-                </button>
-              </span>
-              <span class="spacer"></span>
-              <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
-            </div>
-            <p v-if="dish.description">
-              ({{ dish.description }})
-            </p>
-          </div>
-        </li>
-      </ul>
+  <Page padding="2rem 1rem">
+    <h1 class="center">De Gouden Draak menukaart</h1>
+    <div class="center">
+      <UglyButton tag="a" href="https://hydra.local/api/menu/current">
+        Download
+      </UglyButton>
     </div>
-    <span class="head-heading">Aanbiedingen</span>
-    <div v-for="offer in response.offers">
-      <span class="type-heading">
-        {{ offer.name }} &euro;{{ offer.price.toFixed(2) }}
-      </span>
-      <ul class="menu">
-        <li class="menu-item" v-for="dish in offer.dishes">
-          <div class="section">
-            <div class="heading">
-              <span class="title">{{ dish.number }}. {{ dish.name }}</span>
-            </div>
-            <p v-if="dish.description">
-              ({{ dish.description }})
-            </p>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <MenuComponent :response="response" :icon="heart" :active="favorited" @toggle="favorite"/>
   </Page>
 </template>
 
 <script lang="ts">
+  import { faHeart } from '@fortawesome/free-solid-svg-icons';
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
   import Button from '../../components/form/Button.vue';
-  import Page from '../../components/public/Page.vue';
+  import UglyButton from '../../components/form/UglyButton.vue';
+  import MenuComponent from '../../components/Menu.vue';
+  import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
   import { MenuApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
-      Page,
-      Button
+      FontAwesomeIcon,
+      Button,
+      UglyButton,
+      MenuComponent,
+      Page
     }
   })
   export default class Menu extends Vue {
     public response: Partial<MenuApi> = {};
     public favorites: number[] = JSON.parse(this.$cookies.get('favorites') || '[]');
+
+    get heart() {
+      return faHeart;
+    }
 
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);
@@ -91,58 +67,41 @@
 </script>
 
 <style scoped lang="scss">
-  .head-heading {
-    display: block;
+  .center {
     text-align: center;
-    font-weight: bold;
-    font-size: 35px;
-    margin-top: 1rem;
   }
-  .type-heading {
-    font-weight: bold;
-    font-size: 25px;
-    text-align: center;
-    display: block;
+
+  .type {
     margin: 2rem 0;
   }
+
   .menu {
     display: flex;
-    list-style-type: none;
     flex-wrap: wrap;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 960px;
-    height: 100%;
-    .menu-item {
-      display: flex;
-      width: 50%;
-      list-style-type: none;
-      padding: 0 1rem;
-      margin: 0 0 1rem;
-      .section {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        .heading {
-          display: flex;
-          width: 100%;
-          justify-content: center;
-          align-items: center;
-          .spacer {
-            content: '';
-            width: 100%;
-            height: 1px;
-            margin: 0 .5rem;
-            border-bottom: 1px dashed black;
-            flex: 1;
-          }
-          .title {
-            margin: 0;
-            font-size: 20px;
-            font-weight: bold;
-          }
-        }
-      }
+
+    &-item {
+      flex: 0 0 50%;
+      padding: 1rem;
     }
+
+    &-header {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .action {
+    margin-right: 1rem;
+
+    &.active {
+      color: green;
+    }
+  }
+
+  .spacer {
+    flex: 1;
+    height: 1px;
+    margin: 0 .5rem;
+    border-bottom: 1px dashed black;
   }
 </style>

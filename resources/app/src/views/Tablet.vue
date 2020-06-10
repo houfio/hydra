@@ -1,5 +1,6 @@
 <template>
   <Border :full="true">
+    <Navigation/>
     <router-view/>
   </Border>
 </template>
@@ -9,9 +10,13 @@
   import Component from 'vue-class-component';
 
   import Border from '../components/Border.vue';
+  import Navigation from '../components/tablet/Navigation.vue';
 
   @Component({
-    components: { Border }
+    components: {
+      Border,
+      Navigation
+    }
   })
   export default class Tablet extends Vue {}
 </script>

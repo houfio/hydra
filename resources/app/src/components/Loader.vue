@@ -7,8 +7,7 @@
   import Component from 'vue-class-component';
 
   @Component
-  export default class Loader extends Vue {
-  }
+  export default class Loader extends Vue {}
 </script>
 
 <style scoped lang="scss">

@@ -18,7 +18,9 @@
   import Error from './Error.vue';
 
   @Component({
-    components: { Error }
+    components: {
+      Error
+    }
   })
   export default class Form extends Vue {
     public error = '';

@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :type="type" :disabled="disabled">
+  <button class="button" :bind="$props">
     <slot/>
   </button>
 </template>
@@ -10,10 +10,7 @@
   import { Prop } from 'vue-property-decorator';
 
   @Component
-  export default class Button extends Vue {
-    @Prop({ default: false }) public disabled!: boolean;
-    @Prop({ default: 'submit' }) public type!: string;
-  }
+  export default class Button extends Vue {}
 </script>
 
 <style scoped lang="scss">

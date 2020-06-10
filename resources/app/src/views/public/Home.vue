@@ -25,7 +25,7 @@
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Page from '../../components/public/Page.vue';
+  import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
   import { OffersApi } from '../../types';
   import { request } from '../../utils/request';

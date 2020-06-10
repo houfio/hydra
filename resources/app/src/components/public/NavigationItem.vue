@@ -1,9 +1,9 @@
 <template>
   <td>
     <router-link :to="path" v-slot="{ href, navigate }">
-      <a class="item" :href="href" @click="navigate">
+      <UglyButton tag="a" :href="href" @click.native="navigate">
         <slot/>
-      </a>
+      </UglyButton>
     </router-link>
   </td>
 </template>
@@ -13,20 +13,14 @@
   import Component from 'vue-class-component';
   import { Prop } from 'vue-property-decorator';
 
-  @Component
+  import UglyButton from '../form/UglyButton.vue';
+
+  @Component({
+    components: {
+      UglyButton
+    }
+  })
   export default class NavigationItem extends Vue {
     @Prop() public path!: string;
   }
 </script>
-
-<style scoped lang="scss">
-  .item {
-    display: inline-block;
-    width: 130px;
-    color: white;
-    background-image: linear-gradient(#00f4ff, #0054ff);
-    font-size: 20px;
-    text-align: center;
-    text-decoration: none;
-  }
-</style>

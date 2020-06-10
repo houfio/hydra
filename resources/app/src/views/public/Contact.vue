@@ -24,15 +24,14 @@
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Page from '../../components/public/Page.vue';
+  import Page from '../../components/Page.vue';
 
   @Component({
     components: {
       Page
     }
   })
-  export default class Contact extends Vue {
-  }
+  export default class Contact extends Vue {}
 </script>
 
 <style scoped lang="scss">
