@@ -9,7 +9,11 @@
         <li class="menu-item" v-for="dish in type.dishes">
           <div class="section">
             <div class="heading">
-              <span class="title">{{ dish.number }}. {{ dish.name }}</span>
+              <span class="title">{{ dish.number }}. {{ dish.name }}
+                <a @click="favorite(dish)" :style="Boolean(JSON.parse($cookies.get('favorites')).indexOf(dish.id) !== -1) ? 'color: red;' : 'color: green;'">
+                  Fav
+                </a>
+              </span>
               <span class="spacer"></span>
               <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
             </div>
@@ -66,6 +70,20 @@
       if (response.success) {
         this.response = response.data;
       }
+    }
+
+    public favorite(id: number) {
+      let favorites = this.$cookies.get('favorites');
+
+      if (favorites) {
+        favorites = JSON.parse(favorites);
+        const index = favorites.indexOf(id);
+        index === -1 ? favorites.push(id) : favorites.splice(index, 1);
+      } else {
+        favorites = [id];
+      }
+
+      this.$cookies.set('favorites', JSON.stringify(favorites), 2147483647);
     }
   }
 </script>

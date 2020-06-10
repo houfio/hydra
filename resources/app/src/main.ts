@@ -1,5 +1,6 @@
 import 'normalize.css';
 import Vue, { CreateElement } from 'vue';
+import VueCookies from 'vue-cookies';
 
 import App from './App.vue';
 import router from './router';
@@ -19,6 +20,8 @@ router.beforeEach((to, from, next) => {
     }
   });
 });
+
+Vue.use(VueCookies);
 
 new Vue({
   router,
