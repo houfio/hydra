@@ -9,12 +9,19 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call([
-            UserSeeder::class,
-            DishesSeeder::class,
-            OffersSeeder::class,
-            OrdersSeeder::class
-        ]);
+        if (env('APP_DEBUG')) {
+            $this->call([
+                UserSeeder::class,
+                DishesSeeder::class,
+                OffersSeeder::class,
+                OrdersSeeder::class
+            ]);
+        } else {
+            $this->call([
+                MenuSeeder::class,
+                SaleSeeder::class
+            ]);
+        }
 
         Model::reguard();
     }
