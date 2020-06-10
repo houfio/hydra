@@ -70,13 +70,13 @@ export default new VueRouter({
       }
     }, {
       path: 'aanbiedingen/maken/:id?',
-      component: Type,
+      component: Offer,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
     }, {
       path: 'types/maken/:id?',
-      component: Offer,
+      component: Type,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
