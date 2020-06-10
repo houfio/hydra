@@ -72,6 +72,10 @@ export type DishApi = {
   dish: Dish
 };
 
+export type TypeApi = {
+  type: DishType
+};
+
 export type OfferApi = {
   offer: Offer
 };
@@ -108,7 +112,7 @@ export type Offer = {
 export type DishType = {
   id: number,
   name: string,
-  dishes: Dish[]
+  dishes?: Dish[]
 };
 
 export type Dish = {

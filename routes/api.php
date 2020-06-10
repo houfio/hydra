@@ -28,9 +28,9 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     $router->group(['prefix' => '/types'], function () use ($router) {
         $router->get('', 'TypeController@list');
         $router->post('', 'TypeController@create');
-        $router->get('{dishtype}', 'TypeController@detail');
-        $router->put('{dishtype}', 'TypeController@update');
-        $router->delete('{dishtype}', 'TypeController@delete');
+        $router->get('{dishType}', 'TypeController@detail');
+        $router->put('{dishType}', 'TypeController@update');
+        $router->delete('{dishType}', 'TypeController@delete');
     });
 
     $router->get('/report', 'ReportController@create');

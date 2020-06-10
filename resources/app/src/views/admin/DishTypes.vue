@@ -1,38 +1,25 @@
 <template>
   <Page>
     <div class="grid">
-      <Button @click.native="$router.push('/kassa/gerechten/maken')">
-        Gerecht aanmaken
-      </Button>
-      <Button @click.native="$router.push('/kassa/types')">
-        Gerecht types
+      <div/>
+      <Button @click.native="$router.push('/kassa/types/maken')">
+        Aanmaken
       </Button>
       <div class="box big">
         <Loader v-if="!types.length"/>
-        <div v-else v-for="type of types">
-          <span class="type">
+        <div v-else v-for="type of types" class="dish">
+          <div>
             {{ type.name }}
-          </span>
-          <div v-for="dish of type.dishes" class="dish">
-            <div>
-              {{ dish.number }}
-            </div>
-            <div>
-              {{ dish.name }}
-            </div>
-            <div>
-              &euro;{{ dish.price.toFixed(2) }}
-            </div>
-            <div>
-              <Button @click.native="removeDish(dish)">
-                Verwijderen
-              </Button>
-            </div>
-            <div>
-              <Button @click.native="$router.push(`/kassa/gerechten/maken/${dish.id}`)">
-                Aanpassen
-              </Button>
-            </div>
+          </div>
+          <div>
+            <Button @click.native="removeType(type)">
+              Verwijderen
+            </Button>
+          </div>
+          <div>
+            <Button @click.native="$router.push(`/kassa/types/maken/${type.id}`)">
+              Aanpassen
+            </Button>
           </div>
         </div>
       </div>
@@ -49,7 +36,7 @@
   import Button from '../../components/form/Button.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType } from '../../types';
+  import { DishesApi, DishType } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -59,29 +46,53 @@
       Loader
     }
   })
-  export default class Dishes extends Vue {
+  export default class DishTypes extends Vue {
     public types: DishType[] = [];
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
     public async mounted() {
-      await this.getDishes();
+      await this.getTypes();
     }
 
-    public async removeDish(dish: Dish) {
-      const deleted = await request(`/dishes/${dish.id}`, Method.Delete);
+    // public async createType() {
+    //   const response = await request('/types', Method.Post, {
+    //     name: this.newType
+    //   });
+    //
+    //   if (response.success) {
+    //     await this.getDishes();
+    //     this.push('Product type aangemaakt');
+    //   } else {
+    //     this.push('Product type niet aangemaakt');
+    //   }
+    // }
+
+    public async removeType(type: DishType) {
+      const deleted = await request(`/types/${type.id}`, Method.Delete);
 
       if (deleted) {
-        await this.getDishes();
-        this.push('Product verwijderd');
+        await this.getTypes();
+        this.push('Product type verwijderd');
       } else {
-        this.push('Product niet aangemaakt');
+        this.push('Product type niet verwijderd');
       }
     }
 
-    private async getDishes() {
-      const response = await request<DishesApi>('/dishes', Method.Get);
+    // public async updateType() {
+    //   const response = await request(`/types/${this.selectedType.id}`, Method.Put, this.selectedType);
+    //
+    //   if (response.success) {
+    //     await this.getTypes();
+    //     this.push('Product type bijgewerkt');
+    //   } else {
+    //     this.push('Product type niet bijgewerkt');
+    //   }
+    // }
+
+    private async getTypes() {
+      const response = await request<DishesApi>('/types', Method.Get);
 
       if (response.success) {
         this.types = response.data.types;
@@ -135,19 +146,12 @@
     margin-bottom: 1rem;
 
     & > div:nth-child(1) {
-      width: 5rem;
-    }
-
-    & > div:nth-child(2) {
       flex: 1;
     }
 
-    & > div:nth-child(3) {
+    & > div:nth-child(2) {
+      width: 8rem;
       margin-right: 1rem;
-    }
-
-    &:last-child {
-      margin-bottom: 2rem;
     }
   }
 </style>

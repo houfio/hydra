@@ -6,12 +6,14 @@ import Admin from './views/Admin.vue';
 import Dashboard from './views/admin/Dashboard.vue';
 import Dish from './views/admin/Dish.vue';
 import Dishes from './views/admin/Dishes.vue';
+import DishTypes from './views/admin/DishTypes.vue';
 import Login from './views/admin/Login.vue';
 import Logout from './views/admin/Logout.vue';
 import Offer from './views/admin/Offer.vue';
 import Offers from './views/admin/Offers.vue';
 import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
+import Type from './views/admin/Type.vue';
 import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
 import Contact from './views/public/Contact.vue';
@@ -68,7 +70,19 @@ export default new VueRouter({
       }
     }, {
       path: 'aanbiedingen/maken/:id?',
+      component: Type,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
+      path: 'types/maken/:id?',
       component: Offer,
+      meta: {
+        guard: [authenticated, '/kassa/login']
+      }
+    }, {
+      path: 'types',
+      component: DishTypes,
       meta: {
         guard: [authenticated, '/kassa/login']
       }

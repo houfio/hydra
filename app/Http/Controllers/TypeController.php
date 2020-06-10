@@ -52,7 +52,7 @@ class TypeController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'dish' => $dishType
+                'type' => $dishType
             ]
         ]);
     }
