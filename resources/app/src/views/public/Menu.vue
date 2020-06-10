@@ -10,9 +10,9 @@
           <div class="section">
             <div class="heading">
               <span class="title">{{ dish.number }}. {{ dish.name }}
-                <a @click="favorite(dish.id)" :style="favorited(dish.id) ? 'color: red;' : 'color: green;'">
+                <button @click="favorite(dish.id)" :style="favorited(dish.id) ? 'color: red' : 'color: green'">
                   Fav
-                </a>
+                </button>
               </span>
               <span class="spacer"></span>
               <span class="price">&euro;{{ dish.price.toFixed(2) }}</span>
@@ -52,7 +52,7 @@
   import Button from '../../components/form/Button.vue';
   import Page from '../../components/public/Page.vue';
   import { Method } from '../../constants';
-  import { Dish, MenuApi, OfferDish } from '../../types';
+  import { MenuApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -63,6 +63,7 @@
   })
   export default class Menu extends Vue {
     public response: Partial<MenuApi> = {};
+    public favorites: number[] = JSON.parse(this.$cookies.get('favorites') || '[]');
 
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);
@@ -73,22 +74,18 @@
     }
 
     public favorited(id: number) {
-      const favorites = this.$cookies.get('favorites');
-      return favorites ? Boolean(JSON.parse(favorites).indexOf(id) !== -1) : false;
+      return this.favorites.indexOf(id) !== -1;
     }
 
     public favorite(id: number) {
-      let favorites = this.$cookies.get('favorites');
+      const current = this.favorited(id);
 
-      if (favorites) {
-        favorites = JSON.parse(favorites);
-        const index = favorites.indexOf(id);
-        index === -1 ? favorites.push(id) : favorites.splice(index, 1);
-      } else {
-        favorites = [id];
-      }
+      this.favorites = [
+        ...this.favorites.filter((f) => f !== id),
+        ...current ? [] : [id]
+      ];
 
-      this.$cookies.set('favorites', JSON.stringify(favorites), 2147483647);
+      this.$cookies.set('favorites', JSON.stringify(this.favorites), -1);
     }
   }
 </script>
