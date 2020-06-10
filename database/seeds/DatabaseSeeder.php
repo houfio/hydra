@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         } else {
             $this->call([
                 MenuSeeder::class,
-                SaleSeeder::class
+                SaleSeeder::class,
+                UserSeeder::class
             ]);
         }
 

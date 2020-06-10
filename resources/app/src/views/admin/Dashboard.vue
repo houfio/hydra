@@ -107,7 +107,7 @@
   import Input from '../../components/form/Input.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OffersApi, OrderDish } from '../../types';
+  import { Dish, DishesApi, DishType, Offer, OffersApi, OrderApi, OrderDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -179,14 +179,14 @@
     }
 
     public async pay() {
-      const response = await request<DishesApi>('/orders', Method.Post, {
+      const response = await request<OrderApi>('/orders', Method.Post, {
         dishes: this.order.filter((line) => !line.isOffer),
         offers: this.order.filter((line) => line.isOffer)
       });
 
       if (response.success) {
         this.order = [];
-        this.push('Bestelling aangemaakt');
+        this.push(`Bestelling aangemaakt met bestelnummer: ${response.data.order}`);
       } else {
         this.push('Bestellig niet aangemaakt');
       }

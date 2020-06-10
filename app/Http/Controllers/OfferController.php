@@ -49,7 +49,7 @@ class OfferController extends Controller
         $offer = new Offer();
 
         $offer->name = $data['name'];
-        $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
+        $offer->valid_until = isset($data['valid_until']) && $data['valid_until'] ? $data['valid_until'] : null;
         $offer->price = $data['price'];
 
         $offer->save();
@@ -75,7 +75,7 @@ class OfferController extends Controller
         ]);
 
         $offer->name = $data['name'];
-        $offer->valid_until = isset($data['valid_until']) ? $data['valid_until'] : null;
+        $offer->valid_until = isset($data['valid_until']) && $data['valid_until'] ? $data['valid_until'] : null;
         $offer->price = $data['price'];
 
         $offer->dishes()->detach($offer->dishes()->pluck('dishes.id')->toArray());

@@ -40,7 +40,6 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
     });
 
     $router->group(['prefix' => '/offers'], function () use ($router) {
-        $router->get('', 'OfferController@list');
         $router->post('', 'OfferController@create');
         $router->get('{offer}', 'OfferController@detail');
         $router->put('{offer}', 'OfferController@update');
@@ -51,4 +50,8 @@ $router->group(['middleware' => 'auth:user'], function () use ($router) {
 $router->group(['prefix' => '/menu'], function () use ($router) {
     $router->get('', 'MenuController@list');
     $router->get('current', 'MenuController@current');
+});
+
+$router->group(['prefix' => '/offers'], function () use ($router) {
+    $router->get('', 'OfferController@list');
 });

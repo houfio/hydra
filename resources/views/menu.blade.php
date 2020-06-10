@@ -2,35 +2,59 @@
 <html>
   <head>
     <title>De Gouden Draak - Menukaart</title>
+    <style>
+      .center {
+        text-align: center;
+      }
+
+      .type {
+        margin: 2rem 0;
+      }
+
+      .menu {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .menu-item {
+        flex: 0 0 50%;
+        padding: 1rem;
+      }
+
+      .menu-header {
+        display: flex;
+        align-items: center;
+      }
+
+      .spacer {
+        flex: 1;
+        height: 1px;
+        margin: 0 0.5rem;
+        border-bottom: 1px dashed black;
+      }
+    </style>
   </head>
   <body>
-    <h1>Gouden Draak menukaart</h1>
     @foreach ($types as $type)
-      <h4>{{ $type->name }}</h4>
-      <ul>
+      <h2 class="type center">
+        {{ $type->name }}
+      </h2>
+      <div class="menu">
         @foreach($type->dishes as $dish)
-          <li style="list-style: none;">
-            <span style="margin-right: 10px; text-align: left">
-              {{ $dish->number }}
-            </span>
-            {{ $dish->name }}
-            <span style="text-align: right">
-              &euro;{{ number_format($dish->price, 2, '.', '') }}
-            </span>
-          </li>
+          <div class="menu-item">
+            <div class="menu-header">
+              <h3>{{ $dish->number }}. {{ $dish->name }}</h3>
+              <span class="spacer"/>
+              <span>&euro;{{ number_format($dish->price, 2, '.', '') }}</span>
+            </div>
+            @if($dish->description)
+              <p>
+                ({{ $dish->description }})
+              </p>
+            @endif
+          </div>
         @endforeach
-      </ul>
-    @endforeach
-    <h3>Aanbiedingen</h3>
-    @foreach ($offers as $offer)
-      <h4>{{ $offer->name }}</h4>
-      <ul>
-        @foreach($offer->dishes as $dish)
-          <li style="list-style: none;">
-            {{ $dish->number }} {{ $dish->name }} &euro;{{ number_format($dish->price, 2, '.', '') }}
-          </li>
-        @endforeach
-      </ul>
+      </div>
     @endforeach
   </body>
 </html>
