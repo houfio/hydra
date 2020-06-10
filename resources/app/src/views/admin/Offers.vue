@@ -6,7 +6,8 @@
         Aanmaken
       </Button>
       <div class="box big">
-        <div v-for="offer of offers" class="offer">
+        <Loader v-if="!offers.length"/>
+        <div v-else v-for="offer of offers" class="offer">
           <div v-if="offer.valid_until">
             {{ offer.valid_until }}
           </div>
@@ -42,6 +43,7 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Offer, OffersApi } from '../../types';
   import { request } from '../../utils/request';
@@ -49,7 +51,8 @@
   @Component({
     components: {
       Page,
-      Button
+      Button,
+      Loader
     }
   })
   export default class Offers extends Vue {

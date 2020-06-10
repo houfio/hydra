@@ -33,7 +33,8 @@
         </div>
       </div>
       <div class="box big">
-        <table class="table">
+        <Loader v-if="creating"/>
+        <table v-else class="table">
           <colgroup>
             <col style="width: 20%"/>
             <col style="width: 50%"/>
@@ -98,6 +99,7 @@
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
+  import Loader from '../../components/Loader.vue';
   import Paginator from '../../components/Paginator.vue';
   import { Method } from '../../constants';
   import { ReportApi } from '../../types';
@@ -109,19 +111,23 @@
       Button,
       Form,
       Input,
-      Paginator
+      Paginator,
+      Loader
     }
   })
   export default class Sales extends Vue {
     public start = '';
     public end = '';
     public response: Partial<ReportApi> = {};
+    public creating = false;
 
     get returned() {
       return Boolean(Object.keys(this.response).length);
     }
 
     public async submit(api: typeof request, page?: number) {
+      this.creating = true;
+
       const response = await api<ReportApi>('/report', Method.Get, {
         start_date: this.start,
         end_date: this.end,
@@ -131,6 +137,8 @@
       if (response.success) {
         this.response = response.data;
       }
+
+      this.creating = false;
     }
 
     public paginate(page: number) {

@@ -6,7 +6,8 @@
         Aanmaken
       </Button>
       <div class="box big">
-        <div v-for="type of types">
+        <Loader v-if="!types.length"/>
+        <div v-else v-for="type of types">
           <span class="type">
             {{ type.name }}
           </span>
@@ -46,6 +47,7 @@
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
+  import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Dish, DishesApi, DishType } from '../../types';
   import { request } from '../../utils/request';
@@ -55,7 +57,8 @@
       Page,
       Button,
       Form,
-      Input
+      Input,
+      Loader
     }
   })
   export default class Dishes extends Vue {

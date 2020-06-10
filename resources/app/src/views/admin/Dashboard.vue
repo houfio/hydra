@@ -2,52 +2,55 @@
   <Page>
     <div class="grid">
       <div class="box big">
-        <div v-for="type of types">
+        <Loader v-if="!types.length || !offers.length"/>
+        <div v-else>
+          <div v-for="type of types">
           <span class="type">
             {{ type.name }}
           </span>
-          <div v-for="dish of type.dishes" class="dish">
-            <div>
-              {{ dish.number }}
-            </div>
-            <div>
-              {{ dish.name }}
-            </div>
-            <div>
-              &euro;{{ dish.price.toFixed(2) }}
-            </div>
-            <div>
-              <Button @click.native="add(dish)">
-                Toevoegen
-              </Button>
+            <div v-for="dish of type.dishes" class="dish">
+              <div>
+                {{ dish.number }}
+              </div>
+              <div>
+                {{ dish.name }}
+              </div>
+              <div>
+                &euro;{{ dish.price.toFixed(2) }}
+              </div>
+              <div>
+                <Button @click.native="add(dish)">
+                  Toevoegen
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-        <span class="offer-heading">
+          <span class="offer-heading">
           Aanbiedingen
         </span>
-        <div v-for="offer of offers">
-          <div class="dish">
-            <div style="width: 0"></div>
-            <div class="offer">
-              {{ offer.name }}
+          <div v-for="offer of offers">
+            <div class="dish">
+              <div style="width: 0"></div>
+              <div class="offer">
+                {{ offer.name }}
+              </div>
+              <div>
+                &euro;{{ offer.price.toFixed(2) }}
+              </div>
+              <div>
+                <Button @click.native="add(offer)">
+                  Toevoegen
+                </Button>
+              </div>
             </div>
-            <div>
-              &euro;{{ offer.price.toFixed(2) }}
+            <div v-for="dish of offer.dishes" class="dish">
+              <div/>
+              <div>
+                {{ dish.name }}
+              </div>
+              <div/>
+              <div/>
             </div>
-            <div>
-              <Button @click.native="add(offer)">
-                Toevoegen
-              </Button>
-            </div>
-          </div>
-          <div v-for="dish of offer.dishes" class="dish">
-            <div/>
-            <div>
-              {{ dish.name }}
-            </div>
-            <div/>
-            <div/>
           </div>
         </div>
       </div>
@@ -102,6 +105,7 @@
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
   import Input from '../../components/form/Input.vue';
+  import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Dish, DishesApi, DishType, Offer, OffersApi, OrderDish } from '../../types';
   import { request } from '../../utils/request';
@@ -110,7 +114,8 @@
     components: {
       Input,
       Page,
-      Button
+      Button,
+      Loader
     }
   })
   export default class Dashboard extends Vue {
@@ -118,7 +123,7 @@
     public offers: Offer[] = [];
     public order: OrderDish[] = [];
 
-    @Mutation('push', { namespace: 'notification' })
+    @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
     get total() {
@@ -170,7 +175,7 @@
 
     public deleteOrder() {
       this.order = [];
-      this.push('Bestellig weggehaald');
+      this.push('Bestelling weggehaald');
     }
 
     public async pay() {
@@ -181,9 +186,9 @@
 
       if (response.success) {
         this.order = [];
-        window.alert('Bestelling aangemaakt');
+        this.push('Bestelling aangemaakt');
       } else {
-        window.alert('Bestelling niet aangemaakt');
+        this.push('Bestellig niet aangemaakt');
       }
     }
   }
