@@ -10,7 +10,7 @@
           <div class="section">
             <div class="heading">
               <span class="title">{{ dish.number }}. {{ dish.name }}
-                <a @click="favorite(dish)" :style="Boolean(JSON.parse($cookies.get('favorites')).indexOf(dish.id) !== -1) ? 'color: red;' : 'color: green;'">
+                <a @click="favorite(dish.id)" :style="favorited(dish.id) ? 'color: red;' : 'color: green;'">
                   Fav
                 </a>
               </span>
@@ -52,7 +52,7 @@
   import Button from '../../components/form/Button.vue';
   import Page from '../../components/public/Page.vue';
   import { Method } from '../../constants';
-  import { MenuApi } from '../../types';
+  import { Dish, MenuApi, OfferDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -70,6 +70,11 @@
       if (response.success) {
         this.response = response.data;
       }
+    }
+
+    public favorited(id: number) {
+      const favorites = this.$cookies.get('favorites');
+      return favorites ? Boolean(JSON.parse(favorites).indexOf(id) !== -1) : false;
     }
 
     public favorite(id: number) {
