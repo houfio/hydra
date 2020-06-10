@@ -20,6 +20,11 @@
             &euro;{{ offer.price.toFixed(2) }}
           </div>
           <div>
+            <Button @click.native="remove(offer)">
+              Verwijderen
+            </Button>
+          </div>
+          <div>
             <Button @click.native="$router.push(`/kassa/aanbiedingen/maken/${offer.id}`)">
               Aanpassen
             </Button>
@@ -33,6 +38,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
@@ -49,7 +55,25 @@
   export default class Offers extends Vue {
     public offers: Offer[] = [];
 
+    @Mutation('push', {namespace: 'notification'})
+    private push!: (notification: string) => void;
+
     public async mounted() {
+      await this.getOffers();
+    }
+
+    public async remove(offer: Offer) {
+      const deleted = await request(`/offers/${offer.id}`, Method.Delete);
+
+      if (deleted) {
+        this.push('Aanbieding verwijderd');
+        await this.getOffers();
+      } else {
+        this.push('Aanbieding niet verwijderd');
+      }
+    }
+
+    private async getOffers() {
       const response = await request<OffersApi>('/offers', Method.Get);
 
       if (response.success) {

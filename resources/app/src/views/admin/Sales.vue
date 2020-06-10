@@ -66,7 +66,7 @@
                 {{ format(dish.order.created_at) }}
               </td>
               <td class="data">
-                {{ dish.dish.name }}
+                {{ dish.dish ? dish.dish.name : 'Product verwijderd' }}
               </td>
               <td class="data right">
                 &euro;{{ dish.price.toFixed(2) }}

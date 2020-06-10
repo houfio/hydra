@@ -60,7 +60,6 @@
   })
   export default class Dishes extends Vue {
     public types: DishType[] = [];
-    public selectedDish: Partial<Dish> = {};
     public selectedType: Partial<DishType> = {};
     public newType = '';
 
