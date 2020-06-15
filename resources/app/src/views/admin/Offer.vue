@@ -39,7 +39,7 @@
       <div class="box">
         <Form @submit="execute" v-slot="{ loading, errors }">
           <Input label="Naam" type="text" v-model="offer.name" :errors="errors['name']"/>
-          <Input label="Prijs" type="number" v-model.number="offer.price" :errors="errors['price']" step="0.01"/>
+          <Input label="Prijs" type="number" step="0.01" v-model.number="offer.price" :errors="errors['price']"/>
           <Input label="Geldig tot" type="datetime-local" v-model="offer.valid_until" :errors="errors['valid_until']"/>
           <Button :disabled="loading || !offer.dishes.length">
             {{ editing ? 'Bewerken' : 'Aanmaken' }}

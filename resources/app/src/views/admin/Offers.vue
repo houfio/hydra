@@ -6,8 +6,8 @@
         Aanmaken
       </Button>
       <div class="box big">
-        <Loader v-if="!offers.length"/>
-        <div v-else v-for="offer of offers" class="offer">
+        <Loader v-if="loading"/>
+        <div v-else v-for="offer of offers.offers" class="offer">
           <div v-if="offer.valid_until">
             {{ offer.valid_until }}
           </div>
@@ -56,10 +56,14 @@
     }
   })
   export default class Offers extends Vue {
-    public offers: Offer[] = [];
+    public offers: Partial<OffersApi> = {};
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
+
+    get loading() {
+      return !Object.keys(this.offers).length;
+    }
 
     public async mounted() {
       await this.getOffers();
@@ -80,7 +84,7 @@
       const response = await request<OffersApi>('/offers', Method.Get);
 
       if (response.success) {
-        this.offers = response.data.offers;
+        this.offers = response.data;
       }
     }
   }

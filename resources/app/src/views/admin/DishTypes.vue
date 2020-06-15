@@ -6,8 +6,8 @@
         Aanmaken
       </Button>
       <div class="box big">
-        <Loader v-if="!types.length"/>
-        <div v-else v-for="type of types" class="dish">
+        <Loader v-if="loading"/>
+        <div v-else v-for="type of types.types" class="dish">
           <div>
             {{ type.name }}
           </div>
@@ -47,27 +47,18 @@
     }
   })
   export default class DishTypes extends Vue {
-    public types: DishType[] = [];
+    public types: Partial<DishesApi> = {};
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
+    get loading() {
+      return !Object.keys(this.types).length;
+    }
+
     public async mounted() {
       await this.getTypes();
     }
-
-    // public async createType() {
-    //   const response = await request('/types', Method.Post, {
-    //     name: this.newType
-    //   });
-    //
-    //   if (response.success) {
-    //     await this.getDishes();
-    //     this.push('Product type aangemaakt');
-    //   } else {
-    //     this.push('Product type niet aangemaakt');
-    //   }
-    // }
 
     public async removeType(type: DishType) {
       const deleted = await request(`/types/${type.id}`, Method.Delete);
@@ -80,22 +71,11 @@
       }
     }
 
-    // public async updateType() {
-    //   const response = await request(`/types/${this.selectedType.id}`, Method.Put, this.selectedType);
-    //
-    //   if (response.success) {
-    //     await this.getTypes();
-    //     this.push('Product type bijgewerkt');
-    //   } else {
-    //     this.push('Product type niet bijgewerkt');
-    //   }
-    // }
-
     private async getTypes() {
       const response = await request<DishesApi>('/types', Method.Get);
 
       if (response.success) {
-        this.types = response.data.types;
+        this.types = response.data;
       }
     }
   }

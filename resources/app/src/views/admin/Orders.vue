@@ -2,7 +2,8 @@
   <Page>
     <div class="grid">
       <div class="box big">
-        <div v-for="order of orders" class="order">
+        <Loader v-if="loading"/>
+        <div v-else v-for="order of orders.orders" class="order">
           <div>
             {{ order.created_at }}
           </div>
@@ -62,6 +63,7 @@
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
   import Form from '../../components/form/Form.vue';
+  import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Dish, Order, OrdersApi } from '../../types';
   import { request } from '../../utils/request';
@@ -70,12 +72,17 @@
     components: {
       Page,
       Button,
-      Form
+      Form,
+      Loader
     }
   })
   export default class Orders extends Vue {
-    public orders: Order[] = [];
+    public orders: Partial<OrdersApi> = {};
     public selected: Partial<Order> = {};
+
+    get loading() {
+      return !Object.keys(this.orders).length;
+    }
 
     public calculatePrice(dishes: Dish[]): string {
       return dishes.reduce((prev, curr) => prev + (curr.pivot!.price * curr.pivot!.quantity), 0).toFixed(2);
@@ -85,7 +92,7 @@
       const response = await request<OrdersApi>('/orders', Method.Get);
 
       if (response.success) {
-        this.orders = response.data.orders;
+        this.orders = response.data;
       }
     }
   }

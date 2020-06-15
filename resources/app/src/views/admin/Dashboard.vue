@@ -2,9 +2,9 @@
   <Page>
     <div class="grid">
       <div class="box big">
-        <Loader v-if="!types.length || !offers.length"/>
+        <Loader v-if="loading"/>
         <div v-else>
-          <div v-for="type of types">
+          <div v-for="type of types.types">
           <span class="type">
             {{ type.name }}
           </span>
@@ -28,7 +28,7 @@
           <span class="offer-heading">
           Aanbiedingen
         </span>
-          <div v-for="offer of offers">
+          <div v-for="offer of offers.offers">
             <div class="dish">
               <div style="width: 0"></div>
               <div class="offer">
@@ -119,12 +119,16 @@
     }
   })
   export default class Dashboard extends Vue {
-    public types: DishType[] = [];
-    public offers: Offer[] = [];
+    public types: Partial<DishesApi> = {};
+    public offers: Partial<OffersApi> = {};
     public order: OrderDish[] = [];
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
+
+    get loading() {
+      return !Object.keys(this.types).length || !Object.keys(this.offers).length;
+    }
 
     get total() {
       return this.order.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2);
@@ -135,11 +139,11 @@
       const offers = await request<OffersApi>('/offers', Method.Get);
 
       if (response.success) {
-        this.types = response.data.types;
+        this.types = response.data;
       }
 
       if (offers.success) {
-        this.offers = offers.data.offers;
+        this.offers = offers.data;
       }
     }
 
