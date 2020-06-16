@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
     public function list(Request $request)
     {
-        $orders = isset($request->tablet) ? $request->tablet->orders()->with('dishes') : Order::with('dishes');
+        $orders = isset($request->tablet) ? $request->tablet->orders()->with(['dishes', 'offers']) : Order::with(['dishes', 'offers']);
         $orders = $orders->orderBy('created_at', 'desc')->get()->makeHidden(['updated_at']);
 
         foreach ($orders as $order) {

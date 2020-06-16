@@ -1,27 +1,69 @@
 <template>
   <Page>
-    {{ JSON.stringify(orders) }}
+    <div class="orders">
+      <div v-for="order of orders.orders">
+        {{ format(order.created_at) }} geleden | Aantal gerechten: {{ order.dishes.length }}
+        <UglyButton @click.native="submit(order)">
+          Herhaal bestelling
+        </UglyButton>
+      </div>
+    </div>
   </Page>
 </template>
 
 <script lang="ts">
+  import { formatDistance, parseISO } from 'date-fns';
+  import { nl } from 'date-fns/locale';
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
+  import Form from '../../components/form/Form.vue';
+  import UglyButton from '../../components/form/UglyButton.vue';
   import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
-  import { OrdersApi } from '../../types';
+  import { Order, OrderApi, OrdersApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
-      Page
+      Page,
+      UglyButton,
+      Form
     }
   })
   export default class History extends Vue {
     public orders: Partial<OrdersApi> = {};
+    public loading = false;
+
+    @Mutation('clear', { namespace: 'cart' })
+    private clear!: () => void;
+
+    @Mutation('push', { namespace: 'notification' })
+    private push!: (notification: string) => void;
 
     public async mounted() {
+      await this.getOrders();
+    }
+
+    public format(date: string) {
+      return formatDistance(parseISO(date), new Date(), {locale: nl});
+    }
+
+    public async submit(order: Order) {
+      const response = await request<OrderApi>('/orders', Method.Post, {
+        dishes: order.dishes,
+        offers: order.offers
+      });
+
+      if (response.success) {
+        this.clear();
+      } else if (response.error.message === 'Order cannot be placed yet.') {
+        this.push('Er moeten 10 minuten tussen twee bestellingen zitten');
+      }
+    }
+
+    private async getOrders() {
       const response = await request<OrdersApi>('/orders', Method.Get);
 
       if (response.success) {
@@ -30,3 +72,10 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+  .orders {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
