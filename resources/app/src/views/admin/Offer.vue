@@ -112,7 +112,7 @@
       if (offer?.success) {
         this.offer = {
           ...offer.data.offer,
-          valid_until: offer.data.offer.valid_until.replace(' ', 'T')
+          valid_until: offer.data.offer.valid_until ? offer.data.offer.valid_until.replace(' ', 'T') : null
         };
       }
     }

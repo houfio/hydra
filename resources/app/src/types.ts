@@ -109,7 +109,7 @@ export type Offer = {
   name: string,
   tax?: number,
   price: number,
-  valid_until: string,
+  valid_until: string | null,
   dishes: Dish[] | OfferDish[]
 };
 

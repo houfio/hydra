@@ -25,6 +25,22 @@
         </div>
       </div>
     </div>
+    <div v-for="offer in response.offers">
+      <h2 class="type center">
+        {{ offer.name }} &euro;{{ offer.price.toFixed(2) }}
+      </h2>
+      <div class="menu">
+        <div v-for="dish in offer.dishes" class="menu-item">
+          <div class="menu-header">
+            <h3>{{ dish.number }}. {{ dish.name }}</h3>
+            <span class="spacer"/>
+          </div>
+          <p v-if="dish.description">
+            ({{ dish.description }})
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
