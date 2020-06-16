@@ -4,19 +4,20 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators';
   namespaced: true
 })
 export default class extends VuexModule {
-  public dishes: { id: number, quantity: number }[] = [];
+  public dishes: { id: number, quantity: number, isOffer: boolean }[] = [];
 
   @Mutation
-  public addDish(id: number) {
-    const has = this.dishes.some((dish) => dish.id === id);
+  public addDish(params: {id: number, isOffer: boolean}) {
+    const has = this.dishes.some((dish) => dish.id === params.id && dish.isOffer === params.isOffer);
 
     this.dishes = [
-      ...this.dishes.map((dish) => dish.id !== id ? dish : {
+      ...this.dishes.map((dish) => dish.id !== params.id || dish.isOffer !== params.isOffer ? dish : {
         ...dish,
         quantity: dish.quantity + 1
       }),
       ...has ? [] : [{
-        id,
+        id: params.id,
+        isOffer: params.isOffer,
         quantity: 1
       }]
     ];

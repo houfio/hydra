@@ -2,7 +2,7 @@
   <Page>
     <div class="dishes">
       <div v-for="dish of dishes">
-        {{ dish.quantity }}x {{ getName(dish.id) }}
+        {{ dish.quantity }}x {{ getName(dish.id, dish.isOffer) }}
       </div>
     </div>
     <Form @submit="submit" v-slot="{ loading }">
@@ -36,7 +36,7 @@
     public response: Partial<MenuApi> = {};
 
     @State('dishes', { namespace: 'cart' })
-    public dishes!: { id: number, quantity: number }[];
+    public dishes!: { id: number, quantity: number, isOffer: boolean }[];
 
     @Mutation('clear', { namespace: 'cart' })
     private clear!: () => void;
@@ -60,12 +60,14 @@
       }
     }
 
-    public getName(id: number) {
-      if (!this.response.types) {
+    public getName(id: number, isOffer: boolean) {
+      if (!this.response.types || (!this.response.offers && isOffer)) {
         return;
       }
 
-      return this.response.types.flatMap((t) => t.dishes).find((d) => d.id === id)?.name;
+      return isOffer ?
+        this.response.offers!.find((o) => o!.id === id)?.name :
+        this.response.types.flatMap((t) => t.dishes).find((d) => d!.id === id)?.name;
     }
   }
 </script>

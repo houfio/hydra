@@ -11,7 +11,7 @@
                 v-if="icon"
                 class="action"
                 :class="{ active: active && active(dish.id) }"
-                @click="$emit('toggle', dish.id)"
+                @click="$emit('toggle', {id: dish.id, isOffer: false})"
             >
               <FontAwesomeIcon :icon="icon"/>
             </button>
@@ -28,10 +28,10 @@
     <div v-for="offer in response.offers">
       <h2 class="type center">
         <button
-            v-if="icon"
+            v-if="tablet"
             class="action"
             :class="{ active: active && active(offer.id) }"
-            @click="$emit('toggle', offer.id)"
+            @click="$emit('toggle', {id: offer.id, isOffer: true})"
         >
           <FontAwesomeIcon :icon="icon"/>
         </button>
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-  import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+  import { faPlus, IconDefinition } from '@fortawesome/free-solid-svg-icons';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import Vue from 'vue';
   import Component from 'vue-class-component';
@@ -69,6 +69,7 @@
   export default class Menu extends Vue {
     @Prop({default: () => ({})}) public response!: Partial<MenuApi>;
     @Prop() public active?: (id: number) => boolean;
+    @Prop() public tablet?: boolean;
     @Prop() public icon?: IconDefinition;
   }
 </script>

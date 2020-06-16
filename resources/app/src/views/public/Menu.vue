@@ -6,7 +6,7 @@
         Download
       </UglyButton>
     </div>
-    <MenuComponent :response="response" :icon="heart" :active="favorited" @toggle="favorite"/>
+    <MenuComponent :response="response" :icon="heart" :active="favorited" @toggle="favorite" :tablet="false"/>
   </Page>
 </template>
 

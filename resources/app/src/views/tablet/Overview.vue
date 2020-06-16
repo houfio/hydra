@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <Menu :response="response" :icon="plus" @toggle="addDish"/>
+    <Menu :response="response" :icon="plus" @toggle="addDish" :tablet="true"/>
   </Page>
 </template>
 
@@ -26,7 +26,7 @@
     public response: Partial<MenuApi> = {};
 
     @Mutation('addDish', { namespace: 'cart' })
-    private addDish!: (id: number) => void;
+    private addDish!: (id: number, isOffer: boolean) => void;
 
     public get plus() {
       return faPlus;
