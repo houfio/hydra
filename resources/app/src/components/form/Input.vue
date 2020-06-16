@@ -3,13 +3,13 @@
     <label class="label">
       {{ label }}
     </label>
-    <select v-if="type === 'select'" @change="onChange" class="form-control" :bind="$props">
-      <option v-for="key of options" :value="key">
-        {{ options[key] }}
+    <select v-if="type === 'select'" class="input" @change="onChange">
+      <option v-for="(label, key) in options" :value="key">
+        {{ label }}
       </option>
     </select>
-    <textarea v-else-if="type === 'textarea'" class="input" @input="onChange" :bind="$props"/>
-    <input v-else class="input" :type="type" @input="onChange" :bind="$props"/>
+    <textarea v-else-if="type === 'textarea'" class="input" :value="value" @input="onChange"/>
+    <input v-else class="input" :step="step" :type="type" :value="value" @input="onChange"/>
     <div v-for="error in errors" :key="error" class="error">
       {{ error }}
     </div>
@@ -28,6 +28,8 @@
     @Prop() public type?: string;
     @Prop() public label?: string;
     @Prop() public options?: object;
+    @Prop() public value?: string;
+    @Prop() public step?: string;
     @Prop() public errors?: keyof FormErrors;
 
     @Emit('input')
@@ -68,7 +70,9 @@
     background-color: #f1f1f1;
     border-radius: .5rem;
     outline: none;
+    vertical-align: top;
     resize: vertical;
+    appearance: none;
     transition: box-shadow .25s ease;
 
     &:focus {

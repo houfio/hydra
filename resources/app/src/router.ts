@@ -6,7 +6,6 @@ import Admin from './views/Admin.vue';
 import Dashboard from './views/admin/Dashboard.vue';
 import Dish from './views/admin/Dish.vue';
 import Dishes from './views/admin/Dishes.vue';
-import DishTypes from './views/admin/DishTypes.vue';
 import Login from './views/admin/Login.vue';
 import Logout from './views/admin/Logout.vue';
 import Offer from './views/admin/Offer.vue';
@@ -14,6 +13,7 @@ import Offers from './views/admin/Offers.vue';
 import Orders from './views/admin/Orders.vue';
 import Sales from './views/admin/Sales.vue';
 import Type from './views/admin/Type.vue';
+import Types from './views/admin/Types.vue';
 import NotFound from './views/NotFound.vue';
 import Public from './views/Public.vue';
 import Contact from './views/public/Contact.vue';
@@ -21,6 +21,8 @@ import Home from './views/public/Home.vue';
 import Menu from './views/public/Menu.vue';
 import News from './views/public/News.vue';
 import Tablet from './views/Tablet.vue';
+import History from './views/tablet/History.vue';
+import Order from './views/tablet/Order.vue';
 import Overview from './views/tablet/Overview.vue';
 import Register from './views/tablet/Register.vue';
 
@@ -45,7 +47,7 @@ export default new VueRouter({
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'gerechten/maken/:id?',
+      path: 'gerechten/:id',
       component: Dish,
       meta: {
         guard: [authenticated, '/kassa/login']
@@ -69,20 +71,20 @@ export default new VueRouter({
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'aanbiedingen/maken/:id?',
+      path: 'aanbiedingen/:id',
       component: Offer,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'types/maken/:id?',
-      component: Type,
+      path: 'types',
+      component: Types,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
     }, {
-      path: 'types',
-      component: DishTypes,
+      path: 'types/:id',
+      component: Type,
       meta: {
         guard: [authenticated, '/kassa/login']
       }
@@ -99,6 +101,18 @@ export default new VueRouter({
     children: [{
       path: '/',
       component: Overview,
+      meta: {
+        guard: [authenticated, '/tablet/register']
+      }
+    }, {
+      path: 'bestellen',
+      component: Order,
+      meta: {
+        guard: [authenticated, '/tablet/register']
+      }
+    }, {
+      path: 'geschiedenis',
+      component: History,
       meta: {
         guard: [authenticated, '/tablet/register']
       }

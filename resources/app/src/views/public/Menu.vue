@@ -37,7 +37,7 @@
     public response: Partial<MenuApi> = {};
     public favorites: number[] = JSON.parse(this.$cookies.get('favorites') || '[]');
 
-    get heart() {
+    public get heart() {
       return faHeart;
     }
 

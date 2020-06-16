@@ -2,25 +2,23 @@
   <Page>
     <div class="grid">
       <div/>
-      <Button @click.native="$router.push('/kassa/types/maken')">
-        Aanmaken
+      <Button @click.native="$router.push('/kassa/types/nieuw')">
+        Type aanmaken
       </Button>
       <div class="box big">
         <Loader v-if="loading"/>
-        <div v-else v-for="type of types.types" class="dish">
+        <div v-else v-for="type of types.types" class="type">
           <div>
             {{ type.name }}
           </div>
-          <div>
+          <Group>
             <Button @click.native="removeType(type)">
               Verwijderen
             </Button>
-          </div>
-          <div>
-            <Button @click.native="$router.push(`/kassa/types/maken/${type.id}`)">
+            <Button @click.native="$router.push(`/kassa/types/${type.id}`)">
               Aanpassen
             </Button>
-          </div>
+          </Group>
         </div>
       </div>
     </div>
@@ -34,25 +32,27 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Group from '../../components/form/Group.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { DishesApi, DishType } from '../../types';
+  import { DishesApi, Type } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page,
       Button,
+      Group,
       Loader
     }
   })
-  export default class DishTypes extends Vue {
+  export default class Types extends Vue {
     public types: Partial<DishesApi> = {};
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
-    get loading() {
+    public get loading() {
       return !Object.keys(this.types).length;
     }
 
@@ -60,7 +60,7 @@
       await this.getTypes();
     }
 
-    public async removeType(type: DishType) {
+    public async removeType(type: Type) {
       const deleted = await request(`/types/${type.id}`, Method.Delete);
 
       if (deleted) {
@@ -99,39 +99,13 @@
     }
   }
 
-  .offer-heading {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-  }
-
-  .offer {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
-
   .type {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-  }
-
-  .dish {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
 
     & > div:nth-child(1) {
       flex: 1;
-    }
-
-    & > div:nth-child(2) {
-      width: 8rem;
-      margin-right: 1rem;
     }
   }
 </style>

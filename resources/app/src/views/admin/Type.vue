@@ -1,16 +1,12 @@
 <template>
   <Page>
-    <div class="grid">
-      <div/>
-      <span>{{ editing ? 'Product type bewerken' : 'Product type toevoegen' }}</span>
-      <div class="box big">
-        <Form @submit="submit" v-slot="{ loading, errors }">
-          <Input label="Naam" type="text" v-model="type.name" :errors="errors['name']"/>
-          <Button :disabled="loading">
-            {{ editing ? 'Bewerken' : 'Aanmaken' }}
-          </Button>
-        </Form>
-      </div>
+    <div class="box">
+      <Form @submit="submit" v-slot="{ loading, errors }">
+        <Input label="Naam" type="text" v-model="type.name" :errors="errors['name']"/>
+        <Button :disabled="loading">
+          {{ editing ? 'Bewerken' : 'Aanmaken' }}
+        </Button>
+      </Form>
     </div>
   </Page>
 </template>
@@ -25,7 +21,7 @@
   import Form from '../../components/form/Form.vue';
   import Input from '../../components/form/Input.vue';
   import { Method } from '../../constants';
-  import { DishType, TypeApi } from '../../types';
+  import { Type as SingleType, TypeApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -37,21 +33,28 @@
     }
   })
   export default class Type extends Vue {
-    public type: DishType = {
-      id: 1,
+    public type: SingleType = {
       name: ''
     };
 
-    @Mutation('push', {namespace: 'notification'})
+    @Mutation('push', { namespace: 'notification' })
     private push!: (notification: string) => void;
 
+    public get id() {
+      return parseInt(this.$route.params.id, 10);
+    }
+
     public get editing() {
-      return Boolean(this.$route.params.id);
+      return !isNaN(this.id);
     }
 
     public async mounted() {
       if (this.editing) {
-        await this.getType(this.$route.params.id);
+        const response = await request<TypeApi>(`/types/${this.id}`, Method.Get);
+
+        if (response.success) {
+          this.type = response.data.type;
+        }
       }
     }
 
@@ -62,36 +65,19 @@
 
       if (response.success) {
         this.push(this.editing ? 'Product type bijgewerkt' : 'Product type aangemaakt');
+
+        await this.$router.push('/kassa/types');
       } else {
         this.push(this.editing ? 'Product type niet bijgewerkt' : 'Product type niet aangemaakt');
-      }
-    }
-
-    private async getType(id: string) {
-      const response = await request<TypeApi>(`/types/${id}`, Method.Get);
-
-      if (response.success) {
-        this.type = response.data.type;
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  .grid {
-    display: grid;
-    grid-template: 3rem calc(100vh - 11rem) / 5fr 1fr;
-    grid-gap: 1rem;
-  }
-
   .box {
     padding: 1rem;
     background-color: #262626;
     border-radius: 1rem;
-
-    &.big {
-      grid-column: span 2;
-      overflow-y: scroll;
-    }
   }
 </style>

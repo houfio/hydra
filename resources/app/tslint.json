@@ -12,11 +12,12 @@
     "array-type": false,
     "indent": [true, "spaces", 2],
     "interface-over-type-literal": false,
+    "member-access": [true, "check-accessor"],
     "no-bitwise": false,
     "no-unused-expression": [true, "allow-tagged-template"],
-    "object-literal-sort-keys": false,
     "no-console": false,
     "no-var-requires": false,
+    "object-literal-sort-keys": false,
     "ordered-imports": [true, {
       "grouped-imports": true,
       "import-sources-order": "case-insensitive",

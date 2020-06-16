@@ -1,6 +1,6 @@
 <template>
   <Border :full="true">
-    <Navigation/>
+    <Navigation v-if="navigation"/>
     <router-view/>
   </Border>
 </template>
@@ -18,7 +18,11 @@
       Navigation
     }
   })
-  export default class Tablet extends Vue {}
+  export default class Tablet extends Vue {
+    public get navigation() {
+      return Boolean(this.$route.meta.guard);
+    }
+  }
 </script>
 
 <style scoped lang="scss">

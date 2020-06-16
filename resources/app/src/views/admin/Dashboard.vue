@@ -5,7 +5,7 @@
         <Loader v-if="loading"/>
         <div v-else>
           <div v-for="type of types.types">
-          <span class="type">
+          <span class="heading">
             {{ type.name }}
           </span>
             <div v-for="dish of type.dishes" class="dish">
@@ -25,13 +25,13 @@
               </div>
             </div>
           </div>
-          <span class="offer-heading">
-          Aanbiedingen
-        </span>
+          <span class="heading">
+            Aanbiedingen
+          </span>
           <div v-for="offer of offers.offers">
             <div class="dish">
-              <div style="width: 0"></div>
-              <div class="offer">
+              <div style="width: 0"/>
+              <div>
                 {{ offer.name }}
               </div>
               <div>
@@ -45,9 +45,9 @@
             </div>
             <div v-for="dish of offer.dishes" class="dish">
               <div/>
-              <div>
+              <i>
                 {{ dish.name }}
-              </div>
+              </i>
               <div/>
               <div/>
             </div>
@@ -65,14 +65,14 @@
           <div>
             &euro;{{ dish.price.toFixed(2) }}
           </div>
-          <div class="group">
+          <Group>
             <Button @click.native="remove(dish)">
-              -
+              <FontAwesomeIcon :icon="minus"/>
             </Button>
             <Button @click.native="add(dish)">
-              +
+              <FontAwesomeIcon :icon="plus"/>
             </Button>
-          </div>
+          </Group>
         </div>
       </div>
       <div class="box">
@@ -98,23 +98,28 @@
 </template>
 
 <script lang="ts">
+  import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import { Mutation } from 'vuex-class';
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Group from '../../components/form/Group.vue';
   import Input from '../../components/form/Input.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType, Offer, OffersApi, OrderApi, OrderDish } from '../../types';
+  import { DishesApi, OffersApi, OrderApi, OrderDish } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
-      Input,
+      FontAwesomeIcon,
       Page,
       Button,
+      Group,
+      Input,
       Loader
     }
   })
@@ -123,23 +128,33 @@
     public offers: Partial<OffersApi> = {};
     public order: OrderDish[] = [];
 
-    @Mutation('push', {namespace: 'notification'})
+    @Mutation('push', { namespace: 'notification' })
     private push!: (notification: string) => void;
 
-    get loading() {
+    public get loading() {
       return !Object.keys(this.types).length || !Object.keys(this.offers).length;
     }
 
-    get total() {
-      return this.order.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2);
+    public get total() {
+      return this.order.reduce((previous, { price, quantity }) => previous + price * quantity, 0).toFixed(2);
+    }
+
+    public get plus() {
+      return faPlus;
+    }
+
+    public get minus() {
+      return faMinus;
     }
 
     public async mounted() {
-      const response = await request<DishesApi>('/dishes', Method.Get);
-      const offers = await request<OffersApi>('/offers', Method.Get);
+      const [types, offers] = await Promise.all([
+        request<DishesApi>('/dishes', Method.Get),
+        request<OffersApi>('/offers', Method.Get)
+      ]);
 
-      if (response.success) {
-        this.types = response.data;
+      if (types.success) {
+        this.types = types.data;
       }
 
       if (offers.success) {
@@ -147,7 +162,7 @@
       }
     }
 
-    public add(dish: Dish | Offer) {
+    public add(dish: OrderDish) {
       const foundDish = this.order.find((orderDish) => orderDish.id === dish.id);
 
       if (!foundDish) {
@@ -159,7 +174,7 @@
           isOffer: dish.hasOwnProperty('dishes')
         });
       } else {
-        ++foundDish.quantity;
+        foundDish.quantity++;
       }
     }
 
@@ -173,13 +188,13 @@
       if (foundDish.quantity === 1) {
         this.order = this.order.filter((orderDish) => orderDish.id !== dish.id);
       } else {
-        --foundDish.quantity;
+        foundDish.quantity--;
       }
     }
 
     public deleteOrder() {
       this.order = [];
-      this.push('Bestelling weggehaald');
+      this.push('Bestelling verwijderd');
     }
 
     public async pay() {
@@ -199,11 +214,6 @@
 </script>
 
 <style scoped lang="scss">
-  .note {
-    background-color: white;
-    color: black;
-  }
-
   .grid {
     display: grid;
     grid-template: calc(100vh - 19rem) 12rem / 3fr 2fr;
@@ -215,24 +225,6 @@
     justify-content: space-around;
     align-items: center;
     height: 100%;
-  }
-
-  .group {
-    display: flex;
-
-    & > * {
-      border-radius: 0;
-
-      &:first-child {
-        border-top-left-radius: .5rem;
-        border-bottom-left-radius: .5rem;
-      }
-
-      &:last-child {
-        border-top-right-radius: .5rem;
-        border-bottom-right-radius: .5rem;
-      }
-    }
   }
 
   .info {
@@ -258,21 +250,7 @@
     }
   }
 
-  .offer-heading {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-  }
-
-  .offer {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
-
-  .type {
+  .heading {
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;

@@ -1,14 +1,15 @@
 <template>
   <Page>
-    <Menu :response="response"/>
+    <Menu :response="response" :icon="plus" @toggle="addDish"/>
   </Page>
 </template>
 
 <script lang="ts">
+  import { faPlus } from '@fortawesome/free-solid-svg-icons';
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { Mutation } from 'vuex-class';
 
-  import UglyButton from '../../components/form/UglyButton.vue';
   import Menu from '../../components/Menu.vue';
   import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
@@ -17,13 +18,19 @@
 
   @Component({
     components: {
-      UglyButton,
       Menu,
       Page
     }
   })
   export default class Overview extends Vue {
     public response: Partial<MenuApi> = {};
+
+    @Mutation('addDish', { namespace: 'cart' })
+    private addDish!: (id: number) => void;
+
+    public get plus() {
+      return faPlus;
+    }
 
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);

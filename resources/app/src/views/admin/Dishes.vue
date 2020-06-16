@@ -1,7 +1,7 @@
 <template>
   <Page>
     <div class="grid">
-      <Button @click.native="$router.push('/kassa/gerechten/maken')">
+      <Button @click.native="$router.push('/kassa/gerechten/nieuw')">
         Gerecht aanmaken
       </Button>
       <Button @click.native="$router.push('/kassa/types')">
@@ -10,7 +10,7 @@
       <div class="box big">
         <Loader v-if="loading"/>
         <div v-else v-for="type of types.types">
-          <span class="type">
+          <span class="heading">
             {{ type.name }}
           </span>
           <div v-for="dish of type.dishes" class="dish">
@@ -23,16 +23,14 @@
             <div>
               &euro;{{ dish.price.toFixed(2) }}
             </div>
-            <div>
+            <Group>
               <Button @click.native="removeDish(dish)">
                 Verwijderen
               </Button>
-            </div>
-            <div>
-              <Button @click.native="$router.push(`/kassa/gerechten/maken/${dish.id}`)">
+              <Button @click.native="$router.push(`/kassa/gerechten/${dish.id}`)">
                 Aanpassen
               </Button>
-            </div>
+            </Group>
           </div>
         </div>
       </div>
@@ -47,15 +45,17 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Group from '../../components/form/Group.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { Dish, DishesApi, DishType } from '../../types';
+  import { Dish, DishesApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
     components: {
       Page,
       Button,
+      Group,
       Loader
     }
   })
@@ -65,7 +65,7 @@
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
-    get loading() {
+    public get loading() {
       return !Object.keys(this.types).length;
     }
 
@@ -97,7 +97,7 @@
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: 3rem calc(100vh - 11rem) / 5fr 1fr;
+    grid-template: 3rem calc(100vh - 10rem) / 5fr 1fr;
     grid-gap: 1rem;
   }
 
@@ -112,21 +112,7 @@
     }
   }
 
-  .offer-heading {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-  }
-
-  .offer {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
-
-  .type {
+  .heading {
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;

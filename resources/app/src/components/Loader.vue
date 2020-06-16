@@ -13,12 +13,13 @@
 <style scoped lang="scss">
   .loader {
     margin: 0 auto;
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #555;
+    border: .25rem solid rgba(255, 255, 255, .25);;
+    border-top-color: white;
+    border-left-color: white;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
+    width: 2rem;
+    height: 2rem;
+    animation: spin .5s linear infinite;
   }
 
   @keyframes spin {

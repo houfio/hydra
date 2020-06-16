@@ -2,8 +2,8 @@
   <Page>
     <div class="grid">
       <div/>
-      <Button @click.native="$router.push('/kassa/aanbiedingen/maken')">
-        Aanmaken
+      <Button @click.native="$router.push('/kassa/aanbiedingen/nieuw')">
+        Aanbieding aanmaken
       </Button>
       <div class="box big">
         <Loader v-if="loading"/>
@@ -20,16 +20,14 @@
           <div>
             &euro;{{ offer.price.toFixed(2) }}
           </div>
-          <div>
+          <Group>
             <Button @click.native="remove(offer)">
               Verwijderen
             </Button>
-          </div>
-          <div>
-            <Button @click.native="$router.push(`/kassa/aanbiedingen/maken/${offer.id}`)">
+            <Button @click.native="$router.push(`/kassa/aanbiedingen/${offer.id}`)">
               Aanpassen
             </Button>
-          </div>
+          </Group>
         </div>
       </div>
     </div>
@@ -43,6 +41,7 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Group from '../../components/form/Group.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Offer, OffersApi } from '../../types';
@@ -52,6 +51,7 @@
     components: {
       Page,
       Button,
+      Group,
       Loader
     }
   })
@@ -61,7 +61,7 @@
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
 
-    get loading() {
+    public get loading() {
       return !Object.keys(this.offers).length;
     }
 

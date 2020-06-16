@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="box">
-        <div v-if="Object.keys(selected).length" v-for="dish of selected.dishes" class="dish">
+        <div v-if="Object.keys(selected).length" v-for="dish of selected.dishes" class="order">
           <div>
             x{{ dish.pivot.quantity }}
           </div>
@@ -80,7 +80,7 @@
     public orders: Partial<OrdersApi> = {};
     public selected: Partial<Order> = {};
 
-    get loading() {
+    public get loading() {
       return !Object.keys(this.orders).length;
     }
 
@@ -112,20 +112,6 @@
     height: 100%;
   }
 
-  .row {
-    display: flex;
-
-    button:first-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    button:last-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-
   .info {
     display: flex;
     flex-direction: column;
@@ -149,60 +135,17 @@
     }
   }
 
-  .offer-heading {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-  }
-
-  .offer {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
-
-  .type {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-  }
-
   .order {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
 
     & > div:nth-child(1) {
-      width: 25rem;
-    }
-
-    & > div:nth-child(2) {
-      flex: 1;
-    }
-
-    & > div:nth-child(3) {
       margin-right: 1rem;
     }
 
-    &:last-child {
-      margin-bottom: 2rem;
-    }
-  }
-
-  .dish {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    & > div:nth-child(1) {
-      width: 5rem;
-    }
-
     & > div:nth-child(2) {
-      flex: 1;
+      flex: 2;
     }
 
     & > div:nth-child(3) {

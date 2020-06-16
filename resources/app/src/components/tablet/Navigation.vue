@@ -6,7 +6,7 @@
           Menukaart
         </NavigationItem>
         <NavigationItem path="/tablet/bestellen">
-          Bestellen
+          Bestellen ({{ quantity }})
         </NavigationItem>
         <NavigationItem path="/tablet/geschiedenis">
           Geschiedenis
@@ -19,6 +19,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import { State } from 'vuex-class';
 
   import NavigationItem from '../public/NavigationItem.vue';
 
@@ -27,7 +28,14 @@
       NavigationItem
     }
   })
-  export default class Navigation extends Vue {}
+  export default class Navigation extends Vue {
+    @State('dishes', { namespace: 'cart' })
+    public dishes!: { id: number, quantity: number }[];
+
+    public get quantity() {
+      return this.dishes.reduce((previous, current) => previous + current.quantity, 0);
+    }
+  }
 </script>
 
 <style scoped lang="scss">

@@ -65,7 +65,7 @@ export type ReportApi = {
 };
 
 export type DishesApi = {
-  types: DishType[]
+  types: Type[]
 };
 
 export type OrderApi = {
@@ -77,7 +77,7 @@ export type DishApi = {
 };
 
 export type TypeApi = {
-  type: DishType
+  type: Type
 };
 
 export type OfferApi = {
@@ -100,7 +100,7 @@ export type Order = {
 };
 
 export type MenuApi = {
-  types: DishType[],
+  types: Type[],
   offers: Offer[]
 };
 
@@ -113,8 +113,8 @@ export type Offer = {
   dishes: Dish[] | OfferDish[]
 };
 
-export type DishType = {
-  id: number,
+export type Type = {
+  id?: number,
   name: string,
   dishes?: Dish[]
 };
@@ -145,14 +145,6 @@ export type OrderDish = {
   quantity: number,
   isOffer: boolean,
   note?: string
-};
-
-export type NewDish = {
-  number: string,
-  price: number,
-  description: string,
-  name: string,
-  type_id: number
 };
 
 export type OfferDish = {

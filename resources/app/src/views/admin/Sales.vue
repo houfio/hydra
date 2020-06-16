@@ -121,7 +121,7 @@
     public response: Partial<ReportApi> = {};
     public creating = false;
 
-    get returned() {
+    public get returned() {
       return Boolean(Object.keys(this.response).length);
     }
 

@@ -20,7 +20,7 @@
     }
   })
   export default class Admin extends Vue {
-    get navigation() {
+    public get navigation() {
       return Boolean(this.$route.meta.guard);
     }
   }
