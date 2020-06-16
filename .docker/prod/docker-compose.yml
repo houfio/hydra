@@ -1,0 +1,20 @@
+version: '3'
+services:
+  hydra:
+    image: docker.pkg.github.com/houfio/hydra/hydra:master
+    command: php artisan migrate
+    ports:
+      - 8000:80
+    networks:
+      - hydra
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    networks:
+      - hydra
+networks:
+  hydra:
+    driver: bridge

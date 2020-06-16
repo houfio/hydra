@@ -1,0 +1,27 @@
+version: '3'
+services:
+  hydra:
+    build:
+      context: ../..
+      dockerfile: ./.docker/dev/Dockerfile
+    image: hydra
+    command: php artisan migrate
+    volumes:
+      - ../..:/var/www/html
+    ports:
+      - 8000:80
+    depends_on:
+      - database
+    networks:
+      - hydra
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    networks:
+      - hydra
+networks:
+  hydra:
+    driver: bridge

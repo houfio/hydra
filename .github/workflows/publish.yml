@@ -1,0 +1,35 @@
+name: publish
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - release/*
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2.1.0
+      - name: define version
+        run: echo ::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##*/})
+      - name: setup node
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: '12'
+      - name: install dependencies
+        working-directory: ./resources/app
+        run: npm ci
+      - name: build app
+        working-directory: ./resources/app
+        run: npm run build
+      - name: publish to registry
+        uses: elgohr/Publish-Docker-Github-Action@2.14
+        with:
+          name: docker.pkg.github.com/houfio/hydra/hydra
+          username: houfio
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          dockerfile: .docker/prod/Dockerfile
+          context: .
+          tags: "${{ env.BRANCH_NAME }}"
