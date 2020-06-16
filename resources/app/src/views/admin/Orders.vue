@@ -5,7 +5,7 @@
         <Loader v-if="loading"/>
         <div v-else v-for="order of orders.orders" class="order">
           <div>
-            {{ order.created_at }}
+            {{ format(order.created_at) }}
           </div>
           <div>
             {{ order.dishes.length }} gerechten besteld
@@ -45,7 +45,7 @@
           </div>
           <div class="info">
             <span class="big">
-              {{ selected.created_at }}
+              {{ format(selected.created_at) }}
             </span>
             geplaatst op
           </div>
@@ -57,6 +57,8 @@
 </template>
 
 <script lang="ts">
+  import { format, parseISO } from 'date-fns';
+  import { nl } from 'date-fns/locale';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
@@ -79,6 +81,10 @@
   export default class Orders extends Vue {
     public orders: Partial<OrdersApi> = {};
     public selected: Partial<Order> = {};
+
+    public format(date: string) {
+      return format(parseISO(date), 'PPpp', { locale: nl });
+    }
 
     public get loading() {
       return !Object.keys(this.orders).length;

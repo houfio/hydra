@@ -48,5 +48,24 @@
         @endforeach
       </div>
     @endforeach
+    @foreach ($offers as $offer)
+      <h2 class="type center">
+        {{ $offer->name }} &euro;{{ number_format($offer->price, 2, '.', '') }}
+      </h2>
+      <div class="menu">
+        @foreach($offer->dishes as $dish)
+          <div class="menu-item">
+            <div class="menu-header">
+              <h3>{{ $dish->number }}. {{ $dish->name }}</h3>
+            </div>
+            @if($dish->description)
+              <p>
+                ({{ $dish->description }})
+              </p>
+            @endif
+          </div>
+        @endforeach
+      </div>
+    @endforeach
   </body>
 </html>

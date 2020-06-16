@@ -104,6 +104,10 @@ export type MenuApi = {
   offers: Offer[]
 };
 
+export type MenuDownloadApi = {
+  url: string
+};
+
 export type Offer = {
   id?: number,
   name: string,

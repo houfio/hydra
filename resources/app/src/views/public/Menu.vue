@@ -2,7 +2,7 @@
   <Page padding="2rem 1rem">
     <h1 class="center">De Gouden Draak menukaart</h1>
     <div class="center">
-      <UglyButton tag="a" href="https://hydra.local/api/menu/current">
+      <UglyButton tag="a" :href="url" download :disabled="!url" target="_blank">
         Download
       </UglyButton>
     </div>
@@ -21,7 +21,7 @@
   import MenuComponent from '../../components/Menu.vue';
   import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
-  import { MenuApi } from '../../types';
+  import { MenuApi, MenuDownloadApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -35,6 +35,7 @@
   })
   export default class Menu extends Vue {
     public response: Partial<MenuApi> = {};
+    public url = '';
     public favorites: number[] = JSON.parse(this.$cookies.get('favorites') || '[]');
 
     public get heart() {
@@ -46,6 +47,12 @@
 
       if (response.success) {
         this.response = response.data;
+      }
+
+      const downloadResponse = await request<MenuDownloadApi>('/menu/current', Method.Get);
+
+      if (downloadResponse.success) {
+        this.url = downloadResponse.data.url;
       }
     }
 

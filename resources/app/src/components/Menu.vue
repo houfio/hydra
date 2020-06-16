@@ -8,10 +8,10 @@
         <div v-for="dish in type.dishes" class="menu-item">
           <div class="menu-header">
             <button
-              v-if="icon"
-              class="action"
-              :class="{ active: active && active(dish.id) }"
-              @click="$emit('toggle', dish.id)"
+                v-if="icon"
+                class="action"
+                :class="{ active: active && active(dish.id) }"
+                @click="$emit('toggle', dish.id)"
             >
               <FontAwesomeIcon :icon="icon"/>
             </button>
@@ -27,6 +27,14 @@
     </div>
     <div v-for="offer in response.offers">
       <h2 class="type center">
+        <button
+            v-if="icon"
+            class="action"
+            :class="{ active: active && active(offer.id) }"
+            @click="$emit('toggle', offer.id)"
+        >
+          <FontAwesomeIcon :icon="icon"/>
+        </button>
         {{ offer.name }} &euro;{{ offer.price.toFixed(2) }}
       </h2>
       <div class="menu">
@@ -59,7 +67,7 @@
     }
   })
   export default class Menu extends Vue {
-    @Prop({ default: () => ({}) }) public response!: Partial<MenuApi>;
+    @Prop({default: () => ({})}) public response!: Partial<MenuApi>;
     @Prop() public active?: (id: number) => boolean;
     @Prop() public icon?: IconDefinition;
   }

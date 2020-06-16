@@ -61,6 +61,7 @@
           </div>
           <div>
             {{ dish.name }}
+            <Input label="Notitie" type="text" v-model="dish.note"/>
           </div>
           <div>
             &euro;{{ dish.price.toFixed(2) }}
