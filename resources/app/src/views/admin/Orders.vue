@@ -8,10 +8,10 @@
             {{ format(order.created_at) }}
           </div>
           <div>
-            {{ order.dishes.length }} gerechten besteld
+            {{ order.dishes.length + order.offers.length }} gerechten besteld
           </div>
           <div>
-            &euro;{{ calculatePrice(order.dishes) }}
+            &euro;{{ (calculatePrice(order.dishes) + calculatePrice(order.offers)).toFixed(2) }}
           </div>
           <div>
             <Button @click.native="selected = order">
@@ -21,17 +21,31 @@
         </div>
       </div>
       <div class="box">
-        <div v-if="Object.keys(selected).length" v-for="dish of selected.dishes" class="order">
-          <div>
-            x{{ dish.pivot.quantity }}
+        <div v-if="Object.keys(selected).length" >
+          <div v-for="dish of selected.dishes" class="order">
+            <div>
+              x{{ dish.pivot.quantity }}
+            </div>
+            <div>
+              {{ dish.name }}
+            </div>
+            <div>
+              &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
+            </div>
+            <div></div>
           </div>
-          <div>
-            {{ dish.name }}
+          <div v-for="dish of selected.offers" class="order">
+            <div>
+              x{{ dish.pivot.quantity }}
+            </div>
+            <div>
+              {{ dish.name }}
+            </div>
+            <div>
+              &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
+            </div>
+            <div></div>
           </div>
-          <div>
-            &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
-          </div>
-          <div></div>
         </div>
         <p v-else>Selecteer een bestelling</p>
       </div>
@@ -39,7 +53,7 @@
         <div v-if="Object.keys(selected).length" class="spacing">
           <div class="info">
             <span class="big">
-              &euro;{{ calculatePrice(selected.dishes) }}
+              &euro;{{ calculatePrice(selected.dishes).toFixed(2) }}
             </span>
             totaal incl. btw
           </div>
@@ -67,7 +81,7 @@
   import Form from '../../components/form/Form.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
-  import { Dish, Order, OrdersApi } from '../../types';
+  import { Dish, Offer, Order, OrdersApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -90,8 +104,8 @@
       return !Object.keys(this.orders).length;
     }
 
-    public calculatePrice(dishes: Dish[]): string {
-      return dishes.reduce((prev, curr) => prev + (curr.pivot!.price * curr.pivot!.quantity), 0).toFixed(2);
+    public calculatePrice(dishes: any): number {
+      return dishes.reduce((prev: any, curr: any) => prev + (curr.pivot!.price * curr.pivot!.quantity), 0);
     }
 
     public async mounted() {
