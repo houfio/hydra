@@ -41,6 +41,9 @@
     @Mutation('clear', { namespace: 'cart' })
     private clear!: () => void;
 
+    @Mutation('push', { namespace: 'notification' })
+    private push!: (notification: string) => void;
+
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);
 
@@ -51,12 +54,14 @@
 
     public async submit(api: typeof request) {
       const response = await api<OrderApi>('/orders', Method.Post, {
-        dishes: this.dishes,
-        offers: []
+        dishes: this.dishes!.filter((d) => !d.isOffer),
+        offers: this.dishes!.filter((d) => d.isOffer)
       });
 
       if (response.success) {
         this.clear();
+      } else if (response.error.message === 'Order cannot be placed yet.') {
+        this.push('Er moeten 10 minuten tussen twee bestellingen zitten');
       }
     }
 

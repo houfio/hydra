@@ -96,7 +96,8 @@ export type Order = {
   id: number,
   session_id?: number,
   created_at: string,
-  dishes: Dish[]
+  dishes: Dish[],
+  offers?: Offer[]
 };
 
 export type MenuApi = {
