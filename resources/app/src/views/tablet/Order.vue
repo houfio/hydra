@@ -65,7 +65,7 @@
         return;
       }
 
-      return this.response.types.flatMap((t) => t.dishes).find((d) => d.id === id)?.name;
+      return this.response.types.flatMap((t) => t.dishes).find((d) => d?.id === id)?.name;
     }
   }
 </script>
