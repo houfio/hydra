@@ -115,7 +115,8 @@ export type Offer = {
   tax?: number,
   price: number,
   valid_until: string | null,
-  dishes: Dish[] | OfferDish[]
+  dishes: Dish[] | OfferDish[],
+  pivot?: OrderDishPivot
 };
 
 export type Type = {

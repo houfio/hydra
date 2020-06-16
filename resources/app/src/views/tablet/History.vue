@@ -22,7 +22,7 @@
   import UglyButton from '../../components/form/UglyButton.vue';
   import Page from '../../components/Page.vue';
   import { Method } from '../../constants';
-  import { Order, OrderApi, OrdersApi } from '../../types';
+  import { Dish, Order, OrderApi, OrdersApi } from '../../types';
   import { request } from '../../utils/request';
 
   @Component({
@@ -51,15 +51,35 @@
     }
 
     public async submit(order: Order) {
+      const dishes: any[] = [];
+      const offers: any[] = [];
+
+      order.dishes.map((d) => {
+        dishes.push({
+          ...d,
+          quantity: d.pivot!.quantity,
+          note: d.pivot!.note
+        });
+      });
+
+      order.offers!.map((o) => {
+        offers.push({
+          ...o,
+          quantity: o.pivot!.quantity,
+          note: o.pivot!.note
+        });
+      });
+
       const response = await request<OrderApi>('/orders', Method.Post, {
-        dishes: order.dishes,
-        offers: order.offers
+        dishes,
+        offers
       });
 
       if (response.success) {
         this.clear();
+        await this.getOrders();
       } else if (response.error.message === 'Order cannot be placed yet.') {
-        this.push('Er moeten 10 minuten tussen twee bestellingen zitten');
+        window.alert('Er moeten 10 minuten tussen twee bestellingen zitten');
       }
     }
 

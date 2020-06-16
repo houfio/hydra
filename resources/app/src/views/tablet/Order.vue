@@ -41,9 +41,6 @@
     @Mutation('clear', { namespace: 'cart' })
     private clear!: () => void;
 
-    @Mutation('push', { namespace: 'notification' })
-    private push!: (notification: string) => void;
-
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);
 
