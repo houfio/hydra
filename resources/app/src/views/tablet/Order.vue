@@ -60,8 +60,6 @@
 
       if (response.success) {
         this.clear();
-      } else if (response.error.message === 'Order cannot be placed yet.') {
-        this.push('Er moeten 10 minuten tussen twee bestellingen zitten');
       }
     }
 
