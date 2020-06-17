@@ -1,6 +1,14 @@
 <template>
   <Page>
     <div class="grid">
+      <Form @submit="getDishes" v-slot="{ loading }">
+        <Group class="group">
+          <Input label="Zoeken" :spacing="false" v-model="search"/>
+          <Button :disabled="loading">
+            Gerecht zoeken
+          </Button>
+        </Group>
+      </Form>
       <Button @click.native="$router.push('/kassa/gerechten/nieuw')">
         Gerecht aanmaken
       </Button>
@@ -45,7 +53,9 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Form from '../../components/form/Form.vue';
   import Group from '../../components/form/Group.vue';
+  import Input from '../../components/form/Input.vue';
   import Loader from '../../components/Loader.vue';
   import { Method } from '../../constants';
   import { Dish, DishesApi } from '../../types';
@@ -55,12 +65,15 @@
     components: {
       Page,
       Button,
+      Form,
       Group,
+      Input,
       Loader
     }
   })
   export default class Dishes extends Vue {
     public types: Partial<DishesApi> = {};
+    public search = '';
 
     @Mutation('push', {namespace: 'notification'})
     private push!: (notification: string) => void;
@@ -84,8 +97,8 @@
       }
     }
 
-    private async getDishes() {
-      const response = await request<DishesApi>('/dishes', Method.Get);
+    private async getDishes(api = request) {
+      const response = await api<DishesApi>(`/dishes?q=${encodeURIComponent(this.search)}`, Method.Get);
 
       if (response.success) {
         this.types = response.data;
@@ -97,7 +110,7 @@
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: 3rem calc(100vh - 10rem) / 5fr 1fr;
+    grid-template: 3rem calc(100vh - 10rem) / 5fr 1fr 1fr;
     grid-gap: 1rem;
   }
 
@@ -107,7 +120,7 @@
     border-radius: 1rem;
 
     &.big {
-      grid-column: span 2;
+      grid-column: span 3;
       overflow-y: scroll;
     }
   }
@@ -138,6 +151,18 @@
 
     &:last-child {
       margin-bottom: 2rem;
+    }
+  }
+
+  .group {
+    display: flex;
+
+    & > *:nth-child(1) {
+      flex: 5;
+    }
+
+    & > *:nth-child(2) {
+      flex: 1;
     }
   }
 </style>

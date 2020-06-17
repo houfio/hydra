@@ -1,5 +1,5 @@
 <template>
-  <div class="group">
+  <div class="group" :bind="$attrs">
     <slot/>
   </div>
 </template>
@@ -17,16 +17,16 @@
     display: flex;
 
     & > * {
-      border-radius: 0;
+      border-radius: 0 !important;
 
       &:first-child {
-        border-top-left-radius: .5rem;
-        border-bottom-left-radius: .5rem;
+        border-top-left-radius: .5rem !important;
+        border-bottom-left-radius: .5rem !important;
       }
 
       &:last-child {
-        border-top-right-radius: .5rem;
-        border-bottom-right-radius: .5rem;
+        border-top-right-radius: .5rem !important;
+        border-bottom-right-radius: .5rem !important;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :class="{ 'has-error': errors && errors.length }">
+  <div class="wrapper" :class="{ 'has-error': errors && errors.length, spacing: spacing }">
     <label class="label">
       {{ label }}
     </label>
@@ -31,6 +31,7 @@
     @Prop() public value?: string;
     @Prop() public step?: string;
     @Prop() public errors?: keyof FormErrors;
+    @Prop({ default: true }) public spacing!: boolean;
 
     @Emit('input')
     public onChange(event: InputEvent) {
@@ -42,13 +43,18 @@
 <style scoped lang="scss">
   .wrapper {
     position: relative;
-    margin-bottom: .5rem;
+    border-radius: .5rem;
     font-family: 'Open Sans', sans-serif;
+    overflow: hidden;
 
     &.has-error {
       background-color: #ff0000;
       border-radius: .5rem;
       box-shadow: 0 0 0 3px #ff0000;
+    }
+
+    &.spacing {
+      margin-bottom: .5rem;
     }
   }
 
@@ -68,7 +74,6 @@
     padding: 1.5rem .75rem .5rem .75rem;
     color: black;
     background-color: #f1f1f1;
-    border-radius: .5rem;
     outline: none;
     vertical-align: top;
     resize: vertical;
