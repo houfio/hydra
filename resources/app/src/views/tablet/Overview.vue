@@ -26,7 +26,7 @@
     public response: Partial<MenuApi> = {};
 
     @Mutation('addDish', { namespace: 'cart' })
-    private addDish!: (id: number, isOffer: boolean) => void;
+    private addDish!: (params: {id: number, isOffer: boolean}) => void;
 
     public get plus() {
       return faPlus;

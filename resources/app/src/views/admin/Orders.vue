@@ -8,7 +8,7 @@
             {{ format(order.created_at) }}
           </div>
           <div>
-            {{ order.dishes.length + order.offers.length }} gerechten besteld
+            {{ calculateDishes(order.dishes) + calculateDishes(order.offers) }} gerechten besteld
           </div>
           <div>
             &euro;{{ (calculatePrice(order.dishes) + calculatePrice(order.offers)).toFixed(2) }}
@@ -27,7 +27,7 @@
               x{{ dish.pivot.quantity }}
             </div>
             <div>
-              {{ dish.name }}
+              {{ dish.name }} | {{ dish.pivot.note ? dish.pivot.note : 'Geen notitie' }}
             </div>
             <div>
               &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
@@ -39,7 +39,7 @@
               x{{ dish.pivot.quantity }}
             </div>
             <div>
-              {{ dish.name }}
+              {{ dish.name }} | {{ dish.pivot.note ? dish.pivot.note : 'Geen notitie' }}
             </div>
             <div>
               &euro;{{ (dish.pivot.quantity * dish.pivot.price).toFixed(2) }}
@@ -53,7 +53,7 @@
         <div v-if="Object.keys(selected).length" class="spacing">
           <div class="info">
             <span class="big">
-              &euro;{{ calculatePrice(selected.dishes).toFixed(2) }}
+              &euro;{{ (calculatePrice(selected.dishes) + calculatePrice(selected.offers)).toFixed(2) }}
             </span>
             totaal incl. btw
           </div>
@@ -106,6 +106,10 @@
 
     public calculatePrice(dishes: any): number {
       return dishes.reduce((prev: any, curr: any) => prev + (curr.pivot!.price * curr.pivot!.quantity), 0);
+    }
+
+    public calculateDishes(dishes: any): number {
+      return dishes.reduce((prev: any, curr: any) => prev + curr.pivot!.quantity, 0);
     }
 
     public async mounted() {

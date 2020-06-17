@@ -2,8 +2,11 @@
   <Page padding="2rem 1rem">
     <h1 class="center">De Gouden Draak menukaart</h1>
     <div class="center">
-      <UglyButton tag="a" :href="url" download :disabled="!url" target="_blank">
+      <UglyButton v-if="url" tag="a" :href="url" download target="_blank">
         Download
+      </UglyButton>
+      <UglyButton v-else disabled>
+        Menu wordt voorbereid
       </UglyButton>
     </div>
     <MenuComponent :response="response" :icon="heart" :active="favorited" @toggle="favorite" :tablet="false"/>

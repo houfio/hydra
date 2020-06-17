@@ -3,6 +3,16 @@
     <div class="dishes">
       <div v-for="dish of dishes">
         {{ dish.quantity }}x {{ getName(dish.id, dish.isOffer) }}
+        <button
+            @click="removeDish({id: dish.id, isOffer: dish.isOffer})"
+        >
+          <FontAwesomeIcon :icon="minus"/>
+        </button>
+        <button
+            @click="addDish({id: dish.id, isOffer: dish.isOffer})"
+        >
+          <FontAwesomeIcon :icon="plus"/>
+        </button>
       </div>
     </div>
     <Form @submit="submit" v-slot="{ loading }">
@@ -14,6 +24,8 @@
 </template>
 
 <script lang="ts">
+  import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import { Mutation, State } from 'vuex-class';
@@ -29,7 +41,8 @@
     components: {
       Form,
       UglyButton,
-      Page
+      Page,
+      FontAwesomeIcon
     }
   })
   export default class Order extends Vue {
@@ -40,6 +53,20 @@
 
     @Mutation('clear', { namespace: 'cart' })
     private clear!: () => void;
+
+    @Mutation('addDish', { namespace: 'cart' })
+    private addDish!: (params: {id: number, isOffer: boolean}) => void;
+
+    @Mutation('removeDish', { namespace: 'cart' })
+    private removeDish!: (params: {id: number, isOffer: boolean}) => void;
+
+    public get plus() {
+      return faPlus;
+    }
+
+    public get minus() {
+      return faMinus;
+    }
 
     public async mounted() {
       const response = await request<MenuApi>('/menu', Method.Get);

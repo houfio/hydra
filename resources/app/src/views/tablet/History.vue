@@ -2,7 +2,7 @@
   <Page>
     <div class="orders">
       <div v-for="order of orders.orders">
-        {{ format(order.created_at) }} geleden | Aantal gerechten: {{ order.dishes.length }}
+        {{ format(order.created_at) }} geleden | Aantal gerechten: {{ calculateDishes(order.dishes) + calculateDishes(order.offers) }}
         <UglyButton @click.native="submit(order)">
           Herhaal bestelling
         </UglyButton>
@@ -48,6 +48,10 @@
 
     public format(date: string) {
       return formatDistance(parseISO(date), new Date(), {locale: nl});
+    }
+
+    public calculateDishes(dishes: any): number {
+      return dishes.reduce((prev: any, curr: any) => prev + curr.pivot!.quantity, 0);
     }
 
     public async submit(order: Order) {

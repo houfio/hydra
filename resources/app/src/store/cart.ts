@@ -24,8 +24,8 @@ export default class extends VuexModule {
   }
 
   @Mutation
-  public removeDish(id: number) {
-    this.dishes = this.dishes.map((dish) => dish.id !== id ? dish : {
+  public removeDish(params: {id: number, isOffer: boolean}) {
+    this.dishes = this.dishes.map((dish) => dish.id !== params.id || dish.isOffer !== params.isOffer ? dish : {
       ...dish,
       quantity: dish.quantity - 1
     }).filter((dish) => dish.quantity > 0);
