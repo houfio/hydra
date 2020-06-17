@@ -1,6 +1,14 @@
 <template>
   <Page>
     <div class="grid">
+      <Form class="top" @submit="getDishes" v-slot="{ loading }">
+        <Group class="group">
+          <Input label="Zoeken" :spacing="false" v-model="search"/>
+          <Button :disabled="loading">
+            Gerecht zoeken
+          </Button>
+        </Group>
+      </Form>
       <div class="box big">
         <Loader v-if="loading"/>
         <div v-else>
@@ -107,6 +115,7 @@
 
   import Page from '../../components/admin/Page.vue';
   import Button from '../../components/form/Button.vue';
+  import Form from '../../components/form/Form.vue';
   import Group from '../../components/form/Group.vue';
   import Input from '../../components/form/Input.vue';
   import Loader from '../../components/Loader.vue';
@@ -119,6 +128,7 @@
       FontAwesomeIcon,
       Page,
       Button,
+      Form,
       Group,
       Input,
       Loader
@@ -128,6 +138,7 @@
     public types: Partial<DishesApi> = {};
     public offers: Partial<OffersApi> = {};
     public order: OrderDish[] = [];
+    public search = '';
 
     @Mutation('push', { namespace: 'notification' })
     private push!: (notification: string) => void;
@@ -211,14 +222,23 @@
         this.push('Bestellig niet aangemaakt');
       }
     }
+
+    private async getDishes(api: typeof request) {
+      const response = await api<DishesApi>(`/dishes?q=${encodeURIComponent(this.search)}`, Method.Get);
+
+      if (response.success) {
+        this.types = response.data;
+      }
+    }
   }
 </script>
 
 <style scoped lang="scss">
   .grid {
     display: grid;
-    grid-template: calc(100vh - 19rem) 12rem / 3fr 2fr;
+    grid-template: 1fr 18fr 5fr / 3fr 2fr;
     grid-gap: 1rem;
+    height: calc(100vh - 6rem);
   }
 
   .spacing {
@@ -248,6 +268,22 @@
     &.big {
       grid-row: span 2;
       overflow-y: scroll;
+    }
+  }
+
+  .top {
+    grid-column: span 2;
+  }
+
+  .group {
+    display: flex;
+
+    & > *:nth-child(1) {
+      flex: 5;
+    }
+
+    & > *:nth-child(2) {
+      flex: 1;
     }
   }
 

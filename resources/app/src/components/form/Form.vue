@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" :bind="$attrs">
     <Error v-if="error">
       {{ error }}
     </Error>
