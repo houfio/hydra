@@ -2,70 +2,52 @@
 <html>
   <head>
     <title>De Gouden Draak - Menukaart</title>
-    <style>
-      .center {
-        text-align: center;
-      }
-
-      .type {
-        margin: 2rem 0;
-      }
-
-      .menu-item {
-        display: inline-block;
-        width: 50%;
-        padding: 1rem;
-        vertical-align: top;
-      }
-
-      .menu-header > * {
-        display: inline-block;
-      }
-
-      .menu-header > *:last-child {
-        float: right;
-      }
-    </style>
   </head>
   <body>
+    <h1>Gouden Draak menukaart</h1>
     @foreach ($types as $type)
-      <h2 class="type center">
-        {{ $type->name }}
-      </h2>
-      <div class="menu">
+      <h4>{{ $type->name }}</h4>
+      <ul>
         @foreach($type->dishes as $dish)
-          <div class="menu-item">
-            <div class="menu-header">
-              <h3>{{ $dish->number }}. {{ $dish->name }}</h3>
-              <span>&euro;{{ number_format($dish->price, 2, '.', '') }}</span>
-            </div>
+          <div @if($dish->description) style="margin-bottom: 20px" @endif>
+            <li style="list-style: none;">
+            <span style="margin-right: 10px; text-align: left">
+              {{ $dish->number }}
+            </span>
+              {{ $dish->name }}
+              <span style="text-align: right">
+              &euro;{{ number_format($dish->price, 2, '.', '') }}
+            </span>
+            </li>
             @if($dish->description)
-              <p>
-                ({{ $dish->description }})
-              </p>
+              <span style="font-size: 12px;">
+            ({{ $dish->description }})
+          </span>
             @endif
           </div>
         @endforeach
-      </div>
+      </ul>
     @endforeach
+    <h3>Aanbiedingen</h3>
     @foreach ($offers as $offer)
-      <h2 class="type center">
-        {{ $offer->name }} &euro;{{ number_format($offer->price, 2, '.', '') }}
-      </h2>
-      <div class="menu">
+      <h4>{{ $offer->name }} &euro;{{ number_format($offer->price, 2, '.', '') }}</h4>
+      <ul>
         @foreach($offer->dishes as $dish)
-          <div class="menu-item">
-            <div class="menu-header">
-              <h3>{{ $dish->number }}. {{ $dish->name }}</h3>
-            </div>
+          <div @if($dish->description) style="margin-bottom: 20px" @endif>
+            <li style="list-style: none;">
+            <span style="margin-right: 10px; text-align: left">
+              {{ $dish->number }}
+            </span>
+              {{ $dish->name }}
+            </li>
             @if($dish->description)
-              <p>
-                ({{ $dish->description }})
-              </p>
+              <span style="font-size: 12px;">
+              ({{ $dish->description }})
+            </span>
             @endif
           </div>
         @endforeach
-      </div>
+      </ul>
     @endforeach
   </body>
 </html>
